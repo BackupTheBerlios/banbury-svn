@@ -1,0 +1,20 @@
+<project name="Versionsverwaltung mit Subversion (Handbuch)"
+  default="info">
+  <description>
+    Das Banbury-Framework dient dem Betrieb einer Ajax- und
+    JavaScript-angereicherten Seite, die aus den Eingaben der
+    angemeldeten Benutzer Inhalte generiert.
+  </description>
+  
+  <!-- Allgemeine Vereinbarungen -->
+  <property name="upload.protocol" value="ftp" />
+  <property name="upload.host" value="ftp.mac-only.de" />
+
+  <!-- Ziele -->
+  <target name="info">
+    <echo message="Banbury-Framework" />
+  </target>
+  <target name="upload">
+    <echo message="Noch nicht implementiert..." level="error" />
+  </target>
+</project>
