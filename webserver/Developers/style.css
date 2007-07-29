@@ -1,0 +1,22 @@
+body{
+	margin-left:20px;
+}
+.small{
+	font-size:11px;
+}
+
+h1,h2,h3,p,ul{
+	margin:0px;
+	padding:0px;
+}
+ul{
+	padding-left:20px;
+	list-style:square;
+}
+p,li{
+	line-height:140%;
+}
+	
+.code{
+	font-family:monospace;
+}
