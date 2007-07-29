@@ -1,0 +1,44 @@
+<project name="Versionsverwaltung mit Subversion (Handbuch)" default="usage">
+<property name="file" location="subversion" />
+<target name="index">
+  <exec executable="latex">
+    <arg value="${file}" />
+  </exec>
+  <exec executable="makeindex">
+    <arg value="${file}" />
+  </exec>
+</target>
+<target name="dvi" depends="index">
+  <exec executable="latex">
+    <arg value="${file}" />
+  </exec>
+</target>
+<target name="ps" depends="dvi">
+  <exec executable="dvips">
+    <arg value="-Ppdf" />
+    <arg value="-o" />
+    <arg value="${file}.ps" />
+    <arg value="${file}.dvi" />
+  </exec>
+</target>
+<target name="pdf" depends="index">
+  <exec executable="pdflatex">
+    <arg value="${file}" />
+  </exec>
+</target>
+<target name="html" depends="index">
+  <exec executable="htlatex">
+    <arg value="${file}.tex" />
+    <arg value="xhtml,uni-html4" />
+    <arg value=" -cunihtf -utf8" />
+  </exec>
+</target>
+<target name="usage">
+  <echo>Folgende Aufrufe sind möglich:
+ant pdf     Erzeugt die PDF-Ausgabe
+ant html    Erzeugt die HTML-Ausgabe
+ant dvi     Erzeugt die DVI-Ausgabe
+ant ps      Erzeugt die PostScript-Ausgabe
+</echo>
+</target>
+</project>

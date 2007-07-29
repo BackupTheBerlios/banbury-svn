@@ -1,0 +1,306 @@
+%\listfiles % für Fehlersuche
+% Dokumentenklasse und Optionen
+\documentclass[
+  final,      % endgültige Fassung
+% draft,      % Vorschau
+  idxtotoc,   % Index soll im Inhaltsverzeichnis stehen
+% liststotoc, % Abbildungs- und Tabellenverzeichnis sollen im Inhaltsverzeichnis stehen
+% bibtotoc,   % Literaturverzeichnis soll im Inhaltsverzeichnis stehen
+  tocleft,    % Inhaltsverzeichnis nicht einrücken
+% chapterprefix, % »Kapitel« vor Kapitelnummer ausgeben (nur scrreprt und scrbook)
+% appendixprefix, % »Anhang« vor Anhangsnummer ausgeben
+  a4paper,    % Papiergröße A4
+  abstracton, % Zusammenfassung aktivieren
+  titlepage,  % Eine Titelseite erstellen
+% twoside,    % zweiseitiges Layout
+  oneside,    % einseitiges Layout
+  DIVcalc
+]{scrartcl} 
+
+%% ==================================
+%% Pakete einbinden
+%% ==================================
+
+\usepackage{makeidx} % Paket zur Indexerzeugung
+\makeindex % Indexerzeugung aktivieren
+%\usepackage[style=altlist,toc=true,hyper=true,number=none]{glossary} % Paket für Glossar
+%\makeglossary % Glossarerzeugung aktivieren
+%Glossareinträge an der jeweiligen Textstelle mit:
+% \glossary{
+%   name={Computer},
+%   description={Eine Maschine zur Lösung von Problemen,
+%     die es ohne diese Maschine nicht gäbe.}
+% }
+%Erstellung des Glossars mit makeindex:
+%makeindex -s dateiname.ist -t dateiname.glg -o dateiname.gls dateiname.glo
+
+\usepackage[headsepline,footsepline]{scrpage2} % Kopf- und Fußzeile
+\usepackage[utf8]{inputenc} % Encoding der TeX-Dateien:
+% latin1 = Windows,
+% ansi = Linux alt,
+% utf8 = Linux aktuell
+\usepackage[T1]{fontenc} % Aktiviert EC-Schriftarten
+\usepackage{ae} % Schöne Schriften für PDF-Dateien
+\usepackage{textcomp} % Text-Companion-Symbols (z. B. \texteuro)
+\usepackage[ngerman]{babel} % Deutsche Einstellungen
+%Paket times ist veraltet, siehe
+% http://www.ctan.org/tex-archive/info/german/l2tabu/l2tabu.pdf
+% \usepackage{times} % Times-Schriftart auswählen
+%Auswahl der Schriftarten:
+%
+%  -- Palatino --
+% Paket mathpazo akzeptiert diese Optionen:
+% leer    lieber nicht benutzen
+% [sc]    Palatino(pplx) mit echten Kapitälchen
+% [osf]   Palatino(pplj) mit echten Kapitälchen und
+%         Oldstyle-Zahlen im Text
+%\usepackage[sc]{mathpazo}
+%\linespread{1.04} % Zeilenabstand passend zur Schriftart erhöen
+%\usepackage[scaled=.95]{helvet}
+%\usepackage{courier}%
+%  -- Times --
+%\usepackage{mathptmx} % Times
+%\usepackage[scaled=.90]{helvet}
+%\usepackage{courier}%
+%  -- Zapf Chancery --
+%\usepackage{chancery}
+%\usepackage[scaled=.90]{helvet}
+%\usepackage{courier}%
+%  -- Bookman --
+%\usepackage{bookman}
+%\usepackage[scaled=.90]{helvet}
+%\usepackage{courier}%
+%  -- New Century Schoolbook --
+%\usepackage{newcent}
+%\usepackage[scaled=.90]{helvet}
+%\usepackage{courier}%
+%  -- Charter --
+%\usepackage{charter}
+%\usepackage[scaled=.90]{helvet}
+%\usepackage{courier}%
+%  -- Latin Modern --
+\usepackage{lmodern}
+
+\typearea[current]{last}
+\usepackage{marvosym} % Symbole und das Euro-Zeichen \EUR
+\usepackage{eurosym} % Euro-Zeichen nach offz. Vorgaben, Geld durch \EUR{100,00}
+\usepackage[final]{microtype} % Mikrotypographische Anpassungen
+\usepackage{fixltx2e} % korrigiert LaTeX-Fehler
+%\usepackage{mparhack} % wenn verfügbar, korrigiert Fehler bei marginpar-Befehl
+\usepackage{color,graphics,graphicx} % Unterstützung für Grafiken und Farben
+%\usepackage{picins} % Text umfließt Grafiken
+%\usepackage{eso-pic} % nur falls Entwurf-Seitenhintergrund
+% \usepackage{url} % nur falls kein hyperref-Paket genutzt wird
+% \usepackage{longtable} % für Tabellen über mehrere Seiten
+\usepackage{fancyvrb} % für verbatiminput
+\usepackage[german]{fancyref}
+% \usepackage{listings} % Quelltexte formatiert ausgeben
+%\usepackage{booktabs} % Tabellenformatierungsbefehle top-/mid-/bottomrule
+\usepackage{caption}
+%\usepackage[ngerman]{varioref} % variable Referenzen
+%\usepackage[square]{natbib} % Literaturverzeichnis
+% PDF-Optionen, PDF-Hyperlinks
+\usepackage[draft=false, %
+  bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, %
+  colorlinks, linkcolor=blue, urlcolor=blue, %
+  pdfauthor={Erik Wegner}, pdftitle={Versionsverwaltung mit Subversion}, pdfpagemode=UseOutlines, pdfstartview=Fit, pdfview=FitBH, a4paper]{hyperref}
+\usepackage[all]{hypcap} %Klicken auf Verweise rückt Ziel in den Mittelpunkt
+%\usepackage{pdfcolmk} %bei Problemen mit Farben beim Seitenwechsel
+
+%veraltete Pakete, die nicht mehr benötigt werden
+%t1enc = ersetzt durch fontenc
+%times = ersetzt durch mathptmx
+%a4    = ersetzt durch Klassenoption a4paper
+
+%% ==================================
+%% Standardbefehle für \newcommand
+%% ==================================
+
+%%Dieses Kommando trennt die einzelnen Dokumentenabschnitte
+%%wahlweise eine neue Seite
+\newcommand{\ABSCHNITTSTRENNER}{\cleardoublepage }
+%%Dieses Kommando setzt einen Backslash,
+%%an dem ohne ein Trennzeichen getrennt werden kann
+\newcommand{\trennBS}{\texttt{\char92}" "}
+
+%Einstellungen für Abbildungsbeschriftungen
+\captionsetup{margin=10pt,font=small,labelfont=bf,position=bottom}
+
+%%Dieses Kommando setzt um den übergebenen Parameter
+%%deutsche doppelte Anführungszeichen
+\newcommand{\gdq}[1]{\glqq{}#1\grqq{}}
+
+%%Dieses Kommando setzt um den übergebenen Parameter
+%%französische Anführungszeichen (innen, außen, einfach, doppelt)
+\newcommand{\fqi}[1]{\frq#1\flq}                 % Anführungsz. einfach
+\newcommand{\fqqi}[1]{\frqq#1\flqq}              % Anführungsz. doppelt
+\newcommand{\fqa}[1]{\flq#1\frq}                 % Anführungsz. einfach
+\newcommand{\fqqa}[1]{\flqq#1\frqq}              % Anführungsz. doppelt
+
+%enquote-Befehl für alle Anführungszeichen verwenden,
+%dann kann schnell eine andere Formatierung genutzt werden
+%\newcommand{\enquote}[1]{\fqqi{#1}}              % diese Anf.zeichen nutzen
+\usepackage[babel,german=guillemets]{csquotes} % falls Paket nicht vorhanden, vorherige Zeile aktivieren
+
+%%Ein Platzhalter für Daten, die später ergänzt werden
+%\usepackage[margin,ngerman]{fixme}
+\newcommand{\weissnicht}{XX?\-XX?\-XX?\-XX\fixme{Hier fehlt was!}}
+
+%%Der Parameter erscheint im Text und im Index
+\newcommand{\textindex}[1]{#1\index{#1}}
+
+%% ==================================
+%% Standardfarben definieren
+%% ==================================
+\definecolor{gruen}{rgb}{0.0,1.0,0.0}
+\definecolor{gelb}{rgb}{1.0,1.0,0.0}
+\definecolor{weiss}{rgb}{1.0,1.0,1.0}
+\definecolor{schwarz}{rgb}{0.0,0.0,0.0}
+\definecolor{rot}{rgb}{1.0,0.0,0.0}
+
+
+%% ==================================
+%% Kopf- und Fußzeile definieren
+%% ==================================
+\manualmark % Manuelle Einstellungen anschalten
+\pagestyle{scrheadings}
+\ihead{%\includegraphics[height=2ex,draft=false]{zusatz/logo}
+}
+\chead{}
+\ohead{\headmark}
+
+\ifoot{\tiny Name}
+\cfoot{}
+\ofoot{\pagemark}
+
+% Eine Seite ohne Kopf- und Fußzeile
+\defpagestyle{plainwfl}{(0pt,0pt){} {} {}(0pt,0pt)}{(0pt,0pt){} {} {}(0pt,0pt)}
+
+%%Unterste Zeile
+\flushbottom % gleiche Höhe, elastische vertikale Abstände
+%\raggedbottom % wechselnde Höhe, konstante vertikale Abstände
+
+\begin{document}
+
+%% ==================================
+%% Befehle für die Titelseite
+%% ==================================
+\title{
+%\includegraphics[scale=1.0]{zusatz/logo_a} \\
+Projektverwaltung mit Subversion
+%\includegraphics[draft=false,scale=0.333]{zusatz/logo_a}
+}
+\author{}
+%Datum wird automatisch eingefügt
+\pdfbookmark[1]{Titelseite}{titel}
+\maketitle
+\thispagestyle{plainwfl}
+
+\mbox{}
+
+\vfill
+
+
+%% ==================================
+%% Die Zusammenfassung
+%% ==================================
+%\begin{abstract}\pdfbookmark[1]{Zusammenfassung}{}
+
+%\end{abstract}
+
+\markleft{}
+\markright{Inhaltsverzeichnis}
+
+\ABSCHNITTSTRENNER
+\pdfbookmark[1]{\contentsname}{toc}
+\tableofcontents
+%\listoffigures
+%\listoftables
+%\listoffixmes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ABSCHNITTSTRENNER
+\markright{Allgemeines}
+\section{Versionsverwaltung mit Subversion}
+
+\subsection{Arbeitskopie erstellen}
+\begin{Verbatim}
+mkdir mac-only 
+cd mac-only 
+svn checkout https://BENUTZERNAME@banbury.svn.sourceforge.net/svnroot/banbury
+\end{Verbatim}
+
+
+\subsection{Änderungen in das Archiv übertragen}
+\begin{Verbatim}
+svn update
+svn commit --message "Mitteilung über Änderungen"
+\end{Verbatim}
+
+
+\subsection{Verzeichnisse}
+
+\subsubsection{trunk}\label{sec:trunk}
+Hauptentwicklungszweig, der Inhalt dieses Verzeichnises wird auf den
+Webserver überspielt
+
+\subsubsection{branches}
+Ablegen von Nebenentwicklungszweigen für größere, länger dauernde
+Änderugen
+
+\begin{Verbatim}
+svn copy trunk branches/geek9
+\end{Verbatim}
+
+Der Befehl kopiert alle Dateien (und Verzeichnisse) aus dem aktiven
+Zweig in den Entwicklerzweig mit der Bezeichnung geek9. In diesem
+Nebenzweig können nun umfangreiche Änderungen\footnote{Umfangreich kann
+  heißen: viele Dateien betreffend, viele Programmzeilen betreffend,
+  eine lange Zeitdauer betreffend, Änderung eines Modells mit
+  weitreichenden Folgen, etc.}  vorgenommen werden. Änderungen des
+Hauptzweigs lassen sich bei Bedarf übernehmen. Nach Abschluss der
+Arbeiten kann der Nebenzweig wieder mit dem Hauptzweig vereint werden.
+
+\subsubsection{tags}
+Ablage \enquote{alter} Versionen mit:
+
+\begin{Verbatim}
+svn copy trunk tags/v1.1
+\end{Verbatim}
+
+Letztlich passiert hier folgendes: alle Dateien aus dem aktiven Zweig
+(\fref{sec:trunk}) werden in das Unterverzeichnis v1.1 kopiert. An den
+Verzeichnissen und Dateien im Verzeichnis tags dürfen keine Änderungen
+vorgenommen werden, da sonst die historische Version abweicht. Erlaubt
+ist nur das Anlegen zusätzlicher Tags (Verzeichnisse) mit dem oben
+genannten Befehl.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ABSCHNITTSTRENNER
+\appendix
+\markright{Anhang}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\ABSCHNITTSTRENNER
+%\markright{Glossar}
+%\def\glossaryname{Glossar}
+%\printglossary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ABSCHNITTSTRENNER
+\markright{Index}
+\renewcommand*{\indexpagestyle}{scrheadings}
+\printindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\ABSCHNITTSTRENNER
+%\markright{Literaturverzeichnis}
+%\bibliographystyle{dinat}%[Autor, Jahr]
+%\bibliographystyle{gerplain} %einfache Zahl
+%\bibliography{dateiname}
+
+\end{document}
+
+% htlatex subversion.tex "xhtml,uni-html4" " -cunihtf -utf8"
+

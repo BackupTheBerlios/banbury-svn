@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<!--http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd-->  
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml"  
+> 
+<head><title> Projektverwaltung mit Subversion </title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<!-- xhtml,uni-html4,html --> 
+<meta name="src" content="subversion.tex" /> 
+<meta name="date" content="2007-07-29 14:15:00" /> 
+<link rel="stylesheet" type="text/css" href="subversion.css" /> 
+</head><body 
+>
+  <div class="maketitle">
+                                                                       
+
+                                                                       
+
+<h2 class="titleHead"> Projektverwaltung mit Subversion </h2>
+<div class="author" ></div><br />
+<div class="date" ><span 
+class="ec-lmr-12x-x-120">29.</span><span 
+class="ec-lmr-12x-x-120"> Juli 2007</span></div>
+                                                                       
+
+                                                                       
+  </div>
+<!--l. 199--><p class="indent" >
+</p>
+  <table 
+class="abstract"><tr><td 
+>
+<!--l. 207--><p class="indent" >
+                                                                       
+
+                                                                       
+</p>
+<div class="center" 
+>
+<!--l. 207--><p class="noindent" >
+</p><!--l. 207--><p class="noindent" ><span 
+class="ec-lmssbx-10x-x-109">Zusammenfassung</span></p></div>
+                                                                       
+
+                                                                       
+  </td></tr></table>
+                                                                       
+
+                                                                       
+  <h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Inhaltsverzeichnis</h3>
+  <div class="tableofcontents">
+  <span class="sectionToc" >1 <a 
+href="#x1-40001" id="QQ2-1-4">Versionsverwaltung mit Subversion</a></span>
+<br />   <span class="subsectionToc" >1.1 <a 
+href="#x1-50001.1" id="QQ2-1-5">Arbeitskopie erstellen</a></span>
+<br />   <span class="subsectionToc" >1.2 <a 
+href="#x1-60001.2" id="QQ2-1-6">Änderungen in das Archiv übertragen</a></span>
+<br />   <span class="subsectionToc" >1.3 <a 
+href="#x1-70001.3" id="QQ2-1-7">Verzeichnisse</a></span>
+<br />    <span class="subsubsectionToc" >1.3.1 <a 
+href="#x1-80001.3.1" id="QQ2-1-8">trunk</a></span>
+<br />    <span class="subsubsectionToc" >1.3.2 <a 
+href="#x1-90001.3.2" id="QQ2-1-9">branches</a></span>
+<br />    <span class="subsubsectionToc" >1.3.3 <a 
+href="#x1-100001.3.3" id="QQ2-1-10">tags</a></span>
+  </div>
+  <h3 class="likesectionHead"><a 
+ id="x1-2000"></a>Abbildungsverzeichnis</h3>
+<div class="tableofcontents">
+</div>
+  <h3 class="likesectionHead"><a 
+ id="x1-3000"></a>Tabellenverzeichnis</h3>
+<div class="tableofcontents">
+</div>
+                                                                       
+
+                                                                       
+  <h3 class="sectionHead"><span class="titlemark">1 </span> <a 
+ id="x1-40001"></a>Versionsverwaltung mit Subversion</h3>
+<!--l. 226--><p class="noindent" >
+</p>
+  <h4 class="subsectionHead"><span class="titlemark">1.1 </span> <a 
+ id="x1-50001.1"></a>Arbeitskopie erstellen</h4>
+<!--l. 227--><p class="noindent" >
+</p>
+  <div class="fancyvrb" id="fancyvrb1">
+<a 
+ id="x1-5002r1"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> mkdir</span><span 
+class="ec-lmtt-10x-x-109"> mac-only</span>
+<br class="fancyvrb" /><a 
+ id="x1-5004r2"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> cd</span><span 
+class="ec-lmtt-10x-x-109"> mac-only</span>
+<br class="fancyvrb" /><a 
+ id="x1-5006r3"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> svn</span><span 
+class="ec-lmtt-10x-x-109"> checkout</span><span 
+class="ec-lmtt-10x-x-109"> https://BENUTZERNAME@banbury.svn.sourceforge.net/svnroot/banbury</span>
+  </div>
+<!--l. 234--><p class="noindent" >
+</p>
+  <h4 class="subsectionHead"><span class="titlemark">1.2 </span> <a 
+ id="x1-60001.2"></a>Änderungen in das Archiv übertragen</h4>
+<!--l. 235--><p class="noindent" >
+</p>
+  <div class="fancyvrb" id="fancyvrb2">
+<a 
+ id="x1-6002r1"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> svn</span><span 
+class="ec-lmtt-10x-x-109"> update</span>
+<br class="fancyvrb" /><a 
+ id="x1-6004r2"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> svn</span><span 
+class="ec-lmtt-10x-x-109"> commit</span><span 
+class="ec-lmtt-10x-x-109"> --message</span><span 
+class="ec-lmtt-10x-x-109"> &#x0022;Mitteilung</span><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109">ü</span><span 
+class="ec-lmtt-10x-x-109">ber</span><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109">Ä</span><span 
+class="ec-lmtt-10x-x-109">nderungen&#x0022;</span>
+  </div>
+<!--l. 241--><p class="noindent" >
+</p>
+  <h4 class="subsectionHead"><span class="titlemark">1.3 </span> <a 
+ id="x1-70001.3"></a>Verzeichnisse</h4>
+                                                                       
+
+                                                                       
+<!--l. 243--><p class="noindent" >
+</p>
+  <h5 class="subsubsectionHead"><span class="titlemark">1.3.1 </span> <a 
+ id="x1-80001.3.1"></a>trunk</h5>
+<!--l. 244--><p class="noindent" >Hauptentwicklungszweig, der Inhalt dieses Verzeichnises wird auf den Webserver
+überspielt
+</p><!--l. 247--><p class="noindent" >
+</p>
+  <h5 class="subsubsectionHead"><span class="titlemark">1.3.2 </span> <a 
+ id="x1-90001.3.2"></a>branches</h5>
+<!--l. 248--><p class="noindent" >Ablegen von Nebenentwicklungszweigen für größere, länger dauernde
+Änderugen
+</p><!--l. 251--><p class="indent" >
+</p>
+  <div class="fancyvrb" id="fancyvrb3">
+<a 
+ id="x1-9002r1"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> svn</span><span 
+class="ec-lmtt-10x-x-109"> copy</span><span 
+class="ec-lmtt-10x-x-109"> trunk</span><span 
+class="ec-lmtt-10x-x-109"> branches/geek9</span>
+  </div>
+<!--l. 255--><p class="indent" >  Der Befehl kopiert alle Dateien (und Verzeichnisse) aus dem aktiven Zweig in den
+Entwicklerzweig mit der Bezeichnung geek9. In diesem Nebenzweig können nun umfangreiche
+Änderungen<span class="footnote-mark"><a 
+href="subversion2.html#fn1x0"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-9003f1"></a> 
+vorgenommen werden. Änderungen des Hauptzweigs lassen sich bei Bedarf
+übernehmen. Nach Abschluss der Arbeiten kann der Nebenzweig wieder mit dem
+Hauptzweig vereint werden.
+</p><!--l. 264--><p class="noindent" >
+</p>
+  <h5 class="subsubsectionHead"><span class="titlemark">1.3.3 </span> <a 
+ id="x1-100001.3.3"></a>tags</h5>
+<!--l. 265--><p class="noindent" >Ablage »alter« Versionen mit:
+</p><!--l. 267--><p class="indent" >
+</p>
+                                                                       
+
+                                                                       
+  <div class="fancyvrb" id="fancyvrb4">
+<a 
+ id="x1-10002r1"></a><span 
+class="ec-lmtt-10x-x-109"> </span><span 
+class="ec-lmtt-10x-x-109"> svn</span><span 
+class="ec-lmtt-10x-x-109"> copy</span><span 
+class="ec-lmtt-10x-x-109"> trunk</span><span 
+class="ec-lmtt-10x-x-109"> tags/v1.1</span>
+  </div>
+<!--l. 271--><p class="indent" >  Letztlich passiert hier folgendes: alle Dateien aus dem aktiven Zweig
+(Abschnitt <a 
+href="#x1-80001.3.1">1.3.1<!--tex4ht:ref: sec:trunk --></a> auf Seite 7) werden in das Unterverzeichnis v1.1 kopiert. An den
+Verzeichnissen und Dateien im Verzeichnis tags dürfen keine Änderungen
+vorgenommen werden, da sonst die historische Version abweicht. Erlaubt ist nur
+das Anlegen zusätzlicher Tags (Verzeichnisse) mit dem oben genannten
+Befehl.
+                                                                       
+
+                                                                       
+                                                                       
+
+                                                                       
+</p>
+   
+</body></html> 
+
+                                                                       
+
+
