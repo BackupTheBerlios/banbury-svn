@@ -227,9 +227,19 @@ Projektverwaltung mit Subversion
 \begin{Verbatim}
 mkdir mac-only 
 cd mac-only 
-svn checkout https://BENUTZERNAME@banbury.svn.sourceforge.net/svnroot/banbury
+svn checkout svn+ssh://BENUTZERNAME@svn.berlios.de/svnroot/repos/banbury
 \end{Verbatim}
 
+In dieser Arbeitskopie können Änderungen an Dateien und Verzeichnissen
+vorgenommen werden. \textsc{Achtung}: bitte Änderungen an Datei- oder
+Verzeichnisnamen, Kopier- und Verschiebevorgänge nur mit
+subversion-Mitteln durchführen:
+\begin{itemize}
+\item svn move oder svn rename
+\item svn copy
+\item svn mkdir
+\item svn del
+\end{itemize}
 
 \subsection{Änderungen in das Archiv übertragen}
 \begin{Verbatim}
