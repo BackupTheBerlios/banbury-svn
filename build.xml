@@ -1,5 +1,4 @@
-<project name="Versionsverwaltung mit Subversion (Handbuch)"
-  default="info">
+<project name="Banbury Framework" default="info">
   <description>
     Das Banbury-Framework dient dem Betrieb einer Ajax- und
     JavaScript-angereicherten Seite, die aus den Eingaben der
