@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<meta http-equiv="content-type" content=
+"text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<script type="text/javascript">
+              /* <![CDATA[ */
+
+
+
+        /* ]]> */
+
+
+</script>
+
+<style type="text/css">
+            h1,h2,h3{padding-top:10px;padding-bottom:10px;}
+
+</style>
+</head>
+<body>
+<h1>Willkommen bei Banbury!</h1>
+
+<p>Für den Anfang haben wir hier Richtlinien
+geschaffen, die die Arbeit und vorallem Zusammenarbeit erleichtern
+sollen. Es wird darum gebeten diese Richtlinien zu beachten und
+sich so strikt wie möglich daran zu halten.</p>
+
+<hr />
+<h2>Inhalt</h2>
+
+<p><a href="#a1">Dateien</a> <a href="#a2">Programmierng</a> <a href=
+"#a2.1">Variablen</a> <a href="#a2.2">Funktionen</a> <a href=
+"3.">Debug</a> <a href="4.">Programmierung</a>
+</p>
+<hr />
+<h2><a id="a1">1.</a> Dateien</h2>
+
+<ul>
+<li>PHP, HTML und sonstige Text-Dateien sollen immer im UTF-8
+Format vorliegen</li>
+
+<li>Die globalen Konfigurationsdateien für das
+Projekt sind in /php/Config</li>
+
+<li style="list-style: none">
+<ul>
+<li>Neue Konfigurationsdateien können
+hinzugefügt werden.</li>
+
+<li>Sie werden in /php/Includes.php aufgerufen.</li>
+</ul>
+</li>
+
+<li>Die globalen Funktionen sind in <a href=
+"FunctionDocumentation/">/php/Functions.php</a></li>
+
+<li>Jede Funktion, die das Projekt selbst bietet wird im
+Dateisystem von einem Unterordner abgebildet</li>
+
+<li style="list-style: none">
+<ul>
+<li>Enthält den Ordner "Content" in dem HTML oder
+PHP Dateien für die Anzeige von Informationen
+bereitliegen</li>
+
+<li>Enthät den Ordner "php" in dem Einzelne PHP
+Dateien mit speziellen Aufgaben liegen können</li>
+
+<li>Enthält eine "index.php", deren Aufgabe die
+Vermittlung ist.</li>
+</ul>
+</li>
+</ul>
+
+<hr />
+<h2><a id="a2">2.</a> Programmierung</h2>
+
+<h3><a id="a2.1">2.1</a> Variablen</h3>
+
+<ul>
+<li>Es gibt <a href="http://www.php.net/reserved.variables">globale
+Variablen in PHP</a>, nutze sie!</li>
+
+<li>Es gibt <a href="Variablen.php">globale Projektvariablen in
+Banbury</a>, nutze sie!</li>
+
+<li>Es gibt <a href="Konstanten.php">globale Konstanten in
+Banbury</a>, nutze sie!</li>
+
+<li>Es gibt <a href=
+"FunctionDocumentation/#UserLogin">Session-Variablen in
+Banbury</a>, nutze sie!</li>
+
+<li>Die Namensgebung von Variablen ist völlig
+freigestellt.</li>
+</ul>
+
+<h3><a id="a2.2">2.2</a> Funktionen</h3>
+
+<ul>
+<li>Funktionen können und sollen sogar soweit wie
+möglich hinzugefügt werden.</li>
+
+<li>Die Implementierung dieser Funktionen soll so allgemein wie
+möglich gehalten werden.</li>
+
+<li>Die Namensgebung von Funktionen erfolgt wie in folgenden
+Beispielen</li>
+
+<li style="list-style: none">
+<ul>
+<li>Funktionsnamen beschreiben ihre Aufgabe</li>
+
+<li>Sie sind Worte ohne Leerzeichen</li>
+
+<li>Jedes Wort beginnt mit einem Gro&Atilde;&Yuml;buchstaben</li>
+
+<li>Ausnahme sind Attribute wie: <em>(unvollständige
+Liste)</em></li>
+
+<li style="list-style: none">
+<ul>
+<li>r - rekursiv</li>
+
+<li>a - assoziativ</li>
+
+<li>i - caseinsensitive</li>
+</ul>
+</li>
+
+<li>Attribute werden zu einem Buchstaben gekürzt und
+an den Anfang des Funktionsnamen gestellt Bsp:
+aArrayIntoString</li>
+</ul>
+</li>
+</ul>
+
+<h2><a id="a3">3.</a> Debug</h2>
+
+<p>Zum Debuggen neuer oder alter Funktionen befindet sich unten auf
+der Seite ein Button mit der Aufschrift <em>»Debug Info«</em>. Wenn
+man diesen drückt bekommt man Informationen
+über die Inhalte aller Wichtigen Arrays sowie
+über alle Queries während des
+Aufrufs. Es wird darum gebeten diesen Button zu nutzen. Der Inhalt
+der Debug Info Anzeige wird in <a href=
+"ShowFile.php?index.php">/index.php</a> generiert.</p>
+
+<h2><a id="a4">4.</a> Programmierung</h2>
+
+<p>Für die Programmierung empfehle ich <a href=
+"http://www.easyeclipse.org/site/distributions/php.html">EasyEclipse</a>
+und <a href=
+"http://www.easyeclipse.org/site/plugins/subclipse.html">Subclipse</a>
+für SVN.</p>
+</body>
+</html>
+
