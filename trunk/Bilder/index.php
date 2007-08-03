@@ -6,5 +6,18 @@ if(isset($Pics[1])){
 	$Bild = "<img src=\"Bilder/Orginale/".$Array['Dateiname']."\" />";
 	$Titel = $Array['Titel'];
 	include("Content/Bild.php");
+}else{
+
+	$Array = DBQ("SELECT ID,Titel,Dateiname FROM Bilder");
+	$CL = InitContentList("Bilder");
+
+	foreach($Arraqy as $Bild){
+		$Titel = $Bild['Titel'];
+		$Link = '?Bilder&'.$Bild['ID'];
+
+		AddToContentList("CL",$Titel,$Inhalt,$Link);
+
+	}
+	OutputContentList($CL,"icons");
 }
 ?>

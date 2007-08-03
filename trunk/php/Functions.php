@@ -362,7 +362,7 @@ function CreateThumbnail($MaxSize = AVATARMAXSIZE,$File,$SaveName){
 			$FTemp = $File['tmp_name'];
 
 			if(fnmatch("*jpg",$FType) or fnmatch("*jpeg",$FType)){
-				$image = imagecreatefromjpeg($FTemp);
+				$image = imagecreatefromjpeg($FTemp); // Scheint hier bei einer Bildgröße über 600KB mehr als 8MB Speicher zu fressen ... k.A. wieso
 			}elseif(fnmatch("*png",$FType)){
 				$image = imagecreatefrompng($FTemp);
 			}elseif(fnmatch("*gif",$FType)){
@@ -370,19 +370,21 @@ function CreateThumbnail($MaxSize = AVATARMAXSIZE,$File,$SaveName){
 			}
 			$thumb_x = imagesx($image);
 			$thumb_y = imagesy($image);
-			if($thumb_x > AVATARMAXSIZE or $thumb_y > AVATARMAXSIZE){ // Herunterskalieren von großen Bildern
-				$Verhaeltnis = $thumb_y / $thumb_x;
+			if($thumb_x > $MaxSize or $thumb_y > $MaxSize){ // Herunterskalieren von großen Bildern
+
 				if($thumb_x > $thumb_y){ // Querformat
-					$thumb_x = AVATARMAXSIZE;
-					$thumb_y = AVATARMAXSIZE * $Verhaeltnis;
+					$Verhaeltnis = $thumb_y / $thumb_x;
+					$thumb_x = $MaxSize;
+					$thumb_y = $MaxSize * $Verhaeltnis;
 				}else{ // Hochformat
-					$thumb_y = AVATARMAXSIZE;
-					$thumb_x = AVATARMAXSIZE * $Verhaeltnis;
+					$Verhaeltnis = $thumb_x / $thumb_y;
+					$thumb_y = $MaxSize;
+					$thumb_x = $MaxSize * $Verhaeltnis;
 				}
 			}
 
 			$thumb = imagecreatetruecolor($thumb_x, $thumb_y);
-			imagecopyresized($thumb, $image, 0, 0, 0, 0, $thumb_x, $thumb_y, imagesx($image), imagesy($image));
+			imagecopyresampled($thumb, $image, 0, 0, 0, 0, $thumb_x, $thumb_y, imagesx($image), imagesy($image));
 			imagejpeg($thumb,$SaveName);
 			return true;
 		}else{
@@ -456,5 +458,62 @@ function QueryToTable($QueryArray){
  	$out .= $Vout;
 	$out .="</table>\n\n";
 	return $out;
+}
+
+## Erstellt einen Content-Type
+##
+## [bool] CreatContent( $Content, $Type, $Time, $Owner )
+##
+## [string] $Content - Enthält den Text oder Hauptinhalt, der gespeichert wird
+## [string] $Type - Enthält einen Identifier für einen Inhaltstyp:
+## mögliche Werte: $Type = "Bild", "Review", "Software", "Hardware", "Kommentar"
+## [string] $Time - Enthält nach Möglichkeit einen Unix-Timestamp
+## [string] $Owner - ID des Besitzers des neuen Inhalts
+## [array] $META - Enthält weitere Meta-Informationen: Image-Type, Dateigröße, Titel... (Hierfür muss eine Tabellenspalte existieren. )
+##
+## Es wird ein Datenbankeintrag erstellt.
+## Dabei darf $Type nur bestimmte Werte enthalten, sonst gibt die Funktion false zurück.
+
+function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
+	switch($Type){
+
+		case "Bild":
+		 //
+		 // $Content enthält hier den Titel des Bildes
+		 // $Meta muss ein Array sein, der von einem hochgeladenen Bild stammt.
+		 // $Time wird automatisch erzeugt, wenn nicht angegeben ... 
+		 //
+			$AllPics = DBQ("SELECT * FROM Bilder");
+			$AllPics = count($AllPics);
+
+			$ThumbCount = DirCount(BilderVerzeichnis."/Thumbnails/");
+			$PicCount = DirCount(BilderVerzeichnis."/Orginale/");
+
+			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
+			$PicName = $PicCount."-".$META['Bild']['name'];
+			if($Time <= 0){
+				$Time = time();
+			}
+
+			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$AllPics."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
+			CreateThumbnail(120,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
+			copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
+
+			return true;
+
+		break;
+		case "Review":
+		break;
+		case "Software":
+		break;
+		case "Hardware":
+		break;
+		case "Kommentar":
+		break;
+		default:
+			return false;
+		break;
+	}
+
 }
 ?>
