@@ -1,4 +1,19 @@
 <?php
+/*
+This file is part of Banbury.
+
+Banbury is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License.
+
+Banbury is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 set_include_path('Profil/');
 
 if(!UserLoggedIn()){
@@ -10,13 +25,13 @@ if(!UserLoggedIn()){
 		$Array = $Array[0];
 		$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
 
-		
+
 		$Values = $_POST['Values'];
 		$Update = aArrayIntoString($Values);
 		DBU("USERS","ID='".$_SESSION['ID']."'",$Update); // Werte speichern
 		if(is_array($Show)){
 			$Show = $Show[0];
-			
+
 			reset($Show);
 			unset($Show['ID']);
 			unset($Show['Nickname']);
