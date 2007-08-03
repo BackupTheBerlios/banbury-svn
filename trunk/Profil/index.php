@@ -82,7 +82,7 @@ if(!UserLoggedIn()){
 		if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
 			include("Content/TooManyPicsInGal.html");
 		}else{
-			$AllPics = DBQ("SELECT * FROM Bilder");
+		/*	$AllPics = DBQ("SELECT * FROM Bilder");
 			$AllPics = count($AllPics);
 
 			$ThumbCount = DirCount(BilderVerzeichnis."/Thumbnails/");
@@ -94,6 +94,12 @@ if(!UserLoggedIn()){
 			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel","'".$_SESSION['ID']."','".$AllPics."','".$PicName."','".$ThumbName."','".$_POST['Titel']."'"); // Eintrag in die Datenbank
 			CreateThumbnail(120,$_FILES['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 			copy($_FILES['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
+			*/
+			if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
+				include("Content/NeuesBildErfolg.html");
+			}else{
+				Error("Bild konnte nicht eingefügt werden");
+			}
 		}
 	}elseif(isset($_GET['EditMyGalerie'])){
 		if(isset($_GET['Remove']) && isset($_GET['ID'])){ // Ein Bild Löschen
@@ -110,7 +116,7 @@ if(!UserLoggedIn()){
 			}
 		}
 		include("Content/NewImage.php");
-		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."'");
+		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
 		include("Content/ImageList.php");
 
 	}else{ // Profil anzeigen
@@ -121,7 +127,7 @@ if(!UserLoggedIn()){
 		$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
 		$Show = $Show[0];
 
-		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."'");
+		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
 		reset($Show);
 		while($key = key($Show)){
 			$current = current($Show);

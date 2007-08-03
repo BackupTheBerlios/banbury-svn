@@ -44,5 +44,5 @@ define ('PASSWORTNEUBETREFF','Ihr Passwort bei mac-only.de wurde zurückgesetzt!
 define ('SERVER',$_SERVER['SERVER_NAME']);
 define ('SCRIPT',$_SERVER['PHP_SELF']);
 define ('AVATARMAXSIZE',120);
-define ('MAXPICSCOUNT',6); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
+define ('MAXPICSCOUNT',18); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
 ?>

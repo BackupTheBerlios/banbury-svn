@@ -474,6 +474,23 @@ function QueryToTable($QueryArray){
 	return $out;
 }
 
+## Generiert eine möglichst kleine, noch nicht belegte ID für einen neuen Inhalt
+## [int] GenerateContentID( $Table )
+##
+## [string] $Table - Enthält die Tabelle, in der nach einer neuen ID geforscht wird. Das Feld ID muss vorhanden sein!
+
+function GenerateContentID($Table){
+	$ContentID = 1;
+	$x=0;
+	$AllPics = DBQ("SELECT ID FROM ".$Table." ORDER BY ID");
+	while(isset($AllPics[$x]['ID']) && $AllPics[$x]['ID'] < $ContentID){
+		$ContentID++;
+		$x++;
+	}
+	$ContentID--;
+	return $ContentID;
+}
+
 ## Erstellt einen Content-Type
 ##
 ## [bool] CreatContent( $Content, $Type, $Time, $Owner )
@@ -489,6 +506,7 @@ function QueryToTable($QueryArray){
 ## Dabei darf $Type nur bestimmte Werte enthalten, sonst gibt die Funktion false zurück.
 
 function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
+
 	switch($Type){
 
 		case "Bild":
@@ -497,11 +515,9 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 		 // $Meta muss ein Array sein, der von einem hochgeladenen Bild stammt.
 		 // $Time wird automatisch erzeugt, wenn nicht angegeben ...
 		 //
-			$AllPics = DBQ("SELECT * FROM Bilder");
-			$AllPics = count($AllPics);
-
-			$ThumbCount = DirCount(BilderVerzeichnis."/Thumbnails/");
-			$PicCount = DirCount(BilderVerzeichnis."/Orginale/");
+			$ContentID = generateContentID("Bilder");
+			$ThumbCount = $ContentID;
+			$PicCount = $ContentID;
 
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
@@ -509,7 +525,7 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 				$Time = time();
 			}
 
-			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$AllPics."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
+			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$ContentID."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
 			CreateThumbnail(120,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 			copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
 
@@ -530,4 +546,26 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 	}
 
 }
+
+function InitContentList($Type){
+	$Handler = array();
+	if($Type == "Bilder"){
+		$Handler['Info'] = array('Type' => $Type,'Length' => 0,'Time' => time());
+		$Handler['Eintraege'] = array();
+	}
+	return $Handler;
+}
+
+function AddToContentList($Handler, $Titel, $Inhalt, $Link){
+	$ThisHandler = ${$Handler};
+	$Count = $ThisHandler['Info']['Length'];
+	if($ThisHandler['Info']['Type'] == "Bilder"){
+
+	}
+}
+
+function OutputContentList($Handler){
+	print_r(${$Handler});
+}
+
 ?>
