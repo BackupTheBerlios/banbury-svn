@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-## Diese Datei enth�lt alle n�tigen Einstellungen die Datenbank betreffend.
+## Diese Datei enthält alle nötigen Einstellungen die Datenbank betreffend.
 
 define ('DBUser', "MacOnly");
 define ('DBHost', "localhost");
