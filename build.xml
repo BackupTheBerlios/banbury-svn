@@ -1,4 +1,8 @@
+<!DOCTYPE project [<!ENTITY buildfile SYSTEM "file:./build-lokal.xml">
+<!ENTITY buildpwd SYSTEM "file:./build-passwords.xml">]>
 <project name="Banbury Framework" default="info">
+  &buildfile;
+  &buildpwd;
   <description>
     Das Banbury-Framework dient dem Betrieb einer Ajax- und
     JavaScript-angereicherten Seite, die aus den Eingaben der
@@ -15,5 +19,21 @@
   </target>
   <target name="upload">
     <echo message="Noch nicht implementiert..." level="error" />
+  </target>
+  <target name="erzeugeDatenbank">
+    <echo message="Datenbank erzeugen" />
+    <input message="Achtung! Vorhandene Daten in der Datenbank werden gelöscht. Fortsetzen? " addproperty="datenbank.erzeugen" defaultvalue="n" validargs="j,n" />
+    <condition property="abbruch">
+      <equals arg1="n" arg2="${datenbank.erzeugen}"/>
+    </condition>
+    <fail if="abbruch">Benutzerabbruch.</fail>
+    <filter token="DBBENUTZER" value="${datenbank.benutzer}" />
+    <filter token="DBPASSWORT" value="${datenbank.passwort}" />
+    <copy file="ressourcen/erzeugedb.sql" tofile="ressourcen/erzeugedb.sql.up" overwrite="yes" filtering="yes" />
+    <exec executable="mysql" input="ressourcen/erzeugedb.sql.up">
+      <arg value="--batch" />
+      <arg value="--force" />
+    </exec>
+    <delete file="ressourcen/erzeugedb.sql.up" />
   </target>
 </project>

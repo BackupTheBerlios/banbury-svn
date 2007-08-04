@@ -1,0 +1,12 @@
+<property name="upload.lokal.elternverzeichnis" value="/home/e-man/public_html/" />
+<property name="upload.lokal.projektverzeichnis" value="mac-only" />
+
+<property name="datenbank.host" value="localhost" />
+
+<target name="upload-lokal">
+	<copy todir="${upload.lokal.elternverzeichnis}/${upload.lokal.projektverzeichnis}">
+		<fileset dir="trunk/">
+			<exclude name="**/.svn" />
+		</fileset>
+	</copy>
+</target>
