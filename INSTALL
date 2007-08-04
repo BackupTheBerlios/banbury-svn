@@ -1,0 +1,13 @@
+Datei build-passwords.xml.vorlage kopieren nach build-passwords.xml
+Zugangskennungen, Prefix zur Datenbank in build-passwords.xml eintragen
+
+Datei build-lokal.xml.vorlage kopieren nach build-lokal.xml
+build-lokal.xml anpassen
+
+im Verzeichnis php/Config Datei DB.php.vorlage umbenennen zu DB.php
+
+Zugangskennung,Prefix zur Datenbank in php/Config/DB.php eintragen
+
+als Benutzer mit Berechtigung zum Anlegen von Datenbanken und Tabellen Befehl
+ant erzeugeDatenbank
+ausführen

@@ -2,14 +2,14 @@
 CREATE DATABASE IF NOT EXISTS `MacOnly` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 USE MacOnly;
 
-DROP TABLE IF EXISTS `Properties`;
-CREATE TABLE IF NOT EXISTS `Properties` (
+DROP TABLE IF EXISTS `@DBPREFIX@Properties`;
+CREATE TABLE IF NOT EXISTS `@DBPREFIX@Properties` (
   `Name` varchar(50) NOT NULL,
   `Value` varchar(200)
 );
 
-DROP TABLE IF EXISTS `Bilder`;
-CREATE TABLE IF NOT EXISTS `Bilder` (
+DROP TABLE IF EXISTS `@DBPREFIX@Bilder`;
+CREATE TABLE IF NOT EXISTS `@DBPREFIX@Bilder` (
   `BesitzerID` mediumint(9) NOT NULL,
   `ID` mediumint(9) NOT NULL,
   `Dateiname` mediumtext collate utf8_bin NOT NULL,
@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `Bilder` (
   `Thumbnail` mediumtext collate utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `Profile`;
-CREATE TABLE IF NOT EXISTS `Profile` (
+DROP TABLE IF EXISTS `@DBPREFIX@Profile`;
+CREATE TABLE IF NOT EXISTS `@DBPREFIX@Profile` (
   `ID` mediumint(9) NOT NULL,
   `Nickname` text collate utf8_bin NOT NULL,
   `Name` varchar(1) collate utf8_bin NOT NULL default '0',
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `Profile` (
   `Webseite` mediumtext collate utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `Schluessel`;
-CREATE TABLE IF NOT EXISTS `Schluessel` (
+DROP TABLE IF EXISTS `@DBPREFIX@Schluessel`;
+CREATE TABLE IF NOT EXISTS `@DBPREFIX@Schluessel` (
   `Nickname` varchar(64) collate utf8_bin NOT NULL,
   `Time` date NOT NULL,
   `Passwort` varchar(40) collate utf8_bin NOT NULL,
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS `Schluessel` (
   `Wert` varchar(40) collate utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `USERS`;
-CREATE TABLE IF NOT EXISTS `USERS` (
+DROP TABLE IF EXISTS `@DBPREFIX@USERS`;
+CREATE TABLE IF NOT EXISTS `@DBPREFIX@USERS` (
   `ID` mediumint(9) NOT NULL,
   `Nickname` varchar(64) collate utf8_bin NOT NULL,
   `Passwort` varchar(64) collate utf8_bin NOT NULL,
@@ -68,5 +68,5 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   `Softwarewuensche` text collate utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE USER '@DBBENUTZER@' IDENTIFIED BY '@DBPASSWORT@';
-GRANT DELETE, INSERT, UPDATE, SELECT ON MacOnly.* TO '@DBBENUTZER@'@'localhost';
+CREATE USER '@DBBENUTZER@';
+GRANT DELETE, INSERT, UPDATE, SELECT ON MacOnly.* TO '@DBBENUTZER@'@'localhost' IDENTIFIED BY '@DBPASSWORT@';

@@ -17,13 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Diese Datei enthält alle nötigen Einstellungen die Datenbank betreffend.
 
-define ('DBUser', "MacOnly");
+define ('DBUser', "benutzer");
+define ('DBPass', "passwort");
+define ('DBName', "MacOnly");
+define ('DBPrefix', "");
 define ('DBHost', "localhost");
 define ('DBPort', "3306");
-define ('DBPass', "fg67f:G!");
-define ('DBName', "MacOnly");
-
-
-
 
 ?>

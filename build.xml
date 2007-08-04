@@ -29,6 +29,7 @@
     <fail if="abbruch">Benutzerabbruch.</fail>
     <filter token="DBBENUTZER" value="${datenbank.benutzer}" />
     <filter token="DBPASSWORT" value="${datenbank.passwort}" />
+    <filter token="DBPREFIX" value="${datenbank.prefix}" />
     <copy file="ressourcen/erzeugedb.sql" tofile="ressourcen/erzeugedb.sql.up" overwrite="yes" filtering="yes" />
     <exec executable="mysql" input="ressourcen/erzeugedb.sql.up">
       <arg value="--batch" />

@@ -2,6 +2,7 @@
 <property name="upload.lokal.projektverzeichnis" value="mac-only" />
 
 <property name="datenbank.host" value="localhost" />
+<property name="datenbank.prefix" value="" />
 
 <target name="upload-lokal">
 	<copy todir="${upload.lokal.elternverzeichnis}/${upload.lokal.projektverzeichnis}">
