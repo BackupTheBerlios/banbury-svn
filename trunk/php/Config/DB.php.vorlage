@@ -24,4 +24,13 @@ define ('DBPrefix', "");
 define ('DBHost', "localhost");
 define ('DBPort', "3306");
 
+//Bezeichnungen der Tabellen
+define ('DBTabProperties', DBPrefix."SysProperties");
+define ('DBTabPictures', DBPrefix."Bilder");
+define ('DBTabProfiles', DBPrefix."Profile");
+define ('DBTabKeys', DBPrefix."Schluessel");
+define ('DBTabUsers', DBPrefix."USERS");
+
+//Bezeichnungen für Einträge in der Properties-Tabelle
+define ('DBPTabVersion', "TableVersion");
 ?>

@@ -1,0 +1,22 @@
+.testok {
+    color : #388c0b;
+  }
+
+
+.testok:before {
+    content : "√ ";
+  }
+
+.testfail {
+	color: #FF4A4A;
+}
+
+.testfail:before {
+ content : "x ";
+}
+
+.warnung {
+	font-size:125%;
+	font-weight:bold;
+	color: #FF4A4A;
+}

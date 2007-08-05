@@ -271,6 +271,10 @@ function UserHasMail($Name,$Mail){
 	}
 }
 
+function DBQ2($Tabelle, $Felder, $Abfrage) {
+	return DBQ("SELECT $Felder FROM $Tabelle WHERE $Abfrage");
+}
+
 ## Startet eine neue Anfrage an MySQL und gibt die Antwort als Array aus
 ##
 ## [array] DBQ( $Query )
@@ -305,6 +309,31 @@ function DBQ($query){
 	return $out;
 }
 
+## Liest aus der Properties-Tabelle den unter $Name gespeicherten Wert
+## [string] DBGetProperty($Name)
+##
+## [string] $Name - Bezeichnung der Eigenschaft, die geladen werden soll
+## [string] $DefaultValue - Ist der Wert in der Properties-Tabelle nicht enthalten, wird dieser Wert zurückgegeben
+function DBGetProperty($Name, $DefaultValue = "") {
+	$erg = DBQ("SELECT PropName,PropValue FROM " . DBTabProperties . 
+		" WHERE PropName=\"" . $Name. "\"");
+	return $erg[0]["PropValue"];
+}
+
+## Speichert den Wert $Value unter dem Namen $Name in der Properties-Tabelle
+##
+## [bool] DBSetProperty($Name, $Value)
+##
+## [string] $Name - Bezeichnung der Eigenschaft, die gespeichert werden soll
+## [string] $Value - Wert, der unter der Bezeichnung $Name gespeichert werden soll
+function DBSetProperty($Name, $Value) {
+	return mysql_query ("REPLACE INTO `" . DBTabProperties . "` (" .
+		"PropName,PropValue" .
+		") VALUES ( \"" .
+		addslashes($Name) . "\",\"" .
+		addslashes($Value) .
+		"\")");
+}
 
 ## Update für Werte in einer vorhandenen Tabellenzeile
 ##

@@ -22,7 +22,7 @@
   </target>
   <target name="erzeugeDatenbank">
     <echo message="Datenbank erzeugen" />
-    <input message="Achtung! Vorhandene Daten in der Datenbank werden gelöscht. Fortsetzen? " addproperty="datenbank.erzeugen" defaultvalue="n" validargs="j,n" />
+    <input message="Achtung! Dieser Aufruf sollte nicht mehr passieren. Öffnen Sie im Browser die Datei config.php, um die Tabellen zu erstellen. Wollen Sie trotzdem fortsetzen und vorhandene Daten in der Datenbank löschen? " addproperty="datenbank.erzeugen" defaultvalue="n" validargs="j,n" />
     <condition property="abbruch">
       <equals arg1="n" arg2="${datenbank.erzeugen}"/>
     </condition>
