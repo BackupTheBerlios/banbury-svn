@@ -41,22 +41,22 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 if($config ==0) die("Config nicht zugelassen");
 
 $aktionen = array(
-	erzeugeTabellen => "Tabellen neu erstellen",
-	erzeugeTabellen2 => "Wirklich Tabellen neu erstellen?",
-	aktualisiereTabellen => "Tabellen aktualisieren",
-	aktualisiereTabellen2 => "Tabellen aktualisieren",
-	cfgTest => "Konfiguration überprüfen",
-	resetAdmin => "Administrator einrichten"
+	'erzeugeTabellen' => "Tabellen neu erstellen",
+	'erzeugeTabellen2' => "Wirklich Tabellen neu erstellen?",
+	'aktualisiereTabellen' => "Tabellen aktualisieren",
+	'aktualisiereTabellen2' => "Tabellen aktualisieren",
+	'cfgTest' => "Konfiguration überprüfen",
+	'resetAdmin' => "Administrator einrichten"
 );
+if(isset($_GET['aktion'])){
+	$aktion = $_GET['aktion'];
 
-$aktion = $_GET['aktion'];
-
-if ($aktionen[$aktion] != "") {
-	call_user_func($aktion);
+	if ($aktionen[$aktion] != "") {
+		call_user_func($aktion);
+	}
 } else {
-	cfgTest();
-}
-
+		cfgTest();
+	}
 function erzeugeTabellen() {
 	echo "<p>";
 	echo actionLink("erzeugeTabellen2");
