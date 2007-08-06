@@ -46,7 +46,9 @@ define ('MAINTEMPLATES','Content/Templates/'); // Unbedingt mit Slash (/) enden 
 ## Einschränkungen und Optionen
 
 define ('AVATARMAXSIZE',120);
-define ('MAXPICSCOUNT',18); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
+define ('MAXPICSCOUNT',3); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
+define ('MAXITEMSINLIST',12); // Maximale Anzahl an Bildern, Reviews etc. in einer Liste.
+define ('MAXLENGTHKOMMENTAR',250);
 
 ## Konfiguration
 
@@ -54,7 +56,7 @@ define ('PROJECTNAME','Banbury'); // Der Name des Projekts
 define ('ADMINMAIL','webmaster@kwnetzwelt.de');
 define ('VON','register@'.PROJECTNAME.'.de');
 define ('VONNAME','Rezeption');
-define ('REGISTERNEUBETREFF','Willkommen bei mac-only.de. Jetzt freischalten!');
-define ('PASSWORTNEUBETREFF','Ihr Passwort bei mac-only.de wurde zurückgesetzt!');
+define ('REGISTERNEUBETREFF','Willkommen bei '.PROJECTNAME.'. Jetzt freischalten!');
+define ('PASSWORTNEUBETREFF','Ihr Passwort bei '.PROJECTNAME.' wurde zurückgesetzt!');
 
 ?>

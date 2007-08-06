@@ -29,10 +29,10 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
 <head>
-  <title>Konfiguration</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link rel="stylesheet" type="text/css" href="css/config.css" />
+	<title>Konfiguration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/config.css" />
 </head>
 <body>
 <?php
@@ -69,17 +69,38 @@ function erzeugeTabellen2() {
 	initDBConnection();
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabPictures, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabPictures . 
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabPictures .
 		"` (
-			`BesitzerID` mediumint(9) NOT NULL, 
-			`ID` mediumint(9) NOT NULL, 
-			`Dateiname` mediumtext collate utf8_bin NOT NULL, 
-			`Titel` mediumtext collate utf8_bin NOT NULL, 
+			`BesitzerID` mediumint(9) NOT NULL,
+			`ID` mediumint(9) NOT NULL,
+			`Dateiname` mediumtext collate utf8_bin NOT NULL,
+			`Titel` mediumtext collate utf8_bin NOT NULL,
 			`Thumbnail` mediumtext collate utf8_bin NOT NULL
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db), "Tabelle für Bilder", "angelegt", "Fehler beim Anlegen: " . mysql_error($db));
 
+	mysql_query("DROP TABLE IF EXISTS " . DBTabRoles, $db);
+	ergebnis(mysql_query('CREATE TABLE `'.DBTabRoles.'` ( `Rolle` VARCHAR(11) NOT NULL,  `BenutzerID` MEDIUMINT NOT NULL ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin', $db),
+		"Tabelle für Benutzerrollen",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+
+
+	mysql_query("DROP TABLE IF EXISTS " . DBTabComments, $db);
+	ergebnis(mysql_query('CREATE TABLE `'.DBTabComments.'` (
+	`ID` mediumint(9) NOT NULL,
+	`Inhalt` text collate utf8_bin NOT NULL,
+	`Titel` varchar(30) collate utf8_bin NOT NULL,
+	`Time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	`BesitzerID` mediumint(9) NOT NULL,
+	`ZuID` mediumint(9) NOT NULL,
+	`ZuType` varchar(30) collate utf8_bin NOT NULL
+)' , $db),
+		"Tabelle für Kommentare",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProfiles, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProfiles. 
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProfiles.
 		"` (
 			`ID` mediumint(9) NOT NULL,
 			`Nickname` text collate utf8_bin NOT NULL,
@@ -100,14 +121,14 @@ function erzeugeTabellen2() {
 		"Fehler beim Anlegen: " . mysql_error($db));
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabKeys, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys. 
-		"` (`Nickname` varchar(64) collate utf8_bin NOT NULL, `Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL, `Mail` varchar(255) collate utf8_bin NOT NULL, `Wert` varchar(40) collate utf8_bin NOT NULL) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db), 
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys.
+		"` (`Nickname` varchar(64) collate utf8_bin NOT NULL, `Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL, `Mail` varchar(255) collate utf8_bin NOT NULL, `Wert` varchar(40) collate utf8_bin NOT NULL) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db),
 		"Tabelle für Schlüssel",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabUsers, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers . 
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
 		"` (
 			`ID` mediumint(9) NOT NULL,
 			`Nickname` varchar(64) collate utf8_bin NOT NULL,
@@ -148,18 +169,11 @@ function erzeugeTabellen2() {
 		"Tabellenversion",
 		"gespeichert",
 		"nicht gespeichert: " . mysql_error($db));
-	
+
 	echo actionLink("cfgTest");
 }
 
-function initDBConnection() {
-	set_include_path('php');
-	require_once('Includes.php');
-	require_once('Functions.php');
-	global $db;
-	$db = mysql_connect(DBHost.":".DBPort,DBUser,DBPass);
-	$db_selected = mysql_select_db(DBName,$db);
-}
+
 
 function actionLink($aktion) {
 	global $aktionen;
@@ -199,7 +213,7 @@ function cfgTestDBTablePropertiesExist() {
 	$result = false;
 	$dbr = mysql_list_tables(DBName, $db);
 	$anzahl = mysql_num_rows($dbr);
-  	for($x=0;$x<$anzahl;$x++) if (mysql_tablename($dbr,$x) == DBTabProperties) $result = true;
+		for($x=0;$x<$anzahl;$x++) if (mysql_tablename($dbr,$x) == DBTabProperties) $result = true;
 	ergebnis($result, "Systemtabelle", "Vorhanden", "Nicht vorhanden: ". actionLink("erzeugeTabellen"));
 	return $result;
 }
@@ -237,7 +251,7 @@ function cfgAdmin() {
 			<input id=\"kennwort2\" name=\"kennwort2\" type=\"password\" /><br />
 		<input type=\"submit\" value=\"Administrator einrichten\" />
 	</div>
-       </form>";
+			 </form>";
 }
 
 function cfgWarnung() {
@@ -252,6 +266,7 @@ function resetAdmin() {
 	$result = false;
 	if (strlen($kennwort1)>7) {
 		if ($kennwort1 == $kennwort2) {
+
 			//Erzeuge Benutzer und Passworteintrag
 			$result = true;
 		} else {$fehler = "Passwörter weichen ab";}

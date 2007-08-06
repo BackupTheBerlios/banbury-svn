@@ -271,6 +271,17 @@ function UserHasMail($Name,$Mail){
 	}
 }
 
+
+function initDBConnection() {
+	set_include_path('php');
+	require_once('Includes.php');
+	require_once('Functions.php');
+	global $db;
+	$db = mysql_connect(DBHost.":".DBPort,DBUser,DBPass);
+	$db_selected = mysql_select_db(DBName,$db);
+}
+
+
 function DBQ2($Tabelle, $Felder, $Abfrage) {
 	return DBQ("SELECT $Felder FROM $Tabelle WHERE $Abfrage");
 }
@@ -536,6 +547,11 @@ function GenerateContentID($Table){
 
 function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 
+			if($Time <= 0){
+				$Time = time();
+			}
+				$Time = date("y-m-d H:i:s");
+
 	switch($Type){
 
 		case "Bild":
@@ -544,17 +560,14 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 		 // $Meta muss ein Array sein, der von einem hochgeladenen Bild stammt.
 		 // $Time wird automatisch erzeugt, wenn nicht angegeben ...
 		 //
-			$ContentID = generateContentID("Bilder");
+			$ContentID = GenerateContentID("Bilder");
 			$ThumbCount = $ContentID;
 			$PicCount = $ContentID;
 
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
-			if($Time <= 0){
-				$Time = time();
-			}
 
-			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$ContentID."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
+			DBIN(DBTabPictures,"BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$ContentID."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
 			CreateThumbnail(120,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 			copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
 
@@ -568,6 +581,14 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 		case "Hardware":
 		break;
 		case "Kommentar":
+			$ContentID = GenerateContentID("Kommentare");
+			$Schluessel = "BesitzerID,ID,Titel,Inhalt,ZuID,ZuType,Time";
+			if(strlen($Content) > MAXLENGTHKOMMENTAR){
+				$Content = substr($Content,0,MAXLENGTHKOMMENTAR);
+			}
+			$Werte = "'".$Owner."','".$ContentID."','".$META['Titel']."','".$Content."','".$META['ZuID']."','".$META['ZuType']."','".$Time."'";
+			DBIN(DBTabComments,$Schluessel,$Werte);
+			return true;
 		break;
 		default:
 			return false;
@@ -576,29 +597,108 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 
 }
 
-function InitContentList($Type){
+## Erzeugt einen Handler für eine Inhaltsliste
+##
+## [mixed] InitContentList( $Type )
+##
+## [string] $Type - Kann nur bestimmte Werte annehmen. Siehe Funktion.
+##
+## Die Funktion erzeugt einen Handler, der für die weitere Erstellung einer Inhaltsliste benötigt wird.
+## Der Handler ist ein Array mit bestimmten Informationen und den Einträgen der Inhaltsliste.
+
+function InitContentList($Type,$Items,$Page,$Position = ""){
+
 	$Handler = array();
-	if($Type == "Bilder"){
-		$Handler['Info'] = array('Type' => $Type,'Length' => 0,'Time' => time());
+	if($Type == "Bilder" or $Type== "Kommentare"){
+		$Handler['Info'] = array(
+			'Type' => $Type,'Length' => 0,
+			'Time' => time(),'Items' => $Items,
+			'Page' => $Page,
+			'Position' => $Position
+		);
 		$Handler['Eintraege'] = array();
+		return $Handler;
+	}else{
+		return false;
 	}
-	return $Handler;
+
 }
 
-function AddToContentList($Handler, $NewValues){
-	global ${$Handler};
-	$ThisHandler = ${$Handler};
-	$Count = $ThisHandler['Info']['Length'];
-	if(isset($ThisHandler['Info']['Type'])){
+## Fügt einen Eintrag in die Liste ein
+##
+## [bool] AddToContentList( $Handlername, $NewValues )
+##
+## [string] $Handlername - Der Handler für diese Inhaltsliste
+## [mixed] $NewValues - Kann entweder ein assoziatives Array sein, oder ein String.
+##
+## Es wird ein weiterer Eintrag in den Handler eingefügt. Dabei werden $NewValues in der Template-Datei ersetzt.
+## Die Template-Datei für einen  Eintrag ergibt sich aus dem Typen der Inhaltsliste. Bsp: Type = "Bilder", dann: Templatename = "BilderList"
+
+function AddToContentList($Handlername, $NewValues){
+	global ${$Handlername};
+	$ThisHandler = ${$Handlername};
+
+	if(isset($ThisHandler['Info']['Length'])){
+		$Count = $ThisHandler['Info']['Length'];
+	}
+	if($Count >= MAXITEMSINLIST){
+		return false;
+	}elseif(isset($ThisHandler['Info']['Type'])){
 		$ThisHandler['Eintraege'][$Count] = LoadTPL($ThisHandler['Info']['Type']."List",$NewValues);
 		$ThisHandler['Info']['Length']++;
+		${$Handlername} = $ThisHandler;
+		return true;
 	}else{
 		Error("Unknown Type of ContentList");
 	}
+
 }
 
-function OutputContentList($Handler){
-	print_r($Handler);
+## Gibt eine Inhaltsliste aus
+## [string] OutputContentList($Handlername, $Style)
+##
+## [string] $Handlername - Der Handler für diese Inhaltsliste
+## [string] $Style - Einhält einen Wert für die Template-Datei. Default: 'Icons'
+##
+## Es wird eine Inhaltsliste erzeugt und zurück gegeben. Der Handler wird zurückgesetzt.
+
+function OutputContentList($Handlername,$Style = 'Icons'){
+	global ${$Handlername};
+	$Handler = ${$Handlername};
+	$Prefix = "CL".$Style;
+
+	$Return = LoadTPL($Prefix."Start",$Handler['Info']['Type']);
+
+	foreach($Handler['Eintraege'] as $Eintrag){
+		$Return .= LoadTPL($Prefix."Item",$Eintrag);
+	}
+
+	$Pages = round($Handler['Info']['Items'] / MAXITEMSINLIST , 0);
+	if($Pages == 0)
+		$Pages = 1; // Warum der Mensch bei 1 Anfängt mit zählen wird mir immer ein Rätsel bleiben
+	$Page = $Handler['Info']['Page'];
+	if($Page == 1){
+		$Back = "";
+	}else{
+		$Back = "?".$Handler['Info']['Position']."&Page=".($Page-1); // Das ist der Link zur Vorigen Seite
+	}
+	if($Page == $Pages){
+		$Forth = "";
+	}else{
+		$Forth = "?".$Handler['Info']['Position']."&Page=".($Page+1); // Das ist der Link zur nächsten Seite
+	}
+	$Values = array(
+		"Pages" => $Pages ,
+		"Page" => $Page,
+		"Items" => $Handler['Info']['Items'],
+		"Type" => $Handler['Info']['Type'],
+		"Back" => $Back,
+		"Forth" => $Forth
+	);
+
+	$Return .= LoadTPL($Prefix."End",$Values);
+	unset(${$Handlername});
+	return $Return;
 }
 
 ## Lädt Werte in eine Template-Datei
@@ -612,9 +712,11 @@ function OutputContentList($Handler){
 ## Lädt eine Template-Datei, ersetzt die Array-Schlüssel durch die Werte ($Values) und gibt das Ergebnis zurück.
 ## Damit dynamischer Inhalt eingebunden werden kann, wird die Template-Datei includiert.
 
-function LoadTPL($TPLName,$Values){
-	$TPLFile = MAINTEMPLATES.$TPLName.".php";
+function LoadTPL($TPLName,$Values = ""){
+	restore_include_path();
+	global $TEMPLATES;
 
+	$TPLFile = MAINTEMPLATES.$TPLName.".php";
 	if(is_file($TPLFile) && !strstr($TPLName,"..")){
 
 		if(is_array($Values)){
@@ -624,13 +726,14 @@ function LoadTPL($TPLName,$Values){
 				next($Values);
 			}
 
+		}else{
+			$Value = $Values;
 		}
-
 		ob_start();
 			include($TPLFile);  // Template-Datei einbinden.
 			$Return = ob_get_contents();
 		ob_end_clean();
-echo $Return;
+		$TEMPLATES[count($TEMPLATES)] = $TPLFile; // DEBUG
 		return $Return;
 	}else{
 		Error("Unknown File: ".$TPLFile);

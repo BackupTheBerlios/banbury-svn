@@ -19,10 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 				<div id="ListObject">
+					<div id="Titel">
+						<?php echo $TPL_Titel;?> von <?php echo $TPL_Autor;?> am <?php echo $TPL_Time;?> Uhr
+					</div>
 					<div id="Objekt">
-					<img src="Bilder/Thumbnails/<?php echo $TPL_Inhalt;?>.jpg" alt="<?php echo $TPL_Titel;?>" title="<?php echo $TPL_Titel;?>" />
+					<?php echo $TPL_Inhalt;?>
 					</div>
-					<div id="Titel" title="<?php echo $TPL_Titel;?>">
-					<a href="<?php echo $TPL_Link;?>"><?php echo $TPL_Titel;?></a>
-					</div>
+
 				</div>
+<hr />

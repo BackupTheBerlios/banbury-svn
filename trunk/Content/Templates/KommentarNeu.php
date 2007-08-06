@@ -14,15 +14,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 ?>
+Maximale Länge: <?php echo MAXLENGTHKOMMENTAR;?>
+<form action="" method="POST">
+<input type="text" name="Titel" />
+<br />
+	<textarea name="Kommentar" rows="10" cols="50" wrap="off"></textarea><br />
+
+	<input type="submit" name="Senden" value="Senden" />
 
 
-				<div id="ListObject">
-					<div id="Objekt">
-					<img src="Bilder/Thumbnails/<?php echo $TPL_Inhalt;?>.jpg" alt="<?php echo $TPL_Titel;?>" title="<?php echo $TPL_Titel;?>" />
-					</div>
-					<div id="Titel" title="<?php echo $TPL_Titel;?>">
-					<a href="<?php echo $TPL_Link;?>"><?php echo $TPL_Titel;?></a>
-					</div>
-				</div>
+
+</form>

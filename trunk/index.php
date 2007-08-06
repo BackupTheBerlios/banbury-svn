@@ -20,8 +20,7 @@ set_include_path('php');
 require('Includes.php');
 require('Functions.php');
 
-	$db = mysql_connect(DBHost.":".DBPort,DBUser,DBPass) or require("Content/DBConnectError.php");
-	$db_selected = mysql_select_db(DBName,$db) or die("Auswahl der Datenbank fehlgeschlagen");
+initDBConnection();
 
 ## Startet eine Session
 session_start();
@@ -53,6 +52,7 @@ if(is_dir($Target) && !strstr($Target,"..") && !fnmatch("/*",$Target)){
 <hr />
 <button onclick="document.getElementById('DEBUGINFO').style.display = 'block';return false;">Debug Info</button>
 <div id="DEBUGINFO" class="DEBUGVARS">
+
 <strong>Session</strong><pre>
 <?php print_r($_SESSION);?></pre>
 <hr />
@@ -65,10 +65,33 @@ if(is_dir($Target) && !strstr($Target,"..") && !fnmatch("/*",$Target)){
 <strong>QUERIES</strong><pre>
 <?php print_r($QUERIES);?></pre>
 <hr />
-<strong>Files</strong><pre>
+<strong>_Files</strong><pre>
 <?php print_r($_FILES);?></pre>
 <hr />
-</div>
+	<table>
+		<tr>
+			<th>Loaded Templates:</th><th>Unique Templates:</th>
+		</tr>
+		<tr>
+			<td valign="top"><pre><?php print_r($TEMPLATES);?></pre></td><td valign="top"><pre><?php print_r(array_unique($TEMPLATES));?></pre></td>
+		</tr>
+
+	</table>
+<hr />
+	<table>
+		<tr>
+			<th>Konstanten:</th><th>Required/Included:</th>
+		</tr>
+		<tr>
+			<td valign="top"><pre><?php
+
+$Constants = get_defined_constants(true);
+print_r($Constants['user']);?></pre></td><td valign="top"><pre><?php print_r(get_required_files());?></pre></td>
+		</tr>
+
+	</table>
+
+ </div>
 
 	</body>
 </html>

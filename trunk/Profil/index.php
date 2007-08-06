@@ -46,7 +46,7 @@ if(!UserLoggedIn()){
 		}
 		$Show['Nickname'] = 1; // Nickname muss angezeigt werden
 		$Update = aArrayIntoString($Show); // Array zu String
-		DBU("Profile","ID='".$_SESSION['ID']."'",$Update); // Anzeigestatus speichern
+		DBU(DBTabProfiles,"ID='".$_SESSION['ID']."'",$Update); // Anzeigestatus speichern
 
 		if($_FILES['Profilbild']['size'] > 0 ){ // Profilbild speichern
 			CreateThumbnail(120,$_FILES['Profilbild'],AvatarVerzeichnis."/".$_SESSION['Nickname'].".jpg");
@@ -55,9 +55,9 @@ if(!UserLoggedIn()){
 	}
 	if(isset($_GET['Edit'])){ // Anzeigen des Profil-Änderungs-Bereiches
 
-		$Array = DBQ("SELECT * FROM USERS WHERE ID='".$_SESSION['ID']."'");
+		$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
 		$Array = $Array[0];
-		$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
+		$Show = DBQ("SELECT * FROM ".DBTabProfiles." WHERE ID='".$_SESSION['ID']."'");
 		if(is_array($Show))
 		$Show = $Show[0];
 
@@ -78,23 +78,10 @@ if(!UserLoggedIn()){
 		include("Content/Edit.php");
 
 	}elseif(isset($_GET['EditMyGalerie']) && isset($_FILES['Bild']) && $_FILES['Bild']['size'] > 0){
-		$MyPics = DBQ("SELECT ID FROM Bilder WHERE BesitzerID = '".$_SESSION['ID']."'");
+		$MyPics = DBQ("SELECT ID FROM ".DBTabPictures." WHERE BesitzerID = '".$_SESSION['ID']."'");
 		if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
 			include("Content/TooManyPicsInGal.html");
 		}else{
-		/*	$AllPics = DBQ("SELECT * FROM Bilder");
-			$AllPics = count($AllPics);
-
-			$ThumbCount = DirCount(BilderVerzeichnis."/Thumbnails/");
-			$PicCount = DirCount(BilderVerzeichnis."/Orginale/");
-
-			$ThumbName = $ThumbCount."-".$_FILES['Bild']['name'].".jpg";
-			$PicName = $PicCount."-".$_FILES['Bild']['name'];
-
-			DBIN("Bilder","BesitzerID,ID,Dateiname,Thumbnail,Titel","'".$_SESSION['ID']."','".$AllPics."','".$PicName."','".$ThumbName."','".$_POST['Titel']."'"); // Eintrag in die Datenbank
-			CreateThumbnail(120,$_FILES['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
-			copy($_FILES['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
-			*/
 			if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
 				include("Content/NeuesBildErfolg.html");
 			}else{
@@ -109,25 +96,25 @@ if(!UserLoggedIn()){
 				/// KOMMENTARE LÖSCHEN HIER EINFUEGEN WENN BEREIT!!!
 				unlink(BilderVerzeichnis."/Thumbnails/".$Bild['Thumbnail']);
 				unlink(BilderVerzeichnis."/Orginale/".$Bild['Dateiname']);
-				DBD("Bilder","ID=".$_GET['ID']);
+				DBD(DBTabPictures,"ID=".$_GET['ID']);
 			}else{
 				restore_include_path();
 				include("Content/NotAllowed.html");
 			}
 		}
 		include("Content/NewImage.php");
-		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
+		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
 		include("Content/ImageList.php");
 
 	}else{ // Profil anzeigen
 
 
-		$Array = DBQ("SELECT * FROM USERS WHERE ID='".$_SESSION['ID']."'");
+		$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
 		$Array = $Array[0];
-		$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
+		$Show = DBQ("SELECT * FROM ".DBTabProfiles." WHERE ID='".$_SESSION['ID']."'");
 		$Show = $Show[0];
 
-		$Bilder = DBQ("SELECT * FROM Bilder WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
+		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
 		reset($Show);
 		while($key = key($Show)){
 			$current = current($Show);
