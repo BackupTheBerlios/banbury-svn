@@ -124,9 +124,9 @@ function ShortenString($String,$Length){
 }
 
 function Error($Value){
-	echo '<div class="Error" id="Error"><img src="IconsPNG/PasswordNotOK.png" align="left" /><h2>Ein Fehler trat auf.</h2> <strong>Kdb meldet:</strong> <br /><em><br />';
+	echo '<div class="Error" id="Error"><img src="IconsPNG/PasswordNotOK.png" align="left" /><h2>Ein Fehler trat auf.</h2> <strong>'.PROJECTNAME.' Meldung:</strong> <br /><em><br />';
 	echo $Value;
-	echo '</em><div style="position:absolute;bottom:5px;right:5px;"><input type="button" value="Ausblenden" onclick="FadeOutError();" class="MiniButton"/></div></div>';
+	echo '</em></div>';
 }
 
 function MKPass(){
@@ -315,7 +315,7 @@ function DBQ($query){
 ## [string] $Name - Bezeichnung der Eigenschaft, die geladen werden soll
 ## [string] $DefaultValue - Ist der Wert in der Properties-Tabelle nicht enthalten, wird dieser Wert zurückgegeben
 function DBGetProperty($Name, $DefaultValue = "") {
-	$erg = DBQ("SELECT PropName,PropValue FROM " . DBTabProperties . 
+	$erg = DBQ("SELECT PropName,PropValue FROM " . DBTabProperties .
 		" WHERE PropName=\"" . $Name. "\"");
 	return $erg[0]["PropValue"];
 }
@@ -585,16 +585,56 @@ function InitContentList($Type){
 	return $Handler;
 }
 
-function AddToContentList($Handler, $Titel, $Inhalt, $Link){
+function AddToContentList($Handler, $NewValues){
+	global ${$Handler};
 	$ThisHandler = ${$Handler};
 	$Count = $ThisHandler['Info']['Length'];
-	if($ThisHandler['Info']['Type'] == "Bilder"){
-
+	if(isset($ThisHandler['Info']['Type'])){
+		$ThisHandler['Eintraege'][$Count] = LoadTPL($ThisHandler['Info']['Type']."List",$NewValues);
+		$ThisHandler['Info']['Length']++;
+	}else{
+		Error("Unknown Type of ContentList");
 	}
 }
 
 function OutputContentList($Handler){
-	print_r(${$Handler});
+	print_r($Handler);
+}
+
+## Lädt Werte in eine Template-Datei
+##
+## [string] LoadTPL( $TPLName, $Values )
+##
+## [string] $TPLName - Name einer Template-Datei in /templates
+## [array] $Values - Assoziativer Array mit Werten, die eingefügt werden sollen. Dabei gilt:
+##                   Schlüssel in Template-Datei wird ersetzt durch Wert.
+##
+## Lädt eine Template-Datei, ersetzt die Array-Schlüssel durch die Werte ($Values) und gibt das Ergebnis zurück.
+## Damit dynamischer Inhalt eingebunden werden kann, wird die Template-Datei includiert.
+
+function LoadTPL($TPLName,$Values){
+	$TPLFile = MAINTEMPLATES.$TPLName.".php";
+
+	if(is_file($TPLFile) && !strstr($TPLName,"..")){
+
+		if(is_array($Values)){
+			reset($Values);
+			while($key = key($Values)){
+				${"TPL_".$key} = current($Values); // lokale Variablen für die zu ersetzenden Werte erstellen
+				next($Values);
+			}
+
+		}
+
+		ob_start();
+			include($TPLFile);  // Template-Datei einbinden.
+			$Return = ob_get_contents();
+		ob_end_clean();
+echo $Return;
+		return $Return;
+	}else{
+		Error("Unknown File: ".$TPLFile);
+	}
 }
 
 ?>

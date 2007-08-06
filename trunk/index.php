@@ -34,7 +34,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="css/main.css" />
-		<title>mac-only.de</title>
+		<title><?php echo PROJECTNAME;?></title>
 	</head>
 	<body>
 

@@ -15,7 +15,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$Pics = addslashes(array_keys($_GET));
+$Pics = array_keys($_GET);
+for($x=0;$x<count($Pics);$x++){
+	$Pics[$x] = addslashes($Pics[$x]);
+}
 if(isset($Pics[1])){
 	$Array = DBQ("SELECT * FROM Bilder WHERE ID='".$Pics[1]."'");
 	$Array = $Array[0];
@@ -27,12 +30,13 @@ if(isset($Pics[1])){
 	$Array = DBQ("SELECT ID,Titel,Dateiname FROM Bilder");
 	$CL = InitContentList("Bilder");
 
-	foreach($Arraqy as $Bild){
-		$Titel = $Bild['Titel'];
-		$Link = '?Bilder&'.$Bild['ID'];
-
-		AddToContentList("CL",$Titel,$Inhalt,$Link);
-
+	foreach($Array as $Bild){
+		$CLValues = array(
+			'Titel' => $Bild['Titel'],
+			'Link' => '?Bilder&'.$Bild['ID'],
+			'Inhalt' => $Bild['Dateiname']
+		);
+		AddToContentList("CL",$CLValues);
 	}
 	OutputContentList($CL,"icons");
 }
