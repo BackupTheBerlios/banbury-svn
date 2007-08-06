@@ -50,13 +50,12 @@ $aktionen = array(
 );
 if(isset($_GET['aktion'])){
 	$aktion = $_GET['aktion'];
-
-	if ($aktionen[$aktion] != "") {
+	if (isset($aktionen[$aktion])) {
 		call_user_func($aktion);
 	}
-} else {
-		cfgTest();
-	}
+}else{
+	cfgTest();
+}
 function erzeugeTabellen() {
 	echo "<p>";
 	echo actionLink("erzeugeTabellen2");

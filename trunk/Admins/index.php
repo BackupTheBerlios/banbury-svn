@@ -26,8 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 require('../php/Includes.php');
 require('../php/Functions.php');
 
-$db = mysql_connect(DBHost.":".DBPort,DBUser,DBPass) or require("../Content/DBConnectError.php");
-$db_selected = mysql_select_db(DBName,$db) or die("Auswahl der Datenbank fehlgeschlagen");
+initDBConnection();
 
 ## Startet eine Session
 session_start();
@@ -35,12 +34,12 @@ session_start();
 
 
 
-$PendingUsers = DBQ("SELECT Nickname,Mail,Time FROM Schluessel");
+$PendingUsers = DBQ("SELECT Nickname,Mail,Time FROM ".DBTabKeys);
 $PendingUsersTable = QueryToTable($PendingUsers);
-$RegisteredUsers = DBQ("SELECT ID,Nickname,Anmeldung,Mail FROM Users");
+$RegisteredUsers = DBQ("SELECT ID,Nickname,Anmeldung,Mail FROM ".DBTabUsers);
 
 $RegisteredUsersTable = QueryToTable($RegisteredUsers);
-echo "Pending Users (".count($RegisteredUsers).")";
+echo "Pending Users (".count($PendingUsers).")";
 
 echo $PendingUsersTable;
 echo "Registered Users";

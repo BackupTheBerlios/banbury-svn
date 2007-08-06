@@ -27,7 +27,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';?>
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<script type="text/javascript">
-			  /* <![CDATA[ */
+				/* <![CDATA[ */
 
 
 
@@ -53,21 +53,21 @@ Die globalen Konstanten sind in folgenden Dateien festgeschrieben:<br />
 <h2><a name="1"></a>/php/Config/DB.php</h2>
 <?php
 
-highlight_file("../php/Config/DB.php");
+highlight_file("../../trunk/php/Config/DB.php");
 
 ?>
 <hr />
 <h2><a name="2"></a>/php/Config/Files.php</h2>
 <?php
 
-highlight_file("../php/Config/Files.php");
+highlight_file("../../trunk/php/Config/Files.php");
 
 ?>
 <hr />
 <h2><a name="3"></a>/php/Config/Global.php</h2>
 <?php
 
-highlight_file("../php/Config/Global.php");
+highlight_file("../../trunk/php/Config/Global.php");
 
 ?></body>
 </html>

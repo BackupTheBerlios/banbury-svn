@@ -27,7 +27,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';?>
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<script type="text/javascript">
-			  /* <![CDATA[ */
+				/* <![CDATA[ */
 
 
 
@@ -50,14 +50,14 @@ Die globalen Projektvariablen sind in <a href="#1">/php/Config/Users.php</a> und
 <h2><a name="1"></a>/php/Config/Users.php</h2>
 <?php
 
-highlight_file("../php/Config/Users.php");
+highlight_file("../../trunk/php/Config/Users.php");
 
 ?>
 <hr />
 <h2><a name="2"></a>/php/Config/Global.php</h2>
 <?php
 
-highlight_file("../php/Config/Global.php");
+highlight_file("../../trunk/php/Config/Global.php");
 
 ?>
 </body>

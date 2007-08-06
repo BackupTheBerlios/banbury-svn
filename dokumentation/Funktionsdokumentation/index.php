@@ -14,10 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-include_once("../PrintCode.php");
+include_once("PrintCode.php");
 
 
-$Functions = "../../php/Functions.php";
+$Functions = "../../trunk/php/Functions.php";
 $Klammernebene = 0;
 $Comment ="";
 $File = file($Functions);

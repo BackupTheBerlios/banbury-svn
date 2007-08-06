@@ -20,6 +20,7 @@ set_include_path('php');
 require('Includes.php');
 require('Functions.php');
 
+
 initDBConnection();
 
 ## Startet eine Session
@@ -38,6 +39,12 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<body>
 
 <?php
+
+// Hier die Navigation ...
+
+include('Content/Navigation.php');
+
+// Es folgt der Seiten-Inhalt
 
 $Target = explode("&",$_SERVER['QUERY_STRING']);
 $Target = $Target[0];

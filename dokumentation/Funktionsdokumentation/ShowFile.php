@@ -26,7 +26,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<script type="text/javascript">
-			  /* <![CDATA[ */
+				/* <![CDATA[ */
 
 
 
@@ -38,10 +38,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
 	<body>
 
 	<?php
-		if(isset($_SERVER['QUERY_STRING']) && is_file("../".$_SERVER['QUERY_STRING']) && !fnmatch("..",$_SERVER['QUERY_STRING'])){
+		if(isset($_SERVER['QUERY_STRING']) && is_file("../../trunk/".$_SERVER['QUERY_STRING']) && !fnmatch("..",$_SERVER['QUERY_STRING'])){
 			echo "<h1>Display of Content</h1>";
 			echo "<p class=\"small\"><strong>File:</strong> ".$_SERVER['QUERY_STRING']."</p>";
-			$File = file("../".$_SERVER['QUERY_STRING']);
+			$File = file("../../trunk/".$_SERVER['QUERY_STRING']);
 			include_once("PrintCode.php");
 
 			echo printCode($File,1,1,0);
