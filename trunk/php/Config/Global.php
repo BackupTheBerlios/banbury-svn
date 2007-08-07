@@ -45,7 +45,10 @@ define ('MAINTEMPLATES','Content/Templates/'); // Unbedingt mit Slash (/) enden 
 
 ## Einschränkungen und Optionen
 
-define ('AVATARMAXSIZE',120);
+define ('AVATARMAXSIZE',120); // Maximale Avatargröße
+define ('THUMBMAXSIZE',120); // Maximale Größe erstellter Thumbnails
+define ('SCALEDMAXSIZE',600); // Maximale Größe von skalierten Bildern
+define ('PICMAXSIZE',1200); // Maximale Größe von Bildern
 define ('MAXPICSCOUNT',3); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
 define ('MAXITEMSINLIST',12); // Maximale Anzahl an Bildern, Reviews etc. in einer Liste.
 define ('MAXLENGTHKOMMENTAR',250);

@@ -14,9 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-	echo $TPL_Bild;
-?>
 
+?>
+<img src="<?php echo $TPL_Bild; ?>" onclick="<?php echo $TPL_OnClick; ?>" onmouseover="<?php echo $TPL_OnMouseover; ?>" title="<?php echo $TPL_Titel; ?>" style="cursor:pointer" />
 <br />
 
 <?php echo $TPL_Titel;?>

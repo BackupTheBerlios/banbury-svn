@@ -15,9 +15,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 set_include_path('Profil/');
-
 if(!UserLoggedIn()){
-	include("Content/Error.html");
+	restore_include_path();
+	echo LoadTPL("Hinweis",array('Message' => 'Bitte logge dich zuvor ein!'));	// Hinweis
+	echo LoadTPL("Login");	// Login
 }else{
 	if(isset($_POST['Values']) && isset($_GET['Edit'])){ // Speichern des geänderten Profils
 
@@ -90,17 +91,7 @@ if(!UserLoggedIn()){
 		}
 	}elseif(isset($_GET['EditMyGalerie'])){
 		if(isset($_GET['Remove']) && isset($_GET['ID'])){ // Ein Bild Löschen
-			$Bild = DBQ("SELECT * FROM Bilder WHERE ID='".$_GET['ID']."'");
-			$Bild = $Bild[0];
-			if($Bild['BesitzerID'] == $_SESSION['ID']){
-				/// KOMMENTARE LÖSCHEN HIER EINFUEGEN WENN BEREIT!!!
-				unlink(BilderVerzeichnis."/Thumbnails/".$Bild['Thumbnail']);
-				unlink(BilderVerzeichnis."/Orginale/".$Bild['Dateiname']);
-				DBD(DBTabPictures,"ID=".$_GET['ID']);
-			}else{
-				restore_include_path();
-				include("Content/NotAllowed.html");
-			}
+			ZapContent($_GET['ID'],"Bild");
 		}
 		include("Content/NewImage.php");
 		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");

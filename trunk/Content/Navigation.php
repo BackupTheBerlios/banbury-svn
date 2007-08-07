@@ -16,9 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
 
-<a href="?Profil">Mein <?php echo PROJECTNAME;?></a>
-|
-<a href="?Bilder">Bilder</a>
-|
-<a href="?Kommentare">Letzte Kommentare</a>
+<a href="?Profil">Mein <?php echo PROJECTNAME;?></a> |
+<a href="?Bilder">Bilder</a> | <a href="?Kommentare">Letzte Kommentare</a>
+<?php if(UserLoggedIn()){ ?> | <a href="?Logout">Abmelden</a><?php }else{ ?>
+ | <a href="?Login">Anmelden</a>
+	<?php } ?>
 <br />

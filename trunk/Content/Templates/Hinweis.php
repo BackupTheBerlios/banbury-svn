@@ -14,17 +14,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-if(isset($_POST['Nickname']) && isset($_POST['Passwort'])){
-	if(!UserLogin($_POST['Nickname'],sha1($_POST['Passwort']))){
-		include("Content/Error.html");
-	}elseif(isset($_SESSION['BringMeBackTo']) && $_SESSION['BringMeBackTo']!==""){
-		BringMeBack();
-	}else{
-		restore_include_path();
-		include("Profil/index.php");
-	}
-}else{
-	echo LoadTPL("Login");
-}
 ?>
+<?php echo $TPL_Message;?>

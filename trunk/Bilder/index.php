@@ -22,7 +22,9 @@ if(isset($_GET['Bild'])){
 	// Als erstes Das Bild und sein Titel ...
 	echo LoadTPL("Bild",
 		array(
-		'Bild' => "<img src=\"Bilder/Orginale/".$Array['Dateiname']."\" />",
+		'Bild' => BilderVerzeichnis."/Skaliert/".$Array['Skaliert'],
+		'OnClick' => "BWOpen('".BilderVerzeichnis."/Orginale/".$Array['Dateiname']."')",
+		'OnMouseover' => "",
 		'Titel'  => $Array['Titel']
 		)
 	);
@@ -47,35 +49,36 @@ if(isset($_GET['Bild'])){
 		$StartWert = 0; // Wenn wir auf Seite 1 sind, beginnen wir mit dem ersten Bild.
 	}
 	// Inhaltsliste anfangen ...
-	$CL = InitContentList("Kommentare",count($Kommentare),$Page,"Bilder&Bild=".$ID);
-	if($CL != 0){
-		$x = $StartWert;
-		do{
-			$Kommentar = $Kommentare[$x];
-			$Autor = DBQ("SELECT Nickname FROM ".DBTabUsers." WHERE ID='".$Kommentar['BesitzerID']."'");
-			if(isset($Autor[0]) && isset($Autor[0]['Nickname'])){
-				$Autor = $Autor[0]['Nickname'];
-			}else{
-				$Autor = "anonymous"; // <- falls der Benutzer nicht mehr existiert ... könnte ja sein
-			}
-			$CLValues = array(
-				'Titel' => $Kommentar['Titel'],
-				'Inhalt' => $Kommentar['Inhalt'],
-				'Time' => $Kommentar['Time'],
-				'Autor' => $Autor
-			);
+	if(count($Kommentare) > 0){
+		$CL = InitContentList("Kommentare",count($Kommentare),$Page,"Bilder&Bild=".$ID);
+		if($CL != 0){
+			$x = $StartWert;
+			do{
+				$Kommentar = $Kommentare[$x];
+				$Autor = DBQ("SELECT Nickname FROM ".DBTabUsers." WHERE ID='".$Kommentar['BesitzerID']."'");
+				if(isset($Autor[0]) && isset($Autor[0]['Nickname'])){
+					$Autor = $Autor[0]['Nickname'];
+				}else{
+					$Autor = "anonymous"; // <- falls der Benutzer nicht mehr existiert ... könnte ja sein
+				}
+				$CLValues = array(
+					'Titel' => $Kommentar['Titel'],
+					'Inhalt' => $Kommentar['Inhalt'],
+					'Time' => $Kommentar['Time'],
+					'Autor' => $Autor
+				);
 
-			$x++;
+				$x++;
 
-		}while(AddToContentList("CL",$CLValues)== 1 && $x < count($Kommentare));
-		echo OutputContentList("CL","List");
+			}while(AddToContentList("CL",$CLValues)== 1 && $x < count($Kommentare));
+			echo OutputContentList("CL","List");
+		}
 	}
-	// TODO hier soll noch ContentList rein nur mit Kommentaren eben ... dürfte kein Problem sein :-!
 	// Kommentarfunktion ...
 	echo LoadTPL("KommentarNeu");
 
 }else{
-	$Array = DBQ("SELECT ID,Titel,Dateiname FROM ".DBTabPictures." ORDER BY Time");
+	$Array = DBQ("SELECT ID,Titel,Skaliert,Thumbnail,Dateiname FROM ".DBTabPictures." ORDER BY Time");
 	if(isset($_GET['Page'])){
 		$Page = $_GET['Page'];
 		$StartWert = ($Page-1) * MAXITEMSINLIST;
@@ -91,6 +94,8 @@ if(isset($_GET['Bild'])){
 			$CLValues = array(
 				'Titel' => $Bild['Titel'],
 				'Link' => '?Bilder&Bild='.$Bild['ID'],
+				'Skaliert' => $Bild['Skaliert'],
+				'Thumbnail' => $Bild['Thumbnail'],
 				'Inhalt' => $Bild['Dateiname']
 			);
 			$x++;

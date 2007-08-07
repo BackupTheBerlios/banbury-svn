@@ -316,8 +316,10 @@ function DBQ($query){
 	}
 	$Debug['ReturnValues'] = $out; // Debug
 	$QUERIES[count($QUERIES)] = $Debug; // Debug
-
-	return $out;
+	if(count($out) <= 0)
+		return true;
+	else
+		return $out;
 }
 
 ## Liest aus der Properties-Tabelle den unter $Name gespeicherten Wert
@@ -356,7 +358,7 @@ function DBSetProperty($Name, $Value) {
 ##                 Kann auch mehrere mit Komma getrennt enhalten
 
 function DBU($Table,$ID,$Var){
-	DBQ("UPDATE $Table SET $Var WHERE $ID");
+	return DBQ("UPDATE $Table SET $Var WHERE $ID");
 }
 
 ## Fügt Werte in eine Vorhandene Tabellenzeile ein
@@ -370,7 +372,7 @@ function DBU($Table,$ID,$Var){
 ## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
 
 function DBI($Table,$ID,$Vars,$Values){
-	DBQ("INSERT INTO $Table($Vars) VALUES($Values) WHERE $ID");
+	return DBQ("INSERT INTO $Table($Vars) VALUES($Values) WHERE $ID");
 }
 
 ## Fügt Werte in eine neue Tabellenzeile ein
@@ -383,7 +385,7 @@ function DBI($Table,$ID,$Vars,$Values){
 ## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
 
 function DBIN($Table,$Vars,$Values){
-	DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
+	return DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
 }
 
 ## Löscht eine Tabellenzeile
@@ -394,7 +396,7 @@ function DBIN($Table,$Vars,$Values){
 ## [string] $ID - Gibt einen Identifier an, wo eingefügt wird. z.B. 'ID=5' oder 'Nickname=Goofy'
 
 function DBD($Table,$ID){
-	DBQ("DELETE FROM $Table WHERE $ID ");
+	return DBQ("DELETE FROM $Table WHERE $ID ");
 }
 
 ## Erstellt eine Bildvorschau einer Datei
@@ -404,7 +406,7 @@ function DBD($Table,$ID){
 ## [string] $MaxSize - gibt die maximale Größe der längsten Seite des Thumbnails an. Default: AVATARMAXSIZE
 ## [array] $File - Entspricht einem Array eines neu hochgeladenen Bildes (entspringt aus $_FILES)
 ## [string] $SaveName - gibt einen Dateinamen an, unter dem der Thumbnail gespeichert wird
-function CreateThumbnail($MaxSize = AVATARMAXSIZE,$File,$SaveName){
+function CreateThumbnail($MaxSize = THUMBMAXSIZE,$File,$SaveName){
 	global $_SESSION;
 
 	if($File['type'] == "image/png" or
@@ -531,6 +533,39 @@ function GenerateContentID($Table){
 	return $ContentID;
 }
 
+function ZapComments($ID){
+
+	$Kommentare = DBD(DBTabComments,"ZuID=".$ID." AND ZuType=Bilder");
+
+}
+
+function ZapContent($ID,$Type){
+
+	global $_SESSION;
+
+	switch($Type){
+	case "Bild":
+		$Bild = DBQ("SELECT * FROM ".DBTabPictures." WHERE ID='".$ID."'");
+		if(isset($Bild[0]) && $Bild[0]['BesitzerID'] == $_SESSION['ID']){
+			$Bild = $Bild[0];
+			$Kommentare = DBD(DBTabComments,"ZuID='".$ID."' AND ZuType='Bilder'"); // Kommentare löschen
+			unlink(BilderVerzeichnis."/Thumbnails/".$Bild['Thumbnail']); // Thumbnail löschen
+			unlink(BilderVerzeichnis."/Skaliert/".$Bild['Skaliert']); // Skalierte Version lösschen
+			unlink(BilderVerzeichnis."/Orginale/".$Bild['Dateiname']); // Orginal löschen
+			DBD(DBTabPictures,"ID=".$ID); // Datenbankeintrag löschen
+		}else{
+			Error("Aktion nicht zugelassen!");
+		}
+	break;
+	default:
+		return false;
+	}
+
+		return true;
+
+}
+
+
 ## Erstellt einen Content-Type
 ##
 ## [bool] CreatContent( $Content, $Type, $Time, $Owner )
@@ -566,10 +601,29 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
+			$Info = getimagesize($META['Bild']['tmp_name']);
+print_r($Info);
+			CreateThumbnail(THUMBMAXSIZE,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 
-			DBIN(DBTabPictures,"BesitzerID,ID,Dateiname,Thumbnail,Titel,Time","'".$Owner."','".$ContentID."','".$PicName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
-			CreateThumbnail(120,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
-			copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Datei kopieren
+			if($Info[0] > SCALEDMAXSIZE or $Info[1] > SCALEDMAXSIZE){
+				CreateThumbnail(SCALEDMAXSIZE,$META['Bild'],BilderVerzeichnis."/Skaliert/".$ThumbName); // Skalierte Version erstellen
+				$ScaledName = $ThumbName;
+			}else{
+				copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Skaliert/".$PicName); // Orginal-Datei kopieren
+				$ScaledName = $PicName;
+			}
+
+
+			if($Info[0] > PICMAXSIZE or $Info[1] > PICMAXSIZE){
+				CreateThumbnail(PICMAXSIZE,$META['Bild'],BilderVerzeichnis."/Orginale/".$ThumbName); // Orginal Version erstellen
+				$PicName = $ThumbName;
+			}else{
+				copy($META['Bild']['tmp_name'],BilderVerzeichnis."/Orginale/".$PicName); // Orginal-Datei kopieren
+			}
+
+			DBIN(DBTabPictures,"BesitzerID,ID,Dateiname,Skaliert,Thumbnail,Titel,Time",
+			"'".$Owner."','".$ContentID."','".$PicName."','".$ScaledName."','".$ThumbName."','".$Content."','".$Time."'"); // Eintrag in die Datenbank
+
 
 			return true;
 
@@ -738,6 +792,29 @@ function LoadTPL($TPLName,$Values = ""){
 	}else{
 		Error("Unknown File: ".$TPLFile);
 	}
+}
+
+## Bringt den Benutzer nach dem Login zum Ausgangspunkt zurück
+##
+## [void] BringMeBack ( void )
+##
+## Diese Funktion bringt den Benutzer nach dem Login zurück.
+## Sie benötigt die Session-Variable $BringMeBack, die entweder vom Login-Script oder zuvor beschrieben werden muss.
+## Außerdem werden hier die Konstanten SERVER und SCRIPT benutzt um die URL zu generieren zu der weitergeleitet wird.
+
+function BringMeBack(){
+
+	global $_SERVER;
+	global $_SESSION;
+
+	$Location = "Location: ".(($_SERVER['HTTPS'] != '') ? "https://" : "http://").SERVER.SCRIPT;
+
+	if(isset($_SESSION['BringMeBack']))
+		$Location.= "?".$_SESSION['BringMeBackTo'];
+
+	header($Location);
+	die();
+
 }
 
 ?>

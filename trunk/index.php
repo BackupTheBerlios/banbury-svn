@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+ob_start(); // Put all that in Buffer
+
 set_include_path('php');
 
 require('Includes.php');
@@ -34,7 +36,12 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/lightbox.css" media="screen" />
 		<title><?php echo PROJECTNAME;?></title>
+
+		<script src="js/Banbury.js" type="text/javascript"></script>
+		<script src="js/mootools.svn.js" type="text/javascript"></script>
+
 	</head>
 	<body>
 
@@ -108,4 +115,9 @@ print_r($Constants['user']);?></pre></td><td valign="top"><pre><?php print_r(get
 
 
 	mysql_close($db);
+
+	$Return = ob_get_contents();
+	ob_end_clean();
+	echo $Return;
+
 ?>

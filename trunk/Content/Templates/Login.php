@@ -14,17 +14,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-if(isset($_POST['Nickname']) && isset($_POST['Passwort'])){
-	if(!UserLogin($_POST['Nickname'],sha1($_POST['Passwort']))){
-		include("Content/Error.html");
-	}elseif(isset($_SESSION['BringMeBackTo']) && $_SESSION['BringMeBackTo']!==""){
-		BringMeBack();
-	}else{
-		restore_include_path();
-		include("Profil/index.php");
-	}
-}else{
-	echo LoadTPL("Login");
-}
+if(!isset($_SESSION['BringMeBackTo']) or $_SESSION['BringMeBackTo']=="") // Das soll den Benutzer nach dem Login wieder zur Ausgangsposition zurückbringen.
+	$_SESSION['BringMeBackTo'] = $_SERVER['QUERY_STRING'];
 ?>
+<form action="?Login" method="post">
+<input type="text" name="Nickname" value="Nickname" />
+<input type="password" name="Passwort" value="Passwort" />
+<input type="submit" id="Submit" value="Anmelden" />
+</form>
+<a href="?Register">Register</a>
+<a href="?NewPass">Passwort vergessen</a>

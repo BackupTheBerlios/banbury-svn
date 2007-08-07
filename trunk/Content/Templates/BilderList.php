@@ -20,9 +20,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div id="ListObject">
 					<div id="Objekt">
-					<img src="Bilder/Thumbnails/<?php echo $TPL_Inhalt;?>.jpg" alt="<?php echo $TPL_Titel;?>" title="<?php echo $TPL_Titel;?>" />
+						<a href="Bilder/Skaliert/<?php echo $TPL_Skaliert;?>" rel="lightbox">
+							<img src="Bilder/Thumbnails/<?php echo $TPL_Thumbnail;?>" alt="<?php echo $TPL_Titel;?>" title="<?php echo $TPL_Titel;?>" />
+						</a>
 					</div>
 					<div id="Titel" title="<?php echo $TPL_Titel;?>">
-					<a href="<?php echo $TPL_Link;?>"><?php echo $TPL_Titel;?></a>
+						<a href="<?php echo $TPL_Link;?>"><?php echo $TPL_Titel;?></a>
 					</div>
 				</div>
