@@ -20,41 +20,46 @@ if(!UserLoggedIn()){
 	echo LoadTPL("Hinweis",array('Message' => 'Bitte logge dich zuvor ein!'));	// Hinweis
 	echo LoadTPL("Login");	// Login
 }else{
-	if(isset($_POST['Values']) && isset($_GET['Edit'])){ // Speichern des geänderten Profils
 
-		$Array = DBQ("SELECT * FROM USERS WHERE ID='".$_SESSION['ID']."'");
-		$Array = $Array[0];
-		$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
+		include("Content/Options.php");
 
-
-		$Values = $_POST['Values'];
-		$Update = aArrayIntoString($Values);
-		DBU("USERS","ID='".$_SESSION['ID']."'",$Update); // Werte speichern
-		if(is_array($Show)){
-			$Show = $Show[0];
-
-			reset($Show);
-			unset($Show['ID']);
-			unset($Show['Nickname']);
-			while($key = key($Show)){ // Anzeigestatus auf 0
-				if(isset($_POST['Show'][$key]) && $_POST['Show'][$key] != 0){
-					$Show[$key] = 1;
-				}else{
-					$Show[$key] = 0;
-				}
-				next($Show);
-			}
-		}
-		$Show['Nickname'] = 1; // Nickname muss angezeigt werden
-		$Update = aArrayIntoString($Show); // Array zu String
-		DBU(DBTabProfiles,"ID='".$_SESSION['ID']."'",$Update); // Anzeigestatus speichern
-
-		if($_FILES['Profilbild']['size'] > 0 ){ // Profilbild speichern
-			CreateThumbnail(120,$_FILES['Profilbild'],AvatarVerzeichnis."/".$_SESSION['Nickname'].".jpg");
-		}
-
-	}
 	if(isset($_GET['Edit'])){ // Anzeigen des Profil-Änderungs-Bereiches
+
+			if(isset($_POST['Values'])){ // Speichern des geänderten Profils
+
+				$Array = DBQ("SELECT * FROM USERS WHERE ID='".$_SESSION['ID']."'");
+				$Array = $Array[0];
+				$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
+
+
+				$Values = $_POST['Values'];
+				$Update = aArrayIntoString($Values);
+				DBU("USERS","ID='".$_SESSION['ID']."'",$Update); // Werte speichern
+				if(is_array($Show)){
+					$Show = $Show[0];
+
+					reset($Show);
+					unset($Show['ID']);
+					unset($Show['Nickname']);
+					while($key = key($Show)){ // Anzeigestatus auf 0
+						if(isset($_POST['Show'][$key]) && $_POST['Show'][$key] != 0){
+							$Show[$key] = 1;
+						}else{
+							$Show[$key] = 0;
+						}
+						next($Show);
+					}
+				}
+				$Show['Nickname'] = 1; // Nickname muss angezeigt werden
+				$Update = aArrayIntoString($Show); // Array zu String
+				DBU(DBTabProfiles,"ID='".$_SESSION['ID']."'",$Update); // Anzeigestatus speichern
+
+				if($_FILES['Profilbild']['size'] > 0 ){ // Profilbild speichern
+					CreateThumbnail(120,$_FILES['Profilbild'],AvatarVerzeichnis."/".$_SESSION['Nickname'].".jpg");
+				}
+
+			}
+		// Anzeigen des eigenen Profils im Editiermodus ...
 
 		$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
 		$Array = $Array[0];
@@ -78,27 +83,47 @@ if(!UserLoggedIn()){
 		extract($Array,EXTR_OVERWRITE);
 		include("Content/Edit.php");
 
-	}elseif(isset($_GET['EditMyGalerie']) && isset($_FILES['Bild']) && $_FILES['Bild']['size'] > 0){
-		$MyPics = DBQ("SELECT ID FROM ".DBTabPictures." WHERE BesitzerID = '".$_SESSION['ID']."'");
-		if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
-			include("Content/TooManyPicsInGal.html");
-		}else{
-			if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
-				include("Content/NeuesBildErfolg.html");
+	}elseif(isset($_GET['EditMyGalerie'])){
+
+		// Neues Bild einfügen ...
+
+		if(isset($_FILES['Bild']) && $_FILES['Bild']['size'] > 0){
+			$MyPics = DBQ("SELECT ID FROM ".DBTabPictures." WHERE BesitzerID = '".$_SESSION['ID']."'");
+			if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
+				include("Content/TooManyPicsInGal.html");
 			}else{
-				Error("Bild konnte nicht eingefügt werden");
+				if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
+					include("Content/NeuesBildErfolg.html");
+				}else{
+					Error("Bild konnte nicht eingefügt werden");
+				}
 			}
 		}
-	}elseif(isset($_GET['EditMyGalerie'])){
+		// Bild löschen
+
 		if(isset($_GET['Remove']) && isset($_GET['ID'])){ // Ein Bild Löschen
 			ZapContent($_GET['ID'],"Bild");
 		}
+
+		// Eigene Galerie im Editiermodus anzeigen
+
 		include("Content/NewImage.php");
 		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
 		include("Content/ImageList.php");
 
-	}else{ // Profil anzeigen
+	}elseif(isset($_GET['EditMyHardware'])){
 
+		// Eigene Hardware im Editiermodus anzeigen
+		if(!isset($_SESSION['Hardware']) or !is_array($_SESSION['Hardware'] ))
+			$_SESSION['Hardware'] = array();
+
+		include("Content/AddHardware.php");
+		$MyHardwareEdit = true;
+		include("Content/MyHardware.php");
+
+	}else{
+
+		// Profil anzeigen
 
 		$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
 		$Array = $Array[0];
