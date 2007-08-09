@@ -32,6 +32,8 @@ define ('DBTabKeys', DBPrefix."Schluessel");
 define ('DBTabUsers', DBPrefix."USERS");
 define ('DBTabRoles', DBPrefix."Rollen");
 define ('DBTabComments', DBPrefix."Kommentare");
+define ('DBTabHardware', DBPrefix."Hardware");
+define ('DBTabTags', DBPrefix."Tags");
 
 //Bezeichnungen für Einträge in der Properties-Tabelle
 define ('DBPTabVersion', "TableVersion");

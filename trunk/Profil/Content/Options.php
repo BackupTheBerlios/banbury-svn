@@ -15,6 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-	<a href="?Profil/&Edit">Profil Bearbeiten</a><br />
- <a href="?Profil/&EditMyGalerie">Galerie Bearbeiten</a><br />
- <a href="?Profil/&EditMyHardware">Hardware Bearbeiten</a><br />
+<a href="?Profil/&Edit">Profil Bearbeiten</a><br />
+<a href="?Profil/&EditMyGalerie">Galerie Bearbeiten</a><br />
+<a href="?Profil/&EditMyHardware">Hardware Bearbeiten</a><br />

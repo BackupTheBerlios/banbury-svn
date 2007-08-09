@@ -36,6 +36,9 @@ Füge ein Kriterium nach dem Anderen hinzu. <?php echo PROJECTNAME;?> hilft dir 
 		<td>
 			Wert :
 		</td>
+		<td>
+			Tags :
+		</td>
 	</tr>
 	<tr>
 		<td class="Search">
@@ -44,13 +47,16 @@ Füge ein Kriterium nach dem Anderen hinzu. <?php echo PROJECTNAME;?> hilft dir 
 		<td class="Search">
 			<input type="text" name="Wert" id="Wert" value="20 Zoll" size="40" maxlength="40" />
 		</td>
+		<td class="Search">
+			<input type="text" name="Tags" value="" size="40" maxlength="40"/>
+		</td>
 	</tr>
 	<tr>
 		<td class="Search">
-			<div id="KritTipp" class="SearchTipp"></div>
+			<div id="KritTipp" class="SearchTipp">1</div>
 		</td>
 		<td class="Search">
-			<div id="WertTipp" class="SearchTipp"></div>
+			<div id="WertTipp" class="SearchTipp">2</div>
 		</td>
 	</tr>
 </table>
@@ -92,6 +98,17 @@ Füge ein Kriterium nach dem Anderen hinzu. <?php echo PROJECTNAME;?> hilft dir 
 					data: "Function=HWSearch&Array=Hardware&key=Wert&query=" + $('Wert').value,
 					method: 'post',
 					update: $('WertTipp')
+				}).request();
+			}
+		});
+
+	$('Kriterium').addEvent('keyup', function(){
+			if($('Kriterium') && $('Kriterium').value.length > 1){
+				url = "CallFunc.php";
+				var MyAjax = new Ajax(url, {
+					data: "Function=HWSearch&Array=Hardware&key=Kriterium&query=" + $('Kriterium').value,
+					method: 'post',
+					update: $('KritTipp')
 				}).request();
 			}
 		});

@@ -316,8 +316,9 @@ function DBQ($query){
 	}
 	$Debug['ReturnValues'] = $out; // Debug
 	$QUERIES[count($QUERIES)] = $Debug; // Debug
+
 	if(count($out) <= 0)
-		return true;
+		return true; // Query hat funktioniert (deshalb true) aber nix ausgegeben.
 	else
 		return $out;
 }
@@ -380,12 +381,35 @@ function DBI($Table,$ID,$Vars,$Values){
 ## [void] DBIN( $Table, $Vars, Values )
 ##
 ## [string] $Table - Gibt den Namen der Tabelle an, in die Eingefügt wird
-## [string] $Vars - Mit Komma getrennte Variablenname
+## [string] $Vars - Mit Komma getrennte Variablennamen
 ## [string] $Values - Mit Komma getrennte Werte
 ## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
 
 function DBIN($Table,$Vars,$Values){
 	return DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
+}
+
+## Fügt Werte in eine neue Tabellenzeile ein
+##
+## [void] DBIChain( $Table, $Vars, Values )
+##
+## [string] $Table - Gibt den Namen der Tabelle an, in die Eingefügt wird
+## [string] $Vars - Mit Komma getrennte Variablennamen
+## [string] $Values - Mit Komma getrennte Werte
+## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
+
+function DBIChain($Table,$Vars,$Array){
+	$q = "INSERT INTO $Table($Vars) VALUES";
+	$Values = array();
+	foreach($Array as $Insert){
+		$Values[count($Values)] ="(".aArrayIntoString($Insert).")";
+	}
+	$q .=join($Values,", ");
+
+	print_r($q);
+	die();
+	return DBQ($q);
+
 }
 
 ## Löscht eine Tabellenzeile
@@ -807,11 +831,15 @@ function BringMeBack(){
 	global $_SERVER;
 	global $_SESSION;
 
-	$Location = "Location: ".(($_SERVER['HTTPS'] != '') ? "https://" : "http://").SERVER.SCRIPT;
+	if(isset($_SERVER['HTTPS']))
+		$Location = "Location: https://";
+	else
+		$Location = "Location: http://";
 
-	if(isset($_SESSION['BringMeBack']))
+	$Location .= SERVER.SCRIPT;
+
+	if(isset($_SESSION['BringMeBackTo']))
 		$Location.= "?".$_SESSION['BringMeBackTo'];
-
 	header($Location);
 	die();
 

@@ -41,7 +41,7 @@ function sProfilSpeichern($Sorted){
 	}else{
 		AjaxError($MESSAGES['Fehler']['Profil']['Sortiert']);
 	}
-
+	include("Profil.php");
 }
 
 
@@ -83,21 +83,38 @@ function PrintKrits($Array){
 		}
 	}
 	return $o;
-
 }
 
-function AddKrit($Array,$kriterium,$wert){
+function AddKrit($Array,$kriterium,$wert,$Tags){
+	$Table = constant("DBTab".$Array);
+
 	if(!isset($_SESSION[$Array]) or !is_array($_SESSION[$Array]))
 		$_SESSION[$Array]= array();
-	$Vorhanden = DBQ("SELECT * FROM ".constant("DBTab".$Array)." WHERE Kriterium='".$kriterium."' AND Wert='".$wert."'");
-	if(count($Vorhanden) == 0)
-		DBIN(constant("DBTab".$Array),"Kriterium,Wert","'".$kriterium."','".$wert."'");
+
+	$Vorhanden = DBQ("SELECT * FROM ".$Table." WHERE Kriterium='".$kriterium."' AND Wert='".$wert."' AND Tags='".$Tags."'");
+
+	if(count($Vorhanden) == 1){ // Wenn kein Fehler in der Query und kein Ergebniswert zurückgegeben wurde ...
+		$ID = generateContentID($Table);
+		if(strlen($Tags)){
+			$Tags = explode(",",$Tags);
+			$InsertTagsID = array();
+			$InsertTags = array();
+			foreach($Tags as $Tag){
+				$InsertTagsID[count($InsertTagsID)] = GenerateContentID(DBTabTags);
+				$InsertTags[count($InsertTags)] = $Tag;
+			}
+
+
+		}
+		DBIN($Table,"ID,Kriterium,Wert,Tags","'".$ID."','".$kriterium."','".$wert."','".$Tags."'");
+	}
+
 	$x = count($_SESSION[$Array]);
 	$_SESSION[$Array][$x]['kriterium'] = $kriterium;
 	$_SESSION[$Array][$x]['wert'] = $wert;
 	$o = PrintKrits($_SESSION[$Array]);
-
 	return $o;
+
 }
 
 function RemoveKrit($Array,$Nr){

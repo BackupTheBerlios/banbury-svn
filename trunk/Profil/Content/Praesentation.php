@@ -15,50 +15,40 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$Profil = '
-	<a href="?Profil/&Edit">Bearbeiten</a><br />
-	<img src="'.AvatarVerzeichnis."/".$_SESSION['Nickname'].'.jpg" alt="Profilbild" align="left" />
-	'.$Nickname.'<br />
-	'.$Vorname.' '.$Name.'<br />
-	'.$PLZ.' '.$Wohnort.'<br />
-	'.$Geburtstag.' '.$Webseite.'<br clear="all" />
-			'.$Kurzprofil.'';
-
-$Galerie = '<strong>Meine Galerie</strong> <a href="?Profil/&EditMyGalerie">Bearbeiten</a>';
-
-ob_start();
-require("Content/ImageList.php");
-$Galerie .= ob_get_contents();
-ob_end_clean();
-
-$Freunde = '<strong>Freunde</strong>';
-$Reviews = '<strong>Reviews</strong>';
-$Hardware = '<strong>Hardware</strong>';
-$Software = '<strong>Software</strong>';
-$Anzeigen = '<strong>Anzeigen</strong>';
-
 $Reihenfolge = DBQ("SELECT Sorted FROM USERS WHERE ID=".$_SESSION['ID']);
 
 $Reihenfolge = explode(",",$Reihenfolge[0]['Sorted']);
-echo "\n\n<ul id=\"ProfilSortable\">\n";
-foreach($Reihenfolge as $Object){
 
-	echo "<li id=\"".$Object."\" class=\"sortme\">\n";
-	echo $$Object;
-	echo "\n</li>\n\n";
-
-}
-echo "</ul>\n";
-
+// Sortables an dieser Stelle
 ?>
 
-<div id="log">Log
+<table>
+<tr>
+	<td>
+		<div id="ProfilAnzeige">
+			<?php
+			// Objekte selbst ...
+			set_include_path("Content/Templates/");
+			include("Profil.php");
 
-<div id="log_res">
-		<!-- spanner -->
-	</div>
-</div>
+			?>
+		</div>
+	</td>
+	<td>
+		<ul id="ProfilSortable">
+			<?php
+			foreach($Reihenfolge as $Object){
 
+				echo "<li id=\"".$Object."\" class=\"sortme\">\n";
+				echo $Object;
+				echo "\n</li>\n\n";
+
+			}
+			?>
+		</ul>
+	</td>
+</tr>
+</table>
 
 
 
@@ -101,7 +91,7 @@ echo "</ul>\n";
 					new Ajax(url, {
 						data: "Function=sProfilSpeichern&Sorted=" + Reihenfolge.join(','),
 						method: 'post',
-						update: $('log')
+						update: $('ProfilAnzeige')
 					}).request();
 
 				}else{

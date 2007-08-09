@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-if(!isset($_SESSION['BringMeBackTo']) or $_SESSION['BringMeBackTo']=="") // Das soll den Benutzer nach dem Login wieder zur Ausgangsposition zurückbringen.
+// if(!isset($_SESSION['BringMeBackTo']) or $_SESSION['BringMeBackTo']=="") // Das soll den Benutzer nach dem Login wieder zur Ausgangsposition zurückbringen.
 	$_SESSION['BringMeBackTo'] = $_SERVER['QUERY_STRING'];
 ?>
 <form action="?Login" method="post">

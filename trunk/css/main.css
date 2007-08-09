@@ -6,25 +6,28 @@ img{
 	border:0px;
 }
 
+td{
+	vertical-align: top;
+	}
 
+ul#sortables {
+	margin: 0;
+	padding: 0;
+	width:500px;
+}
 
-	ul#sortables {
-				margin: 0;
-				padding: 0;
-				width:500px;
-			}
+li.sortme {
+	padding:5px;
+	width:40px;
+	font-size:10px;
+	cursor:pointer;
+	list-style:none;
+	min-height:40px;
+	border:1px solid red;
+	border-top:0px;
+	margin:5px;
+	text-align:center;
+}
 
-			li.sortme {
-				padding: 4px 8px;
-				width:500px;
-
-				cursor: pointer;
-				list-style: none;
-				min-height: 150px;
-				border:1px solid red;
-				border-top:0px;
-				margin:5px;
-			}
-
-			ul#sortables li {
-			}
+ul#sortables li {
+}

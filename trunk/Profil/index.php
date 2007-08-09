@@ -124,22 +124,6 @@ if(!UserLoggedIn()){
 	}else{
 
 		// Profil anzeigen
-
-		$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
-		$Array = $Array[0];
-		$Show = DBQ("SELECT * FROM ".DBTabProfiles." WHERE ID='".$_SESSION['ID']."'");
-		$Show = $Show[0];
-
-		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
-		reset($Show);
-		while($key = key($Show)){
-			$current = current($Show);
-			if($current != 1){
-				$Array[$key] = "";
-			}
-			next($Show);
-		}
-		extract($Array,EXTR_OVERWRITE);
 		include("Content/Praesentation.php");
 	}
 }
