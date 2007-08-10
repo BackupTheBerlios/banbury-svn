@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <p>
 Füge ein Kriterium nach dem Anderen hinzu. <?php echo PROJECTNAME;?> hilft dir dabei ;-)
 </p>
-<form name="HardwareForm1" id="HardwareForm1" action="CallFunc.php" method="post">
+<form name="HardwareForm1" id="HardwareForm1" action="CallFunc.php" method="post" autocomplete="off">
 <input type="hidden" name="Function" value="AddKrit" />
 <input type="hidden" name="Array" value="Hardware" />
 <table class="HardwareSumme" id="Summe">

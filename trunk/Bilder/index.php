@@ -72,8 +72,8 @@ if(isset($_GET['Bild'])){
 				$x++;
 
 			}while(AddToContentList("CL",$CLValues)== 1 && $x < count($Kommentare));
-			print_r($CL);
-			#echo OutputContentList("CL","List");
+			#print_r($CL);
+			echo OutputContentList("CL","List");
 		}
 	}
 	// Kommentarfunktion ...
