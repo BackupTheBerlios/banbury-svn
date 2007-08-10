@@ -15,3 +15,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
+<h1>Ein Neues Bild hinzufügen</h1>
+<form action="?Bilder&Edit" method="post" enctype="multipart/form-data">
+<input type="file" name="Bild" /><br />
+<input type="text" value="" name="Titel" id="Titel" /><label for="Titel">Titel</label>
+<br />
+<input type="submit" id="Submit" />
+</form>

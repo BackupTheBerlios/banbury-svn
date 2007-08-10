@@ -36,11 +36,13 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="css/main.css" />
-		<link rel="stylesheet" href="css/lightbox.css" media="screen" />
+		<link rel="stylesheet" href="css/slimbox.css" media="screen" />
+
 		<title><?php echo PROJECTNAME;?></title>
 
 		<script src="js/Banbury.js" type="text/javascript"></script>
 		<script src="js/mootools.svn.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/slimbox.js"></script>
 
 	</head>
 	<body>
@@ -64,48 +66,12 @@ if(is_dir($Target) && !strstr($Target,"..") && !fnmatch("/*",$Target)){
 
 ?>
 <hr />
-<button onclick="document.getElementById('DEBUGINFO').style.display = 'block';return false;">Debug Info</button>
-<div id="DEBUGINFO" class="DEBUGVARS">
 
-<strong>Session</strong><pre>
-<?php print_r($_SESSION);?></pre>
-<hr />
-<strong>Get</strong><pre>
-<?php print_r($_GET);?></pre>
-<hr />
-<strong>Post</strong><pre>
-<?php print_r($_POST);?></pre>
-<hr />
-<strong>QUERIES</strong><pre>
-<?php print_r($QUERIES);?></pre>
-<hr />
-<strong>_Files</strong><pre>
-<?php print_r($_FILES);?></pre>
-<hr />
-	<table>
-		<tr>
-			<th>Loaded Templates:</th><th>Unique Templates:</th>
-		</tr>
-		<tr>
-			<td valign="top"><pre><?php print_r($TEMPLATES);?></pre></td><td valign="top"><pre><?php print_r(array_unique($TEMPLATES));?></pre></td>
-		</tr>
+<?php
 
-	</table>
-<hr />
-	<table>
-		<tr>
-			<th>Konstanten:</th><th>Required/Included:</th>
-		</tr>
-		<tr>
-			<td valign="top"><pre><?php
+Debug();
 
-$Constants = get_defined_constants(true);
-print_r($Constants['user']);?></pre></td><td valign="top"><pre><?php print_r(get_required_files());?></pre></td>
-		</tr>
-
-	</table>
-
- </div>
+?>
 
 	</body>
 </html>

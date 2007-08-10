@@ -91,6 +91,7 @@ Füge ein Kriterium nach dem Anderen hinzu. <?php echo PROJECTNAME;?> hilft dir 
 	}
 	window.addEvent('domready', function() {
 
+
 		$('Wert').addEvent('keyup', function(){
 			if($('Wert') && $('Wert').value.length > 1){
 				url = "CallFunc.php";

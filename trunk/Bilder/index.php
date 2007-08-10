@@ -77,32 +77,65 @@ if(isset($_GET['Bild'])){
 	// Kommentarfunktion ...
 	echo LoadTPL("KommentarNeu");
 
+}elseif(isset($_GET['Edit'])){
+
+	// Neues Bild einfügen ...
+
+	if(isset($_FILES['Bild']) && $_FILES['Bild']['size'] > 0){
+		$MyPics = DBQ("SELECT ID FROM ".DBTabPictures." WHERE BesitzerID = '".$_SESSION['ID']."'");
+		if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
+			include("Content/TooManyPicsInGal.html");
+		}else{
+			if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
+				include("Content/NeuesBildErfolg.html");
+			}else{
+				Error("Bild konnte nicht eingefügt werden");
+			}
+		}
+	}
+	// Bild löschen
+
+	if(isset($_GET['Remove']) && isset($_GET['ID'])){ // Ein Bild Löschen
+		ZapContent($_GET['ID'],"Bild");
+	}
+
+	// Eigene Galerie im Editiermodus anzeigen
+
+	include("Content/NewImage.php");
+	$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
+	set_include_path("Content/Templates/");
+	include("Content/MyImageList.php");
+
 }else{
 	$Array = DBQ("SELECT ID,Titel,Skaliert,Thumbnail,Dateiname FROM ".DBTabPictures." ORDER BY Time");
-	if(isset($_GET['Page'])){
-		$Page = $_GET['Page'];
-		$StartWert = ($Page-1) * MAXITEMSINLIST;
+	if(is_array($Array) && count($Array)> 0){
+		if(isset($_GET['Page'])){
+			$Page = $_GET['Page'];
+			$StartWert = ($Page-1) * MAXITEMSINLIST;
+		}else{
+			$Page = 1;
+			$StartWert = 0; // Wenn wir auf Seite 1 sind, beginnen wir mit dem ersten Bild.
+		}
+		$CL = InitContentList("Bilder",count($Array),$Page,"Bilder");
+		if($CL != 0){
+			$x = $StartWert;
+			do{
+				$Bild = $Array[$x];
+				$CLValues = array(
+					'Titel' => $Bild['Titel'],
+					'Link' => '?Bilder&Bild='.$Bild['ID'],
+					'Skaliert' => $Bild['Skaliert'],
+					'Thumbnail' => $Bild['Thumbnail'],
+					'Inhalt' => $Bild['Dateiname']
+				);
+				$x++;
+			}while(AddToContentList("CL",$CLValues)== 1 && $x< count($Array));
+			echo OutputContentList("CL","Icons");
+		}else{
+			Error("Konnte Inhaltsliste nicht erstellen. ");
+		}
 	}else{
-		$Page = 1;
-		$StartWert = 0; // Wenn wir auf Seite 1 sind, beginnen wir mit dem ersten Bild.
-	}
-	$CL = InitContentList("Bilder",count($Array),$Page,"Bilder");
-	if($CL != 0){
-		$x = $StartWert;
-		do{
-			$Bild = $Array[$x];
-			$CLValues = array(
-				'Titel' => $Bild['Titel'],
-				'Link' => '?Bilder&Bild='.$Bild['ID'],
-				'Skaliert' => $Bild['Skaliert'],
-				'Thumbnail' => $Bild['Thumbnail'],
-				'Inhalt' => $Bild['Dateiname']
-			);
-			$x++;
-		}while(AddToContentList("CL",$CLValues)== 1 && $x< count($Array));
-		echo OutputContentList("CL","Icons");
-	}else{
-		Error("Konnte Inhaltsliste nicht erstellen. ");
+		include("Content/KeineBilder.php");
 	}
 }
 ?>

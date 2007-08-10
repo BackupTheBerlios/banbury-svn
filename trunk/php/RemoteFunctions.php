@@ -86,6 +86,10 @@ function PrintKrits($Array){
 }
 
 function AddKrit($Array,$kriterium,$wert,$Tags){
+
+	$kriterium = addslashes(FormatString($kriterium,"StripSpaces"));
+	$kriterium = addslashes(FormatString($kriterium,"StripSpaces"));
+
 	$Table = constant("DBTab".$Array);
 
 	if(!isset($_SESSION[$Array]) or !is_array($_SESSION[$Array]))
@@ -114,15 +118,12 @@ function AddKrit($Array,$kriterium,$wert,$Tags){
 	$_SESSION[$Array][$x]['wert'] = $wert;
 	$o = PrintKrits($_SESSION[$Array]);
 	return $o;
-
 }
 
 function RemoveKrit($Array,$Nr){
 	unset($_SESSION[$Array][$Nr]);
 	$o = PrintKrits($_SESSION[$Array]);
-
 	return $o;
 }
-
 
 ?>

@@ -14,4 +14,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+if(isset($_GET['Edit'])){
+
+	// Eigene Hardware im Editiermodus anzeigen
+	if(!isset($_SESSION['Hardware']) or !is_array($_SESSION['Hardware'] ))
+		$_SESSION['Hardware'] = array();
+
+	include("Content/AddHardware.php");
+	$MyHardwareEdit = true;
+	include("Content/MyHardware.php");
+
+}
 ?>

@@ -166,7 +166,7 @@ function aArrayIntoString($Array){
 	return $Vars;
 }
 function UserLogin($Nickname ='',$Passwort =''){
-	$Array = DBQ("SELECT Nickname,Passwort,ID from USERS WHERE Nickname = '".$Nickname."' AND Passwort = '".$Passwort."'");
+	$Array = DBQ("SELECT Nickname,Passwort,ID from ".DBTabUsers." WHERE Nickname = '".$Nickname."' AND Passwort = '".$Passwort."'");
 	if(isset($Array[0])){
 		session_register('Nickname');
 		$_SESSION['Nickname'] = $Array[0]['Nickname'];
@@ -174,6 +174,17 @@ function UserLogin($Nickname ='',$Passwort =''){
 		$_SESSION['Passwort'] = $Array[0]['Passwort'];
 		session_register('ID');
 		$_SESSION['ID'] = $Array[0]['ID'];
+
+		// Rollen anlegen ...
+
+		$Array = DBQ("SELECT Rolle from ".DBTabRoles." WHERE BenutzerID='".$_SESSION['ID']."'");
+		if(isset($Array[0])){
+			$_SESSION['Roles'] = array();
+			foreach($Array as $Rolle){
+				$Rolle = $Rolle['Rolle'];
+				$_SESSION['Roles'][$Rolle] = true;
+			}
+		}
 		return true;
 	}else{
 		return false;
@@ -844,5 +855,48 @@ function BringMeBack(){
 	die();
 
 }
+
+## Testet ob ein Benutzer bestimmte Rechte hat
+##
+## [bool] UserHasRole( $RoleName )
+##
+## [string] $RoleName - Stringwert einer bestimmten Rolle
+
+function UserHasRole($RoleName){
+	if(isset($_SESSION['Roles'][$RoleName]))
+		return true;
+	else
+		return false;
+}
+
+## Zeigt DebugInformationen an
+##
+## [void] Debug( void )
+##
+## Diese Funktion erlaubt es Benutzern mit entsprechenden Rechten Debuginformationen anzuzeigen
+
+function Debug(){
+	if(UserLoggedIn() && UserHasRole(ROLEDebug)){
+		echo LoadTPL("Debug");
+	}
+}
+
+## Formatiert einen String nach einem bestimmten Muster
+##
+## [string] FormatString( $String, $Format )
+##
+## [string] $String - Der String dessen Format geändert werden soll
+## [string] $Format - Ein bestimmter String. Möglich sind:
+## "StripSpaces" - Alle Leerzeichen werden entfernt (auch Tabulatoren)
+
+function FormatString($String,$Format){
+	switch($Format){
+		case "StripSpaces" :
+			$String = ereg_replace("/\s+/i","",$String);
+		break;
+	}
+	return $String;
+}
+
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /*
 This file is part of Banbury.
 
@@ -15,15 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
-
-foreach($Bilder as $Bild){
-	echo '<br />';
-	echo '<a href="'.BilderVerzeichnis."/Skaliert/".$Bild['Skaliert'].'" rel="lightbox"><img src="'.BilderVerzeichnis."/Thumbnails/".$Bild['Thumbnail'].'" alt="'.$Bild['Titel'].'" title="'.$Bild['Titel'].'" /></a>';
-	echo '<a href="?Bilder/&Bild='.$Bild['ID'].'">'.$Bild['Titel'].'</a> ';
-	if(isset($_GET['EditMyGalerie']))
-		echo '<a href="?Profil/&EditMyGalerie&Remove&ID='.$Bild['ID'].'">Löschen</a>';
-	echo '<br />';
-}
-
 ?>
+
+Der Benutzername ist im Standby!
+<br />
+Entweder wurde er noch nicht freigeschaltet oder wurde von einem Admin gesperrt.
+<br />

@@ -14,7 +14,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
+if(is_array($Bilder) && count($Bilder) > 0){
+	foreach($Bilder as $Bild){
+		echo '<br />';
+		echo '<a href="'.BilderVerzeichnis."/Skaliert/".$Bild['Skaliert'].'" rel="lightbox"><img src="'.BilderVerzeichnis."/Thumbnails/".$Bild['Thumbnail'].'" alt="'.$Bild['Titel'].'" title="'.$Bild['Titel'].'" /></a>';
+		echo '<a href="?Bilder/&Bild='.$Bild['ID'].'">'.$Bild['Titel'].'</a> ';
+		if(isset($_GET['Edit']))
+			echo '<a href="?Bilder/&Edit&Remove&ID='.$Bild['ID'].'">Löschen</a>';
+		echo '<br />';
+	}
+}
 ?>
-<a href="?Profil/&Edit">Profil Bearbeiten</a><br />
-<a href="?Bilder/&Edit">Galerie Bearbeiten</a><br />
-<a href="?Hardware/&Edit">Hardware Bearbeiten</a><br />

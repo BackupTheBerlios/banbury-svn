@@ -15,7 +15,11 @@ ul#sortables {
 	padding: 0;
 	width:500px;
 }
-
+.ObjektBox{
+	margin:5px;
+	border:1px solid #ddd;
+	padding:5px;
+}
 li.sortme {
 	padding:5px;
 	width:40px;

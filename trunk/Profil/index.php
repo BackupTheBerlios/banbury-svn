@@ -83,44 +83,6 @@ if(!UserLoggedIn()){
 		extract($Array,EXTR_OVERWRITE);
 		include("Content/Edit.php");
 
-	}elseif(isset($_GET['EditMyGalerie'])){
-
-		// Neues Bild einfügen ...
-
-		if(isset($_FILES['Bild']) && $_FILES['Bild']['size'] > 0){
-			$MyPics = DBQ("SELECT ID FROM ".DBTabPictures." WHERE BesitzerID = '".$_SESSION['ID']."'");
-			if(isset($MyPics) && count($MyPics) > MAXPICSCOUNT){
-				include("Content/TooManyPicsInGal.html");
-			}else{
-				if(CreateContent($_POST['Titel'], "Bild", time(), $_SESSION['ID'], $_FILES)){
-					include("Content/NeuesBildErfolg.html");
-				}else{
-					Error("Bild konnte nicht eingefügt werden");
-				}
-			}
-		}
-		// Bild löschen
-
-		if(isset($_GET['Remove']) && isset($_GET['ID'])){ // Ein Bild Löschen
-			ZapContent($_GET['ID'],"Bild");
-		}
-
-		// Eigene Galerie im Editiermodus anzeigen
-
-		include("Content/NewImage.php");
-		$Bilder = DBQ("SELECT * FROM ".DBTabPictures." WHERE BesitzerID='".$_SESSION['ID']."' ORDER BY ID");
-		include("Content/ImageList.php");
-
-	}elseif(isset($_GET['EditMyHardware'])){
-
-		// Eigene Hardware im Editiermodus anzeigen
-		if(!isset($_SESSION['Hardware']) or !is_array($_SESSION['Hardware'] ))
-			$_SESSION['Hardware'] = array();
-
-		include("Content/AddHardware.php");
-		$MyHardwareEdit = true;
-		include("Content/MyHardware.php");
-
 	}else{
 
 		// Profil anzeigen

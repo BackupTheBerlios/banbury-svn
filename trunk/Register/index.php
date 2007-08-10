@@ -42,30 +42,31 @@ if(UserLoggedIn() != 0){
 }else{
 	## Benutzer erstellen Schritt 1
 	if(isset($_POST['Nickname']) && isset($_POST['Passwort1']) && isset($_POST['Passwort2']) && isset($_POST['Mail'])){
-		$Array = DBQ("SELECT 'Nickname' FROM USERS WHERE Nickname='".$_POST['Nickname']."'");
-		$Array2 = DBQ("SELECT 'Nickname' FROM Schluessel WHERE Nickname='".$_POST['Nickname']."'");
-		$Array = array_merge($Array,$Array2);
-		if(is_array($Array) && count($Array) > 0){ ## Wenn der Nickname schon vergeben ist ...
+		$Array = DBQ("SELECT 'Nickname' FROM ".DBTabUsers." WHERE Nickname='".$_POST['Nickname']."'");
+		$Array2 = DBQ("SELECT 'Nickname' FROM ".DBTabKeys." WHERE Nickname='".$_POST['Nickname']."'");
+		if(is_array($Array)){ ## Wenn der Nickname schon vergeben ist ...
 			include("Content/UserExists.html");
+		}elseif(is_array($Array2)){ ## Wenn der Benutzername bereits reserviert ist ...
+			include("Content/UserReserved.html");
 		}else{
 			if(sha1($_POST['Passwort1']) != sha1($_POST['Passwort2'])){ ## Passwort Schreibfehler überprüfen
 				include("Content/PasswortFehler.html");
 			}elseif(!eregi("^[a-z0-9]+([-_\.]?[a-z0-9])+@[a-z0-9]+([-_\.]?[a-z0-9])+\.[a-z]{2,4}$", $_POST['Mail'])){ ## Falsche EMail-Adressen filtern
 				include("Content/EMailFehler.html");
 			}else{
-				$Key = sha1($_POST['Mail'].time().$_POST['Nickname']); ## Freischaltschlüssel erstellen
-				$Values  = "'".$_POST['Nickname']."'";
+				$Key = sha1(addslashes($_POST['Mail']).time().addslashes($_POST['Nickname'])); ## Freischaltschlüssel erstellen
+				$Values  = "'".addslashes($_POST['Nickname'])."'";
 				$Values .=", '".date("Y-m-d",time())."'";
 				$Values .=", '".sha1($_POST['Passwort1'])."'";
-				$Values .=", '".$_POST['Mail']."'";
+				$Values .=", '".addslashes($_POST['Mail'])."'";
 				$Values .=", '".$Key."'";
-				DBIN("Schluessel","Nickname, Time, Passwort, Mail, Wert",$Values); ## Schlüssel und Werte in Datenbank einfügen
+				DBIN(DBTabKeys,"Nickname, Time, Passwort, Mail, Wert",$Values); ## Schlüssel und Werte in Datenbank einfügen
 				$Inhalt = '
 				Sie haben sich erfolgreich angemeldet.
 				Klicken Sie den folgenden Link um ihren Account zu aktivieren:
 				<a href="http://'.SERVER.SCRIPT.'?Register&UserKey='.$Key.'">Aktiviere deinen Account!</a>
 				';
-				SendMail(VON,VONNAME,$_POST['Mail'],REGISTERNEUBETREFF,$Inhalt); ## Freischalt Mail verschicken.
+				SendMail(VON,VONNAME,addslashes($_POST['Mail']),REGISTERNEUBETREFF,$Inhalt); ## Freischalt Mail verschicken.
 				include("Content/Schritt1Erfolg.html"); ## Erfolg melden.
 			}
 		}

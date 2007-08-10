@@ -40,10 +40,11 @@ $Profil = '
 	'.$Geburtstag.' '.$Webseite.'<br clear="all" />
 			'.$Kurzprofil.'';
 
-$Galerie = '<strong>Meine Galerie</strong> <a href="?Profil/&EditMyGalerie">Bearbeiten</a>';
+$Galerie = '<strong>Meine Galerie</strong> <a href="?Bilder/&Edit">Bearbeiten</a>';
 
 ob_start();
-require("MyImageList.php");
+restore_include_path();
+require("Bilder/Content/MyImageList.php");
 $Galerie .= ob_get_contents();
 ob_end_clean();
 
@@ -61,7 +62,7 @@ $Reihenfolge = explode(",",$Reihenfolge[0]['Sorted']);
 
 foreach($Reihenfolge as $Object){
 
-	echo "<div id=\"".$Object."\">\n";
+	echo "<div id=\"".$Object."\" class=\"ObjektBox\">\n";
 	echo $$Object;
 	echo "\n</div>\n\n";
 

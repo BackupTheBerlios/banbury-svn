@@ -47,11 +47,12 @@ define ('MAINTEMPLATES','Content/Templates/'); // Unbedingt mit Slash (/) enden 
 
 define ('AVATARMAXSIZE',120); // Maximale Avatargröße
 define ('THUMBMAXSIZE',120); // Maximale Größe erstellter Thumbnails
-define ('SCALEDMAXSIZE',600); // Maximale Größe von skalierten Bildern
+define ('SCALEDMAXSIZE',400); // Maximale Größe von skalierten Bildern
 define ('PICMAXSIZE',1200); // Maximale Größe von Bildern
 define ('MAXPICSCOUNT',3); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
 define ('MAXITEMSINLIST',12); // Maximale Anzahl an Bildern, Reviews etc. in einer Liste.
 define ('MAXLENGTHKOMMENTAR',250);
+
 
 ## Konfiguration
 
@@ -61,5 +62,10 @@ define ('VON','register@'.PROJECTNAME.'.de');
 define ('VONNAME','Rezeption');
 define ('REGISTERNEUBETREFF','Willkommen bei '.PROJECTNAME.'. Jetzt freischalten!');
 define ('PASSWORTNEUBETREFF','Ihr Passwort bei '.PROJECTNAME.' wurde zurückgesetzt!');
+
+## Rollennamen...
+
+define ('ROLEDebug', 'Debugger');
+define ('ROLEAdmin', 'Admin');
 
 ?>
