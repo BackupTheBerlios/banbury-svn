@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if(isset($_GET['Bild'])){
 	$ID = addslashes($_GET['Bild']);
+
 	$Array = DBQ("SELECT * FROM ".DBTabPictures." WHERE ID='".$ID."'");
 	$Array = $Array[0];
 	// Als erstes Das Bild und sein Titel ...
@@ -71,7 +72,8 @@ if(isset($_GET['Bild'])){
 				$x++;
 
 			}while(AddToContentList("CL",$CLValues)== 1 && $x < count($Kommentare));
-			echo OutputContentList("CL","List");
+			print_r($CL);
+			#echo OutputContentList("CL","List");
 		}
 	}
 	// Kommentarfunktion ...

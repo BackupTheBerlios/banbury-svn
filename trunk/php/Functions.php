@@ -637,7 +637,7 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
 			$Info = getimagesize($META['Bild']['tmp_name']);
-print_r($Info);
+			print_r($Info);
 			CreateThumbnail(THUMBMAXSIZE,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 
 			if($Info[0] > SCALEDMAXSIZE or $Info[1] > SCALEDMAXSIZE){
@@ -676,7 +676,7 @@ print_r($Info);
 				$Content = substr($Content,0,MAXLENGTHKOMMENTAR);
 			}
 			$Werte = "'".$Owner."','".$ContentID."','".$META['Titel']."','".$Content."','".$META['ZuID']."','".$META['ZuType']."','".$Time."'";
-			DBIN(DBTabComments,$Schluessel,$Werte);
+			echo DBIN(DBTabComments,$Schluessel,$Werte);
 			return true;
 		break;
 		default:
