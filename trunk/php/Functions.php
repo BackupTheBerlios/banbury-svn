@@ -19,6 +19,8 @@ $QUERIES = array();
 $LSRARRAY = array();
 $LSRCOUNT = 0;
 
+## TODO: Funktionsinfo Ls($verzeichnis) 
+
 function Ls($verzeichnis){
 	$ARRAY=array();
 	if(is_dir($verzeichnis)){
@@ -42,6 +44,9 @@ function Ls($verzeichnis){
 
 }
 
+
+## TODO: Funktionsinfo DirCount($verzeichnis) 
+
 function DirCount($verzeichnis){
 	echo $verzeichnis;
 	if(is_dir($verzeichnis)){
@@ -49,10 +54,9 @@ function DirCount($verzeichnis){
 		$handle=opendir ($verzeichnis);
 		while (false !== ($file = readdir ($handle))) {
 			if ($file!="." && 	$file!=".."){
-				if(is_file($verzeichnis."/".$file) or is_dir($verzeichnis."/".$file)){
+				if(is_file($verzeichnis."/".$file) or is_dir($verzeichnis."/".$file)) {
 					$x++;
 				}
-
 			}
 		}
 		closedir($handle);
@@ -64,6 +68,8 @@ function DirCount($verzeichnis){
 
 }
 
+
+## TODO: Funktionsinfo Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option) 
 
 function Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option){
 	global $LSRARRAY;
@@ -92,6 +98,8 @@ function Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option){
 }
 
 
+## TODO: Funktionsinfo Lsr($verzeichnis, $Option ="f") 
+
 function Lsr($verzeichnis, $Option ="f"){
 
 	global $LSRARRAY;
@@ -112,7 +120,7 @@ function Lsr($verzeichnis, $Option ="f"){
 }
 
 
-
+## TODO: Funktionsinfo ShortenString($String,$Length) 
 
 function ShortenString($String,$Length){
 	if(strlen($String) > $Length){
@@ -123,11 +131,17 @@ function ShortenString($String,$Length){
 	return $String;
 }
 
+
+## TODO: Funktionsinfo Error($Value) 
+
 function Error($Value){
 	echo '<div class="Error" id="Error"><img src="IconsPNG/PasswordNotOK.png" align="left" /><h2>Ein Fehler trat auf.</h2> <strong>'.PROJECTNAME.' Meldung:</strong> <br /><em><br />';
 	echo $Value;
 	echo '</em></div>';
 }
+
+
+## TODO: Funktionsinfo MKPass() 
 
 function MKPass(){
 	$pass="";
@@ -139,6 +153,9 @@ function MKPass(){
 	}
 	return $pass;
 }
+
+
+## TODO: Funktionsinfo SendMail($von,$vonname,$an,$betreff,$inhalt) 
 
 function SendMail($von,$vonname,$an,$betreff,$inhalt){
 	global $GlobalMailEncoding;
@@ -155,6 +172,15 @@ function SendMail($von,$vonname,$an,$betreff,$inhalt){
 	mail($an, $betreff, $inhalt, $header);
 }
 
+
+## Verkettet ein assoziatives Feld
+##
+## [string] aArrayIntoString( $Array )
+##
+## [array] $Array - ein assoziatives Feld
+##
+## Ergibt:  key1='wert1', key2='wert2', ... keyn='wertn'
+
 function aArrayIntoString($Array){
 	reset($Array);
 	$Vars = "";
@@ -165,6 +191,10 @@ function aArrayIntoString($Array){
 	$Vars = substr($Vars,0,strlen($Vars)-2);
 	return $Vars;
 }
+
+
+## TODO: Funktionsinfo UserLogin($Nickname ='',$Passwort ='') 
+
 function UserLogin($Nickname ='',$Passwort =''){
 	$Array = DBQ("SELECT Nickname,Passwort,ID from ".DBTabUsers." WHERE Nickname = '".$Nickname."' AND Passwort = '".$Passwort."'");
 	if(isset($Array[0])){
@@ -190,6 +220,7 @@ function UserLogin($Nickname ='',$Passwort =''){
 		return false;
 	}
 }
+
 
 ## Fragt, ob ein Benutzer eingeloggt ist
 ##
@@ -233,6 +264,7 @@ function UserExists($Name){
 	}
 }
 
+
 ## Alias von UserExists
 ##
 ## [bool] IsUser( $Name )
@@ -245,6 +277,7 @@ function IsUser($Name){
 	return UserExists($Name);
 }
 
+
 ## Generiert ein zufälliges Passwort mit $Length-Zeichen länge.
 ##
 ## [string] GeneratePasswort( $Length )
@@ -252,6 +285,7 @@ function IsUser($Name){
 ## [int] $Length - Länge des Passworts
 ##
 ## Das generierte Passwort enthält zufällige Buchstaben, Zahlen und/oder :-,+
+
 function GeneratePasswort($Length){
 	$Passwort = "";
 	$array = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-,+";
@@ -262,6 +296,7 @@ function GeneratePasswort($Length){
 	}
 	return $Passwort;
 }
+
 
 ## Startet eine Datenbankabfrage, ob die angegebene $Mail auch zum $Name (Nickname) gehört
 ##
@@ -283,6 +318,13 @@ function UserHasMail($Name,$Mail){
 }
 
 
+## Öffnet die Verbindung zur Datenbank
+##
+## [void] initDBConnection()
+##
+## Die Funktion stellt die Verbindung zur Datenbank mit den Parametern aus der
+## Datei /php/Config/DB.php her.
+
 function initDBConnection() {
 	set_include_path('php');
 	require_once('Includes.php');
@@ -293,9 +335,12 @@ function initDBConnection() {
 }
 
 
+## TODO: Funktionsinfo DBQ2($Tabelle, $Felder, $Abfrage)  
+
 function DBQ2($Tabelle, $Felder, $Abfrage) {
 	return DBQ("SELECT $Felder FROM $Tabelle WHERE $Abfrage");
 }
+
 
 ## Startet eine neue Anfrage an MySQL und gibt die Antwort als Array aus
 ##
@@ -334,16 +379,19 @@ function DBQ($query){
 		return $out;
 }
 
+
 ## Liest aus der Properties-Tabelle den unter $Name gespeicherten Wert
 ## [string] DBGetProperty($Name)
 ##
 ## [string] $Name - Bezeichnung der Eigenschaft, die geladen werden soll
 ## [string] $DefaultValue - Ist der Wert in der Properties-Tabelle nicht enthalten, wird dieser Wert zurückgegeben
+
 function DBGetProperty($Name, $DefaultValue = "") {
 	$erg = DBQ("SELECT PropName,PropValue FROM " . DBTabProperties .
 		" WHERE PropName=\"" . $Name. "\"");
 	return $erg[0]["PropValue"];
 }
+
 
 ## Speichert den Wert $Value unter dem Namen $Name in der Properties-Tabelle
 ##
@@ -351,6 +399,7 @@ function DBGetProperty($Name, $DefaultValue = "") {
 ##
 ## [string] $Name - Bezeichnung der Eigenschaft, die gespeichert werden soll
 ## [string] $Value - Wert, der unter der Bezeichnung $Name gespeichert werden soll
+
 function DBSetProperty($Name, $Value) {
 	return mysql_query ("REPLACE INTO `" . DBTabProperties . "` (" .
 		"PropName,PropValue" .
@@ -359,6 +408,7 @@ function DBSetProperty($Name, $Value) {
 		addslashes($Value) .
 		"\")");
 }
+
 
 ## Update für Werte in einer vorhandenen Tabellenzeile
 ##
@@ -373,12 +423,14 @@ function DBU($Table,$ID,$Var){
 	return DBQ("UPDATE $Table SET $Var WHERE $ID");
 }
 
+
 ## Fügt Werte in eine neue Tabellenzeile ein
 ##
 ## [void] DBINAA($Table, $aArray)
 ##
 ## [string] $Table - Tabellenname
 ## [array] $aArray - assoziatives Feld, Schlüssel = Feldname
+
 function DBIAA($Table, $id, $aArray) {
 	$Vars = join(",", array_keys($aArray));
 	$Values = "'".join("','", array_values($aArray)) . "'";
@@ -386,6 +438,7 @@ function DBIAA($Table, $id, $aArray) {
 	#echo $Values . "<br />";
 	return DBI($Table, $id, $Vars, $Values);
 }
+
 
 ## Fügt Werte in eine Vorhandene Tabellenzeile ein
 ##
@@ -401,12 +454,14 @@ function DBI($Table,$ID,$Vars,$Values){
 	return DBQ("INSERT INTO $Table($Vars) VALUES($Values) WHERE $ID");
 }
 
+
 ## Fügt Werte in eine neue Tabellenzeile ein
 ##
 ## [void] DBINAA($Table, $aArray)
 ##
 ## [string] $Table - Tabellenname
 ## [array] $aArray - assoziatives Feld, Schlüssel = Feldname
+
 function DBINAA($Table, $aArray) {
 	$Vars = join(",", array_keys($aArray));
 	$Values = "'".join("','", array_values($aArray)) . "'";
@@ -414,6 +469,7 @@ function DBINAA($Table, $aArray) {
 	#echo $Values . "<br />";
 	return DBIN($Table, $Vars, $Values);
 }
+
 
 ## Fügt Werte in eine neue Tabellenzeile ein
 ##
@@ -426,6 +482,7 @@ function DBINAA($Table, $aArray) {
 function DBIN($Table,$Vars,$Values){
 	return DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
 }
+
 
 ## Fügt Werte in eine neue Tabellenzeile ein
 ##
@@ -449,6 +506,7 @@ function DBIChain($Table,$Vars,$Array){
 
 }
 
+
 ## Löscht eine Tabellenzeile
 ##
 ## [void] DBD( $Table, $Var )
@@ -460,6 +518,7 @@ function DBD($Table,$ID){
 	return DBQ("DELETE FROM $Table WHERE $ID ");
 }
 
+
 ## Erstellt eine Bildvorschau einer Datei
 ##
 ## [bool] CreateThumbnail ( $MaxSize = AVATARMAXSIZE,$File,$SaveName)
@@ -467,6 +526,7 @@ function DBD($Table,$ID){
 ## [string] $MaxSize - gibt die maximale Größe der längsten Seite des Thumbnails an. Default: AVATARMAXSIZE
 ## [array] $File - Entspricht einem Array eines neu hochgeladenen Bildes (entspringt aus $_FILES)
 ## [string] $SaveName - gibt einen Dateinamen an, unter dem der Thumbnail gespeichert wird
+
 function CreateThumbnail($MaxSize = THUMBMAXSIZE,$File,$SaveName){
 	global $_SESSION;
 
@@ -509,6 +569,7 @@ function CreateThumbnail($MaxSize = THUMBMAXSIZE,$File,$SaveName){
 		}
 }
 
+
 ## Sendet eine Mail an einen Admin, wenn ein Fehler auftritt.
 ##
 ## [void] CryForHelp( $String )
@@ -544,6 +605,7 @@ function CryForHelp($String){
 	SendMail(VON,VONNAME,ADMINMAIL,"Cry for Help!",$Output);
 }
 
+
 ## Erstellt eine Tabelle aus einem Assoziativen Array
 ##
 ## [string] QueryToTable( $QueryArray )
@@ -577,6 +639,7 @@ function QueryToTable($QueryArray){
 	return $out;
 }
 
+
 ## Generiert eine möglichst kleine, noch nicht belegte ID für einen neuen Inhalt
 ## [int] GenerateContentID( $Table )
 ##
@@ -594,11 +657,17 @@ function GenerateContentID($Table){
 	return $ContentID;
 }
 
+
+## TODO: Funktionsinfo ZapComments($ID) 
+
 function ZapComments($ID){
 
 	$Kommentare = DBD(DBTabComments,"ZuID=".$ID." AND ZuType=Bilder");
 
 }
+
+
+## TODO: Funktionsinfo ZapContent($ID,$Type) 
 
 function ZapContent($ID,$Type){
 
@@ -712,6 +781,7 @@ print_r($Info);
 
 }
 
+
 ## Erzeugt einen Handler für eine Inhaltsliste
 ##
 ## [mixed] InitContentList( $Type )
@@ -738,6 +808,7 @@ function InitContentList($Type,$Items,$Page,$Position = ""){
 	}
 
 }
+
 
 ## Fügt einen Eintrag in die Liste ein
 ##
@@ -768,6 +839,7 @@ function AddToContentList($Handlername, $NewValues){
 	}
 
 }
+
 
 ## Gibt eine Inhaltsliste aus
 ## [string] OutputContentList($Handlername, $Style)
@@ -816,6 +888,7 @@ function OutputContentList($Handlername,$Style = 'Icons'){
 	return $Return;
 }
 
+
 ## Lädt Werte in eine Template-Datei
 ##
 ## [string] LoadTPL( $TPLName, $Values )
@@ -855,6 +928,7 @@ function LoadTPL($TPLName,$Values = ""){
 	}
 }
 
+
 ## Bringt den Benutzer nach dem Login zum Ausgangspunkt zurück
 ##
 ## [void] BringMeBack ( void )
@@ -882,6 +956,7 @@ function BringMeBack(){
 
 }
 
+
 ## Testet ob ein Benutzer bestimmte Rechte hat
 ##
 ## [bool] UserHasRole( $RoleName )
@@ -895,6 +970,7 @@ function UserHasRole($RoleName){
 		return false;
 }
 
+
 ## Zeigt DebugInformationen an
 ##
 ## [void] Debug( void )
@@ -906,6 +982,7 @@ function Debug(){
 		echo LoadTPL("Debug");
 	}
 }
+
 
 ## Formatiert einen String nach einem bestimmten Muster
 ##

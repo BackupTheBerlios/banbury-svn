@@ -1,1 +1,3 @@
 http://www.lastcraft.com/simple_test.php
+
+http://www.openidforphp.org/

@@ -288,45 +288,51 @@ function resetAdmin() {
 	$username = $_POST["username"];
 	$kennwort1 = $_POST["kennwort1"];
 	$kennwort2 = $_POST["kennwort2"];
+	$email = $_POST["email"];
 	$result = false;
-	if (strlen($kennwort1)>7) {
-		if ($kennwort1 == $kennwort2) {
-			require_once("php/Functions.php");
-			initDBConnection();
-			//Erzeuge Benutzer und Passworteintrag
-			$werte=array(
-				'id' => 0,
-				'nickname' => $username,
-				'passwort' => sha1($kennwort1),
-				'anmeldung' => date("Y-m-d H:i:s"),
-				'Sorted' => "Profil,Galerie,Freunde,Hardware,Software,Anzeigen,Reviews");
-			DBD(DBTabUsers, "id=0");
-			$result = DBINAA(DBTabUsers, $werte);
-			ergebnis($result, "Benutzer anlegen", "erfolgreich", "nicht erfolgreich");
-			
-			//in Tabelle DBTabRoles eintragen
-			DBD(DBTabRoles, "BenutzerID=0");
-			$werte = array(
-				'BenutzerID' => 0,
-				'Rolle' => ROLEAdmin
-			);
-			$result = $result && DBINAA(DBTabRoles, $werte);
-			ergebnis($result, "Benutzerberechtigung Debugger", "erfolgreich", "nicht erfolgreich");
-			
-			$werte = array(
-				'BenutzerID' => 0,
-				'Rolle' => ROLEDebug
-			);
-			$result = $result && DBINAA(DBTabRoles, $werte);
-			ergebnis($result, "Benutzerberechtigung Administrator", "erfolgreich", "nicht erfolgreich");
-			
-			$werte = array(
-				'ID' => 0,
-				'Nickname' => 1);
-			$result = $result && DBINAA(DBTabProfiles, $werte);
-			ergebnis($result, "Profil veröffentlichen", "erfolgreich", "nicht erfolgreich");
-		} else {$fehler = "Passwörter weichen ab";}
-	} else {$fehler = "Passwort zu kurz (mindestens 8 Stellen erforderlich)";}
+	if (eregi("^[a-z0-9]+([-_\.]?[a-z0-9])+@[a-z0-9]+([-_\.]?[a-z0-9])+\.[a-z]{2,4}$", $email)) {
+		if (strlen($kennwort1)>7) {
+			if ($kennwort1 == $kennwort2) {
+				require_once("php/Functions.php");
+				initDBConnection();
+				//Erzeuge Benutzer und Passworteintrag
+				$werte=array(
+					'id' => 0,
+					'nickname' => $username,
+					'passwort' => sha1($kennwort1),
+					'Mail' => $email,
+					'anmeldung' => date("Y-m-d H:i:s"),
+					'Sorted' => "Profil,Galerie,Freunde,Hardware,Software,Anzeigen,Reviews");
+				DBD(DBTabUsers, "id=0");
+				$result = DBINAA(DBTabUsers, $werte);
+				ergebnis($result, "Benutzer anlegen", "erfolgreich", "nicht erfolgreich");
+				
+				//in Tabelle DBTabRoles eintragen
+				DBD(DBTabRoles, "BenutzerID=0");
+				$werte = array(
+					'BenutzerID' => 0,
+					'Rolle' => ROLEAdmin
+				);
+				$result = $result && DBINAA(DBTabRoles, $werte);
+				ergebnis($result, "Benutzerberechtigung Debugger", "erfolgreich", "nicht erfolgreich");
+				
+				$werte = array(
+					'BenutzerID' => 0,
+					'Rolle' => ROLEDebug
+				);
+				$result = $result && DBINAA(DBTabRoles, $werte);
+				ergebnis($result, "Benutzerberechtigung Administrator", "erfolgreich", "nicht erfolgreich");
+				
+				$werte = array(
+					'ID' => 0,
+					'Nickname' => 1);
+				$result = $result && DBINAA(DBTabProfiles, $werte);
+				ergebnis($result, "Profil veröffentlichen", "erfolgreich", "nicht erfolgreich");
+			} else {$fehler = "Passwörter weichen ab";}
+		} else {$fehler = "Passwort zu kurz (mindestens 8 Stellen erforderlich)";}
+	} else {
+		$fehler = "Die E-Mailadresse ist ungültig";
+	}
 	if ($fehler != "") {
 		$fehler = "Fehlgeschlagen: " . $fehler . "<br /><a href=\"config.php\" onClick=\"javascript:history.back();return false;\">zurück</a>";
 	}
