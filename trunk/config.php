@@ -40,6 +40,8 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
+define ('DBPTabVersionRequired', "3");
+
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
 	'erzeugeTabellen2' => "Wirklich Tabellen neu erstellen?",
@@ -65,6 +67,7 @@ function erzeugeTabellen() {
 }
 
 function erzeugeTabellen2() {
+	require_once("php/Functions.php");
 	initDBConnection();
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabPictures, $db);
@@ -75,25 +78,36 @@ function erzeugeTabellen2() {
 			`Dateiname` mediumtext collate utf8_bin NOT NULL,
 			`Titel` mediumtext collate utf8_bin NOT NULL,
 			`Thumbnail` mediumtext collate utf8_bin NOT NULL
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db), "Tabelle für Bilder", "angelegt", "Fehler beim Anlegen: " . mysql_error($db));
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin",
+		$db),
+		"Tabelle für Bilder",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabRoles, $db);
-	ergebnis(mysql_query('CREATE TABLE `'.DBTabRoles.'` ( `Rolle` VARCHAR(11) NOT NULL,  `BenutzerID` MEDIUMINT NOT NULL ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin', $db),
+	ergebnis(mysql_query('CREATE TABLE `' . DBTabRoles .
+		'` (
+			`Rolle` VARCHAR(11) NOT NULL,
+			`BenutzerID` MEDIUMINT NOT NULL
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin',
+		$db),
 		"Tabelle für Benutzerrollen",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
 
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabComments, $db);
-	ergebnis(mysql_query('CREATE TABLE `'.DBTabComments.'` (
-	`ID` mediumint(9) NOT NULL,
-	`Inhalt` text collate utf8_bin NOT NULL,
-	`Titel` varchar(30) collate utf8_bin NOT NULL,
-	`Time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	`BesitzerID` mediumint(9) NOT NULL,
-	`ZuID` mediumint(9) NOT NULL,
-	`ZuType` varchar(30) collate utf8_bin NOT NULL
-)' , $db),
+	ergebnis(mysql_query('CREATE TABLE `' . DBTabComments . 
+		'` (
+			`ID` mediumint(9) NOT NULL,
+			`Inhalt` text collate utf8_bin NOT NULL,
+			`Titel` varchar(30) collate utf8_bin NOT NULL,
+			`Time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			`BesitzerID` mediumint(9) NOT NULL,
+			`ZuID` mediumint(9) NOT NULL,
+			`ZuType` varchar(30) collate utf8_bin NOT NULL
+			)' ,
+		$db),
 		"Tabelle für Kommentare",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
@@ -114,14 +128,21 @@ function erzeugeTabellen2() {
 			`Geburtstag` varchar(1) collate utf8_bin NOT NULL default '0',
 			`Mail` varchar(1) collate utf8_bin NOT NULL default '0',
 			`Webseite` mediumtext collate utf8_bin NOT NULL
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db),
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin",
+		$db),
 		"Tabelle für Profile",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabKeys, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys.
-		"` (`Nickname` varchar(64) collate utf8_bin NOT NULL, `Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL, `Mail` varchar(255) collate utf8_bin NOT NULL, `Wert` varchar(40) collate utf8_bin NOT NULL) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", $db),
+		"` (
+			`Nickname` varchar(64) collate utf8_bin NOT NULL,
+			`Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL,
+			`Mail` varchar(255) collate utf8_bin NOT NULL,
+			`Wert` varchar(40) collate utf8_bin NOT NULL
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", 
+		$db),
 		"Tabelle für Schlüssel",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
@@ -149,8 +170,10 @@ function erzeugeTabellen2() {
 			`Anmeldung` datetime NOT NULL,
 			`Kommentare` text collate utf8_bin NOT NULL,
 			`Hardwarewuensche` text collate utf8_bin NOT NULL,
-			`Softwarewuensche` text collate utf8_bin NOT NULL
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;", $db),
+			`Softwarewuensche` text collate utf8_bin NOT NULL,
+			`Sorted` text collate utf8_bin NOT NULL
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;",
+		$db),
 		"Tabelle für Benutzer",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
@@ -160,11 +183,12 @@ function erzeugeTabellen2() {
 		"` (
 			`PropName` varchar(50) NOT NULL UNIQUE,
 			`PropValue` varchar(200)
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;", $db),
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;", 
+		$db),
 		"Tabelle für Systemdaten",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
-	ergebnis(DBSetProperty(DBPTabVersion, "1"),
+	ergebnis(DBSetProperty(DBPTabVersion, DBPTabVersionRequired),
 		"Tabellenversion",
 		"gespeichert",
 		"nicht gespeichert: " . mysql_error($db));
@@ -219,8 +243,8 @@ function cfgTestDBTablePropertiesExist() {
 
 function cfgTestDBTablesVersionMatch() {
 	$tabversion = DBGetProperty(DBPTabVersion);
-	$result = $tabversion == "1";
-	ergebnis($result, "Tabellenaktualisierung erforderlich", "nein", "ja: " . actionLink("aktualisiereTabellen") . " oder " . actionLink("erzeugeTabellen"));
+	$result = $tabversion == DBPTabVersionRequired;
+	ergebnis($result, "Tabellenaktualisierung erforderlich", "nein " . actionLink("erzeugeTabellen"), "ja: " . actionLink("aktualisiereTabellen") . " oder " . actionLink("erzeugeTabellen"));
 	return $result;
 }
 
@@ -248,6 +272,8 @@ function cfgAdmin() {
 			<input id=\"kennwort1\" name=\"kennwort1\" type=\"password\" /><br />
 		<label for=\"kennwordt\">Kennwort wiederholen</label>
 			<input id=\"kennwort2\" name=\"kennwort2\" type=\"password\" /><br />
+		<label for=\"email\">E-Mail</label>
+			<input id=\"email\" name=\"email\" type=\"text\" /><br />
 		<input type=\"submit\" value=\"Administrator einrichten\" />
 	</div>
 			 </form>";
@@ -265,15 +291,49 @@ function resetAdmin() {
 	$result = false;
 	if (strlen($kennwort1)>7) {
 		if ($kennwort1 == $kennwort2) {
-
+			require_once("php/Functions.php");
+			initDBConnection();
 			//Erzeuge Benutzer und Passworteintrag
-			$result = true;
+			$werte=array(
+				'id' => 0,
+				'nickname' => $username,
+				'passwort' => sha1($kennwort1),
+				'anmeldung' => date("Y-m-d H:i:s"),
+				'Sorted' => "Profil,Galerie,Freunde,Hardware,Software,Anzeigen,Reviews");
+			DBD(DBTabUsers, "id=0");
+			$result = DBINAA(DBTabUsers, $werte);
+			ergebnis($result, "Benutzer anlegen", "erfolgreich", "nicht erfolgreich");
+			
+			//in Tabelle DBTabRoles eintragen
+			DBD(DBTabRoles, "BenutzerID=0");
+			$werte = array(
+				'BenutzerID' => 0,
+				'Rolle' => ROLEAdmin
+			);
+			$result = $result && DBINAA(DBTabRoles, $werte);
+			ergebnis($result, "Benutzerberechtigung Debugger", "erfolgreich", "nicht erfolgreich");
+			
+			$werte = array(
+				'BenutzerID' => 0,
+				'Rolle' => ROLEDebug
+			);
+			$result = $result && DBINAA(DBTabRoles, $werte);
+			ergebnis($result, "Benutzerberechtigung Administrator", "erfolgreich", "nicht erfolgreich");
+			
+			$werte = array(
+				'ID' => 0,
+				'Nickname' => 1);
+			$result = $result && DBINAA(DBTabProfiles, $werte);
+			ergebnis($result, "Profil veröffentlichen", "erfolgreich", "nicht erfolgreich");
 		} else {$fehler = "Passwörter weichen ab";}
 	} else {$fehler = "Passwort zu kurz (mindestens 8 Stellen erforderlich)";}
 	if ($fehler != "") {
 		$fehler = "Fehlgeschlagen: " . $fehler . "<br /><a href=\"config.php\" onClick=\"javascript:history.back();return false;\">zurück</a>";
 	}
 	ergebnis($result, "Administrator anlegen", "Erfolgreich",  $fehler);
+	if ($result) {
+		echo "<p>Konfiguration abgeschlossen</p>";
+	}
 	cfgWarnung();
 }
 

@@ -373,6 +373,20 @@ function DBU($Table,$ID,$Var){
 	return DBQ("UPDATE $Table SET $Var WHERE $ID");
 }
 
+## Fügt Werte in eine neue Tabellenzeile ein
+##
+## [void] DBINAA($Table, $aArray)
+##
+## [string] $Table - Tabellenname
+## [array] $aArray - assoziatives Feld, Schlüssel = Feldname
+function DBIAA($Table, $id, $aArray) {
+	$Vars = join(",", array_keys($aArray));
+	$Values = "'".join("','", array_values($aArray)) . "'";
+	#echo $Vars . "<br />";
+	#echo $Values . "<br />";
+	return DBI($Table, $id, $Vars, $Values);
+}
+
 ## Fügt Werte in eine Vorhandene Tabellenzeile ein
 ##
 ## [void] DBI( $Table, $ID, $Vars, Values )
@@ -389,12 +403,25 @@ function DBI($Table,$ID,$Vars,$Values){
 
 ## Fügt Werte in eine neue Tabellenzeile ein
 ##
+## [void] DBINAA($Table, $aArray)
+##
+## [string] $Table - Tabellenname
+## [array] $aArray - assoziatives Feld, Schlüssel = Feldname
+function DBINAA($Table, $aArray) {
+	$Vars = join(",", array_keys($aArray));
+	$Values = "'".join("','", array_values($aArray)) . "'";
+	#echo $Vars . "<br />";
+	#echo $Values . "<br />";
+	return DBIN($Table, $Vars, $Values);
+}
+
+## Fügt Werte in eine neue Tabellenzeile ein
+##
 ## [void] DBIN( $Table, $Vars, Values )
 ##
 ## [string] $Table - Gibt den Namen der Tabelle an, in die Eingefügt wird
 ## [string] $Vars - Mit Komma getrennte Variablennamen
 ## [string] $Values - Mit Komma getrennte Werte
-## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
 
 function DBIN($Table,$Vars,$Values){
 	return DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
@@ -407,7 +434,6 @@ function DBIN($Table,$Vars,$Values){
 ## [string] $Table - Gibt den Namen der Tabelle an, in die Eingefügt wird
 ## [string] $Vars - Mit Komma getrennte Variablennamen
 ## [string] $Values - Mit Komma getrennte Werte
-## Um $Vars und $Values zu erstellen am besten die Funktion aArrayIntoString verwenden
 
 function DBIChain($Table,$Vars,$Array){
 	$q = "INSERT INTO $Table($Vars) VALUES";
@@ -637,7 +663,7 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
 			$Info = getimagesize($META['Bild']['tmp_name']);
-			print_r($Info);
+print_r($Info);
 			CreateThumbnail(THUMBMAXSIZE,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 
 			if($Info[0] > SCALEDMAXSIZE or $Info[1] > SCALEDMAXSIZE){
@@ -676,7 +702,7 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 				$Content = substr($Content,0,MAXLENGTHKOMMENTAR);
 			}
 			$Werte = "'".$Owner."','".$ContentID."','".$META['Titel']."','".$Content."','".$META['ZuID']."','".$META['ZuType']."','".$Time."'";
-			echo DBIN(DBTabComments,$Schluessel,$Werte);
+			DBIN(DBTabComments,$Schluessel,$Werte);
 			return true;
 		break;
 		default:
