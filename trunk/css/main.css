@@ -35,3 +35,13 @@ li.sortme {
 
 ul#sortables li {
 }
+
+#POD{
+	height:500px;
+	border:1px solid black;
+	width:350px;
+}
+#POD #Display{
+	position:relative;
+	margin:20px;
+}

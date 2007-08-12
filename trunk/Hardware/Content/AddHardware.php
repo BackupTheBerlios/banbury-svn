@@ -16,10 +16,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 ?>
-<div id="Display" style="width:500px;height:500px;"></div>
-		<div style="position:relative;">
-			<div id="hwui">&nbsp;</div>
-		</div>
+<div id="POD">
+	<div id="Display" style="height:200px;border:1px solid black;background-color:#eee;">
+
+	<table width="100%">
+		<tr>
+			<td>Computer</td><td align="right">&gt;</td>
+		</tr>
+		<tr>
+			<td>Audio&Video</td><td align="right">&gt;</td>
+		</tr>
+		<tr>
+			<td>Peripherie</td><td align="right">&gt;</td>
+		</tr>
+	</table>
+
+
+
+	</div>
+	<div style="position:relative;">
+		<div id="hwui">&nbsp;</div>
+	</div>
+</div>
 		<p>
 			<a href="javascript:hwsysc.stop();">aus</a>
 			<a href="javascript:hwsysc.pl();">dreh+</a>
