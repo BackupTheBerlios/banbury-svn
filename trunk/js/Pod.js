@@ -25,7 +25,7 @@ var richtung = new Array();
 var center = 150;
 
 // Radius
-var radius = 125.0;
+var radius = 115.0;
 
 // In diesem Winkel hält sich nur das zur Zeit ausgewählte Symbol auf
 var sperrwinkel = 120;
@@ -52,8 +52,8 @@ function indexByObjectid(bname) {
 
 function bildpositionXY(bname, x, y) {
 	bild = document.getElementById(bname);
-	bild.style.left = x - bild.width/2;
-	bild.style.top = y - bild.height/2;
+	bild.style.left = (x - bild.width/2) + "px";
+	bild.style.top = (y - bild.height/2) + "px";
 }
 
 
@@ -85,8 +85,8 @@ function bildBewegung(bindex) {
 function auswahlrahmen() {
 	arahmen = document.createElement("img");
 	arahmen.src = ImagesFolder+"auswahlrahmen.png";
-	arahmen.style.left=88;
-	arahmen.style.top=-20;
+	arahmen.style.left="80px";
+	arahmen.style.top="-25px";
 	arahmen.style.zIndex = 99;
 	arahmen.style.position="relative";
 
@@ -100,9 +100,9 @@ function teilbild(src, name) {
 	tbimg = document.createElement("img");
 	tbimg.src = src;
 	tbimg.style.position="absolute";
-	tbimg.style.left = 210;
-	tbimg.style.top = 100;
-	tbimg.style.borderWidth = 0;
+	tbimg.style.left = "210px";
+	tbimg.style.top = "100px";
+	tbimg.style.borderWidth = "0px";
 	tbimg.zIndex = 25;
 	tbimg.id = name;
 	/*winkel.push(-5);
@@ -233,8 +233,8 @@ function bewegen() {
 function init() {
 	hwuielem = document.getElementById("hwui");
 	hwuielem.style.backgroundImage = "url("+ImagesFolder+"kreishintergrund.png)";
-	hwuielem.style.height = "300px";
-	hwuielem.style.width = "300px";
+	hwuielem.style.height = "280px";
+	hwuielem.style.width = "280px";
 	hwuielem.style.backgroundColor = "red";
 
 	hwuielem.appendChild(auswahlrahmen());

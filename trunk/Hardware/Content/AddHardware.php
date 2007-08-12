@@ -108,15 +108,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	</script>
 </div>
 
-		<div id="hwui">&nbsp;</div>
+		<div style="position:relative;margin-left:20px">
+			<div id="hwui">&nbsp;</div>
+		</div>
 		<script src="js/Pod.js" type="text/javascript"></script>
 
 
 </div>
 		<p>
-			<a href="javascript:hwsysc.stop();">aus</a>
-			<a href="javascript:hwsysc.pl();">dreh+</a>
-			<a href="javascript:hwsysc.mn();">dreh-</a>
-			<a href="javascript:hwsysc.del();">löschen</a>
+			<a href="javascript:anistop();">aus</a>
+			<a href="javascript:drehpl();">dreh+</a>
+			<a href="javascript:drehmn();">dreh-</a>
+			<a href="javascript:del();">löschen</a>
+			<a href="javascript:add();">neu</a>
 		</p>
 		<p id="debug"> </p>
