@@ -24,6 +24,8 @@ if(isset($_GET['Edit'])){
 	include("Content/AddHardware.php");
 	$MyHardwareEdit = true;
 	include("Content/MyHardware.php");
-
 }
+
+
+
 ?>

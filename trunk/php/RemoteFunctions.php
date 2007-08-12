@@ -110,7 +110,8 @@ function AddKrit($Array,$kriterium,$wert,$Tags){
 
 
 		}
-		DBIN($Table,"ID,Kriterium,Wert,Tags","'".$ID."','".$kriterium."','".$wert."','".$Tags."'");
+ 		DBIN($Table,"ID,Kriterium,Wert,Tags","'".$ID."','".$kriterium."','".$wert."','".$Tags."'"); 
+ 		// TODO Dies wird später erst erledigt, wenn die Hardware tatsächlich hinzugefügt wird.
 	}
 
 	$x = count($_SESSION[$Array]);

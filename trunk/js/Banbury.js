@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function BWOpen(Target){
 	window.open(Target,Target);
+	return false; // Wegen XHTML ...
 }
 
 function bild(name, x, y) {
@@ -27,13 +28,13 @@ function bild(name, x, y) {
 	this.zielwinkel = 0.0;
 	this.objektid = name;
 	this.richtung = 0;
-	
+
 	this.schrittXY = function(posx, posy) {
 		r = false;
-		//if (this.objektid=="teil2.png") window.status=this.objektid+",bildgröße="+bild.width;
+		//if (this.objektid=="teil2.png") window.status=this.objektid+",bildgr��e="+bild.width;
 		return r;
 	}
-	
+
 	this.positionXY = function(posx, posy) {
 		bild = document.getElementById(this.objektid);
 		/*if (posx > this.x) {this.x++; r = true;}
@@ -45,26 +46,28 @@ function bild(name, x, y) {
 		bild.style.left = posx - bild.width/2;
 		bild.style.top = posy - bild.height/2;
 	}
-	
+
 	this.bewege = function() {
 		if (this.richtung == 0) {
 			if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) < 180) this.richtung = -1; else this.richtung = 1;
 		}
-		if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) >= 11 ) this.winkel += this.richtung*10;
+
+
+		if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) >= 1 ) this.winkel += this.richtung*1;
 		this.positionXY(
 			Math.floor(center + radius * Math.cos(this.winkel*3.14/180.0)),
 			Math.floor(center + radius * Math.sin(this.winkel*3.14/180.0)));
 		return true;
 	}
-	
+
 }
 
 function hardwaresystemUI() {
-	
+
 	anzahlTeile = 0;
 	aktivesTeil = 0;
 	aktiv = "";
-		
+
 	bewegungen = new Array();
 	bilder = new Array();
 
@@ -86,20 +89,20 @@ function hardwaresystemUI() {
 		bewegungen = new Array();
 		bewegungen.push("nix,distribute");
 	}
-	
+
 	this.nameAktivesTeil = function() {
 		name = bilder[aktivesTeil].objektid;
 		return name;
 	}
-	
+
 	this.pl = function() {
 		this.springeZu((aktivesTeil + 1) % anzahlTeile);
 	}
-	
+
 	this.mn = function() {
 		this.springeZu((aktivesTeil + anzahlTeile - 1) % anzahlTeile);
 	}
-	
+
 	this.springeZuNamen = function(teilname) {
 		ziel = -1;
 		for (var i = 0; i < anzahlTeile; i++) {
@@ -107,13 +110,13 @@ function hardwaresystemUI() {
 		}
 		if (ziel >= 0) this.springeZu(ziel);
 	}
-	
+
 	//Der Benutzer klickt im großen Kreis auf ein Symbol
 	//es drehen sich alle Symbole im äußeren Kreis,
 	//bis das angeklickte Symbol im Bearbeiten-Feld steht
 	this.springeZu = function (teilnummer) {
 		mitte = anzahlTeile / 2;
-		
+
 		//abstand zw. aktivem und teiln muss kl sein als mitte
 		abstand = (aktivesTeil - teilnummer + anzahlTeile) % anzahlTeile;
 		if (abstand <= mitte) r = 1; else r = -1;
@@ -125,13 +128,13 @@ function hardwaresystemUI() {
 		bewegungen = new Array();
 		bewegungen.push("nix,distribute");
 	}
-	
+
 	this.bewegen = function() {
 		neue_bewegungen = new Array();
 		for (var i = 0; i < bewegungen.length; i++) {
 			zeile = bewegungen[i];
 			objekt = zeile.substr(0, zeile.indexOf(","));
-			ani = zeile.substr(zeile.indexOf(",")+1, zeile.length);			
+			ani = zeile.substr(zeile.indexOf(",")+1, zeile.length);
 			if (ani == "distribute") {
 				bilder[aktivesTeil].zielwinkel = 0;
 				if (anzahlTeile > 2) {
@@ -147,7 +150,7 @@ function hardwaresystemUI() {
 						bilder[(aktivesTeil + i) % anzahlTeile].zielwinkel = zielwinkel;
 						//alert(zielwinkel + "," + winkelschritt);
 						debugTxT = debugTxT + ", bild[" + ((aktivesTeil + i) % anzahlTeile ) + "]="+ zielwinkel;
-						zielwinkel = (zielwinkel + winkelschritt) % 360;					
+						zielwinkel = (zielwinkel + winkelschritt) % 360;
 					}
 					debugTxT = debugTxT + ", " + zielwinkel;
 					dp = document.getElementById("debug");
@@ -179,29 +182,29 @@ function hardwaresystemUI() {
 		//}
 		bewegungen = neue_bewegungen;
 	}
-	
+
 	function loeschenFrage(teilenummer) {
-	
+
 	}
-	
+
 	function loeschen(teilenummer) {
 		hardwaresystemC.loesche(teilnummer);
 	}
-	
+
 	function loeschanimation(teilenummer) {
 		//verkleinere das Symbol
 		//bewege alle Symbole auf neue Positionen
 	}
-	
+
 	function neuanimation() {
 	}
-	
+
 	this.init = function () {
 		hwuielem = document.getElementById("hwui");
 		hwuielem.style.backgroundImage = "url(kreishintergrund.png)";
 		hwuielem.style.height = "300px";
 		hwuielem.style.width = "300px";
-		
+
 		hwuielem.appendChild(this.auswahlrahmen());
 		hwuielem.appendChild(this.teilbild("teil1.png", "festplatte"));
 		hwuielem.appendChild(this.teilbild("teil2.png", "cdrom"));
@@ -209,16 +212,16 @@ function hardwaresystemUI() {
 		hwuielem.appendChild(this.teilbild("teil4.png", "monitor"));
 		hwuielem.appendChild(this.teilbild("teil5.png", "festplatte2"));
 		hwuielem.appendChild(this.teilbild("teil6.png", "ram"));
-		
+
 		aktiv = window.setInterval("hwsysc.animation()", 100);
-		
+
 		bewegungen.push("null,distribute");
 	}
-	
+
 	this.stop = function() {
 		window.clearInterval(aktiv);
 	}
-	
+
 	this.teilbild = function(src, name) {
 		tbimg = document.createElement("img");
 		tbimg.src = src;
@@ -230,18 +233,18 @@ function hardwaresystemUI() {
 		abild = new bild(name, 150, 150);
 		abild.winkel = 0;
 		abild.zielwinkel = 0;
-		bilder.push(abild); 
-		
+		bilder.push(abild);
+
 		ank = document.createElement("a");
 		ank.setAttribute('href', 'javascript:hwsysc.jt("' + name + '");');
 		ank.appendChild(tbimg);
 		ank.setAttribute('id', 'ank' + name);
-		
+
 		anzahlTeile++;
-		
+
 		return ank;
 	}
-	
+
 	this.auswahlrahmen = function() {
 		arahmen = document.createElement("img");
 		arahmen.src = "auswahlrahmen.png";
@@ -249,62 +252,61 @@ function hardwaresystemUI() {
 		arahmen.style.top=88;
 		arahmen.style.zIndex = 99;
 		arahmen.style.position="relative";
-		
+
 		return arahmen;
 	}
  }
- 
+
  function hardwaresystemC() {
-	 
+
 	 hwui = new hardwaresystemUI();
-	 
+
 	 function neu() {
 		 hardwaresystemUI.neuanimation();
 	 }
-	 
+
 	 function loesche(teilnummer) {
 		 //lösche das n-te Element (n = teilnummer) aus teile
 		 aktualisiereUI();
 	 }
-	 
+
 	 function aktualisiereUI() {
 		 hardwaresystemUI.anzahlTeile = teile.anzahl;
 		 loeschanimation(teilenummer);
 	 }
-	 
+
 	 this.init = function () {
 		hwui.init();
 	 }
-	 
+
 	 this.animation = function () {
 		 hwui.bewegen();
 	 }
-	 
+
 	 this.stop = function() {
 		 hwui.stop();
 	 }
-	 
+
 	 this.pl = function() {
 		 hwui.pl();
 	 }
-	 
+
 	 this.mn = function() {
 		 hwui.mn();
 	 }
-	 
+
 	 this.jt = function(teil) {
 		 hwui.springeZuNamen(teil);
 	 }
-	 
+
 	 this.del = function() {
 		 hwui.del();
 	 }
  }
- 
+
 var center = 150;
 var radius = 125.0;
 var sperrwinkel = 120;
 
  var hwsysc = new hardwaresystemC();
  hwsysc.init();
- 

@@ -79,7 +79,6 @@ Debug();
 <?php
 
 
-
 	mysql_close($db);
 
 	$Return = ob_get_contents();
