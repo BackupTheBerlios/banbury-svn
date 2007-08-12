@@ -70,7 +70,7 @@ $('slidein').addEvent('click', function(e){
 	e.stop();
 });
 
-$('slideout').addEvent('click', function(e){
+$('test').addEvent('click', function(e){
 	e = new Event(e);
 	mySlide.slideOut();
 	e.stop();

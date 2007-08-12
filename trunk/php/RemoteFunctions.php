@@ -127,4 +127,49 @@ function RemoveKrit($Array,$Nr){
 	return $o;
 }
 
+
+function PODDisplay($Menu){
+	$Eintraege = DBQ("SELECT * FROM ".DBTabHardware." WHERE Menu='".$Menu."'");
+	$out = "<tr><th colspan=\"2\">";
+	if($Menu == ""){
+		$out .= "Hauptmenü";
+	}else{
+		$Zurueck = DBQ("SELECT * FROM ".DBTabHardware." WHERE Name='".$Menu."'");
+		if($Zurueck[0]['Menu'] == ""){
+			$out .= "<div onclick=\"genPODDisplayBack('')\">&lt; Zurück zu Hauptmenü</div>";
+		}else{
+			$BckMenu = $Zurueck[0]['Menu'];
+			$out .= "<div onclick=\"genPODDisplayBack('".$BckMenu."')\">&lt; Zurück zu ".$BckMenu."</div>";
+		}
+
+	}
+	$out .="</th></tr>";
+	if(is_array($Eintraege)){
+		asort($Eintraege);
+		foreach($Eintraege as $Eintrag){
+			$out .="<tr onclick=\"genPODDisplay('".$Eintrag['Name']."');\"><td>".$Eintrag['Name']."</td>";
+			$out .="<td align=\"right\">&gt</td></tr>";
+		}
+	}else{
+		$out .="Keine Einträge an dieser Stelle";
+	}
+
+	$out .="<tr><td onclick=\"NewPODDisplay('".$Menu."');\">+ Hinzufügen</td><td align=\"right\">&gt;</td></tr>";
+	return $out;
+}
+
+function NewPODDisplay($Menu){
+
+	set_include_path("Content/Templates/");
+	require("NewPODDisplay.php");
+}
+
+function AddToPODDisplay($Name,$Menu){
+	DBIN(DBTabHardware,"Name,Menu","'".$Name."','".$Menu."'");
+}
+
+
+
+
+
 ?>

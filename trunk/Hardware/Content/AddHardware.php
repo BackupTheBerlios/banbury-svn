@@ -16,27 +16,102 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 ?>
+
+<?php
+
+// Es folgt die zukünftige Template-Datei
+
+?>
 <div id="POD">
-	<div id="Display" style="height:200px;border:1px solid black;background-color:#eee;">
 
-	<table width="100%">
-		<tr>
-			<td>Computer</td><td align="right">&gt;</td>
-		</tr>
-		<tr>
-			<td>Audio&Video</td><td align="right">&gt;</td>
-		</tr>
-		<tr>
-			<td>Peripherie</td><td align="right">&gt;</td>
-		</tr>
-	</table>
+	<div id="Display">
+		<div id="PODDisplay">
+
+			<table id="PODTable" cellpadding="0" cellspacing="0"></table>
+		</div>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+
+	var url = "CallFunc.php";
+	var target = document.getElementById('PODDisplay');
+	var targetTable = document.getElementById('PODTable');
+	var myEffects = target.effects({duration: 1000, transition:Fx.Transitions.Sine.easeInOut});
+
+	function SlideF(){
+		myEffects.start({'left':[300,0],duration: 1000}).chain(function(){
+			target.style.overflow = 'auto';
+		});
+	}
+	function SlideB(){
+		myEffects.start({'left':[-300,0],duration: 1000}).chain(function(){
+			target.style.overflow = 'auto';
+		});
+	}
+	function genPODDisplay(Menu){
+		target.style.overflow = 'hidden';
+		var MyAjax = myEffects.start({'left':[0,-300],duration: 300}).chain(function(){
+
+			new Ajax(url, {
+				method: 'post',
+				data: "Function=PODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideF,
+
+			}).request();
+		})
+	}
+	function genPODDisplayBack(Menu){
+		target.style.overflow = 'hidden';
+		var MyAjax = myEffects.start({'left':[0,300],duration: 300}).chain(function(){
+
+			new Ajax(url, {
+				method: 'post',
+				data: "Function=PODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideB,
+
+			}).request();
+		})
+	}
+
+	function NewPODDisplay(Menu){
+		var MyAjax = myEffects.start({'left':[0,-300],duration: 300}).chain(
+			function(){
+				new Ajax(url, {
+				method: 'post',
+				data: "Function=NewPODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideF,
+
+				}).request();
+			}
+		);
+
+	}
+	function AddPOD(){
+		Name = document.getElementById('NewPODName').value;
+		Menu = document.getElementById('NewPODMenu').value;
+
+		new Ajax(url, {
+			method: 'post',
+			data: "Function=AddToPODDisplay&Name=" + Name + "&" + "Menu=" + Menu,
+			update: targetTable,
+			onComplete: genPODDisplayBack(Menu),
+
+		}).request();
 
 
+	}
+	genPODDisplay('');
 
-	</div>
-	<div style="position:relative;">
+	/* ]]> */
+	</script>
+</div>
+
 		<div id="hwui">&nbsp;</div>
-	</div>
+		<script src="js/Pod.js" type="text/javascript"></script>
+
+
 </div>
 		<p>
 			<a href="javascript:hwsysc.stop();">aus</a>

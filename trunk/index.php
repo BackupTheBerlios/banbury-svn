@@ -28,7 +28,9 @@ initDBConnection();
 ## Startet eine Session
 session_start();
 
-echo '<?xml version="1.0" encoding="utf-8"?>';
+/* echo '<?xml version="1.0" encoding="utf-8"?>';
+ * 
+ */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
