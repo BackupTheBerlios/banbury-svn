@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', "$Rev$");
+define ('DBPTabVersionRequired', '$Rev$');
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -190,10 +190,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Hardware",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
-	
+
 	ergebnis(
 		mysql_query(
-			"INSERT INTO " . DBTabHardware . 
+			"INSERT INTO " . DBTabHardware .
 			" (ID, Name, Menu) VALUES (1, 'Computer', ''), " .
 			"(2, 'Peripherie', ''), " .
 			"(3, 'Audio&Video', ''), " .
@@ -208,7 +208,7 @@ function erzeugeTabellen2() {
 			"(12, 'Powermac', 'Desktop'), " .
 			"(13, 'Mac Mini', 'Desktop'), "  .
 			"(14, 'X-Serve', 'Server'), " .
-			"(15, 'X-Raid', 'Server');", 
+			"(15, 'X-Raid', 'Server');",
 			$db),
 		"Eintraege in Tabelle " . DBTabHardware,
 		"eingetragen",
@@ -321,6 +321,7 @@ function cfgWarnung() {
 
 function resetAdmin() {
 	global $_POST;
+	$fehler = "";
 	$username = $_POST["username"];
 	$kennwort1 = $_POST["kennwort1"];
 	$kennwort2 = $_POST["kennwort2"];

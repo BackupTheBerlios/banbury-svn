@@ -1,4 +1,84 @@
 
+
+	var url = "CallFunc.php";
+	var target = document.getElementById('PODDisplay'); // Scrollen ...
+	var targetTable = document.getElementById('PODTable'); // Inhalt des Displays ...
+	var myEffects = target.effects({duration: 1000, transition:Fx.Transitions.Sine.easeInOut});
+
+	function SlideF(){
+		myEffects.start({'left':[300,0],duration: 1000}).chain(function(){
+			target.style.overflow = 'auto';
+		});
+	}
+	function SlideB(){
+		myEffects.start({'left':[-300,0],duration: 1000}).chain(function(){
+			target.style.overflow = 'auto';
+		});
+	}
+	function genPODDisplay(Menu){
+		target.style.overflow = 'hidden';
+		var MyAjax = myEffects.start({'left':[0,-300],duration: 300}).chain(function(){
+
+			new Ajax(url, {
+				method: 'post',
+				data: "Function=PODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideF,
+
+			}).request();
+		})
+	}
+	function genPODDisplayBack(Menu){
+		target.style.overflow = 'hidden';
+		var MyAjax = myEffects.start({'left':[0,300],duration: 300}).chain(function(){
+
+			new Ajax(url, {
+				method: 'post',
+				data: "Function=PODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideB,
+
+			}).request();
+		})
+	}
+
+	function NewPODDisplay(Menu){
+		var MyAjax = myEffects.start({'left':[0,-300],duration: 300}).chain(
+			function(){
+				new Ajax(url, {
+				method: 'post',
+				data: "Function=NewPODDisplay&Menu=" + Menu,
+				update: targetTable,
+				onComplete: SlideF,
+
+				}).request();
+			}
+		);
+
+	}
+	function AddPOD(){
+		Name = document.getElementById('NewPODName').value;
+		Menu = document.getElementById('NewPODMenu').value;
+
+		new Ajax(url, {
+			method: 'post',
+			data: "Function=AddToPODDisplay&Name=" + Name + "&" + "Menu=" + Menu,
+			update: targetTable,
+			onComplete: genPODDisplayBack(Menu),
+
+		}).request();
+
+
+	}
+	genPODDisplay('');
+
+
+//
+// Eriks Rad
+//
+
+
+
 function winkeldiff(winkel1, winkel2) {
 	while (winkel1 < -180) winkel1 += 360;
 	while (winkel1 > 180)  winkel1 -= 360;
@@ -8,38 +88,6 @@ function winkeldiff(winkel1, winkel2) {
 	if (r > 180) r = 360 - r;
 	return r;
 }
-
-// derzeitiger Winkel der Komponenten
-var winkel = new Array();
-
-// einzunehmender Winkel jeder Komponente
-var zielwinkel = new Array();
-
-// Feld aller Objektnamen
-var objektid = new Array();
-
-// Bewegungsrichtungen der Komponenten
-var richtung = new Array();
-
-// Zentrum der Grafiken
-var center = 150;
-
-// Radius
-var radius = 115.0;
-
-// In diesem Winkel hÃ¤lt sich nur das zur Zeit ausgewÃ¤hlte Symbol auf
-var sperrwinkel = 120;
-
-// die Anzahl der Komponenten
-var anzahlTeile = 0;
-
-// die Nummer der gerade aktiven Komponente
-var aktivesTeil = 0;
-
-// Liste der auszufÃ¼hrenden Bewegungsbefehle
-var bewegungen = new Array();
-
-// Sucht die Position des Bildes mit dem Namen bname
 
 function indexByObjectid(bname) {
 	r = -1;
@@ -52,8 +100,8 @@ function indexByObjectid(bname) {
 
 function bildpositionXY(bname, x, y) {
 	bild = document.getElementById(bname);
-	bild.style.left = (x - bild.width/2) + "px";
-	bild.style.top = (y - bild.height/2) + "px";
+	bild.style.left = (x - bild.width/2 ) + "px"; // Aus unbekannten Gründen müssen hier 4 Pixel addiert werden.
+	bild.style.top = (y - bild.height/2 ) + "px";
 }
 
 
@@ -85,11 +133,10 @@ function bildBewegung(bindex) {
 function auswahlrahmen() {
 	arahmen = document.createElement("img");
 	arahmen.src = ImagesFolder+"auswahlrahmen.png";
-	arahmen.style.left="80px";
-	arahmen.style.top="-25px";
+	arahmen.style.left= (center-(PictureSize/2))+KorrekturPixel+"px";
+	arahmen.style.top= center - radius - (PictureSize/2) + "px";
 	arahmen.style.zIndex = 99;
 	arahmen.style.position="relative";
-
 	return arahmen;
 }
 
@@ -227,24 +274,25 @@ function bewegen() {
 	while ((bewegungen.length > 2) && (bewegungen[0] == bewegungen[1])) bewegungen.shift();
 	// NOTE: Debugcode entfernen
 	dp = document.getElementById("debug");
-	dp.firstChild.nodeValue= "Debug: " + bewegungen.join(", ");
+	dp.firstChild.nodeValue= "Debug: " + document.getElementById(objektid[aktivesTeil]).style.left;
 }
 
 function init() {
 	hwuielem = document.getElementById("hwui");
 	hwuielem.style.backgroundImage = "url("+ImagesFolder+"kreishintergrund.png)";
-	hwuielem.style.height = "280px";
-	hwuielem.style.width = "280px";
-	hwuielem.style.backgroundColor = "red";
+	hwuielem.style.backgroundPosition = ((center)-150) +"px "+((center)-150) +"px ";
+	hwuielem.style.height = (2*center)+"px";
+	hwuielem.style.height = (2*center)+"px";
+	hwuielem.style.width = (2*center)+"px";
 
 	hwuielem.appendChild(auswahlrahmen());
-	hwuielem.appendChild(teilbild(ImagesFolder+"fragezeichen.png", "QQsystem"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil1.png", "festplatte"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil2.png", "cdrom"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil3.png", "mouse"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil4.png", "monitor"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil5.png", "festplatte2"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"teil6.png", "ram"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"Pieces.png", "QQsystem"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"Core.png", "festplatte"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"SpeakerBox_wood.png", "cdrom"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"scanner.png", "mouse"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"hdd_unmount.png", "monitor"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"keyboard.png", "festplatte2"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"system.png", "ram"));
 
 	bewegungen.push("distribute");
 	aktiv = window.setInterval("bewegen()", 100);

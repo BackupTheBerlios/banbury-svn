@@ -5,7 +5,9 @@ display:none;
 img{
 	border:0px;
 }
-
+a{
+	border:0px;margin:0px;padding:0px;
+	}
 td{
 	vertical-align: top;
 	}

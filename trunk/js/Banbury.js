@@ -21,4 +21,40 @@ function BWOpen(Target){
 	return false; // Wegen XHTML ...
 }
 
-var ImagesFolder = "Content/images/";
+var PictureSize = 32;
+var KorrekturPixel = -4; // Diese Pixelanzahl muss am Auswahlrahmen links eingef¸gt werden. Keiner weiﬂ warum.
+var ImagesFolder = "Content/images/"+PictureSize+"/";
+
+
+// derzeitiger Winkel der Komponenten
+var winkel = new Array();
+
+// einzunehmender Winkel jeder Komponente
+var zielwinkel = new Array();
+
+// Feld aller Objektnamen
+var objektid = new Array();
+
+// Bewegungsrichtungen der Komponenten
+var richtung = new Array();
+
+// Zentrum der Grafiken
+var center = 120;
+
+// Radius
+var radius = 100.0;
+
+// In diesem Winkel h√§lt sich nur das zur Zeit ausgew√§hlte Symbol auf
+var sperrwinkel = 120;
+
+// die Anzahl der Komponenten
+var anzahlTeile = 0;
+
+// die Nummer der gerade aktiven Komponente
+var aktivesTeil = 0;
+
+// Liste der auszuf√ºhrenden Bewegungsbefehle
+var bewegungen = new Array();
+
+// Sucht die Position des Bildes mit dem Namen bname
+
