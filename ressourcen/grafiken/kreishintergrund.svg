@@ -52,6 +52,14 @@
        x2="578.57141"
        y2="560.93359"
        gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       id="filter3334">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.1325355"
+         id="feGaussianBlur3336" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -65,7 +73,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
      inkscape:cx="469.16522"
-     inkscape:cy="1068.5828"
+     inkscape:cy="1011.4399"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="1024"
@@ -194,5 +202,19 @@
        inkscape:export-filename="/home/e-man/public_html/banbury/Hardware/Bilder/teil4.png"
        inkscape:export-xdpi="52.470001"
        inkscape:export-ydpi="52.470001" />
+    <text
+       xml:space="preserve"
+       style="font-size:126px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#0020ff;fill-opacity:1;stroke:#ff9f18;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Palladio L;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter3334)"
+       x="151.42857"
+       y="-111.92353"
+       id="text2179"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/e-man/daten/prog/mac-only/banbury/trunk/Hardware/Bilder/fragezeichen.pnh.png"
+       inkscape:export-xdpi="52.470001"
+       inkscape:export-ydpi="52.470001"><tspan
+         sodipodi:role="line"
+         id="tspan2181"
+         x="151.42857"
+         y="-111.92353">?</tspan></text>
   </g>
 </svg>

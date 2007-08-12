@@ -21,6 +21,16 @@ function BWOpen(Target){
 	return false; // Wegen XHTML ...
 }
 
+function winkeldiff(winkel1, winkel2) {
+	while (winkel1 < -180) winkel1 += 360;
+	while (winkel1 > 180)  winkel1 -= 360;
+	while (winkel2 < -180) winkel2 += 360;
+	while (winkel2 > 180)  winkel2 -= 360;
+	r = Math.abs(winkel1 - winkel2);
+	if (r > 180) r = 360 - r;
+	return r;
+}
+
 function bild(name, x, y) {
 	this.x = x;
 	this.y = y;
@@ -31,7 +41,7 @@ function bild(name, x, y) {
 
 	this.schrittXY = function(posx, posy) {
 		r = false;
-		//if (this.objektid=="teil2.png") window.status=this.objektid+",bildgröße="+bild.width;
+		//if (this.objektid=="teil2.png") window.status=this.objektid+",bildgrï¿½ï¿½e="+bild.width;
 		return r;
 	}
 
@@ -48,16 +58,20 @@ function bild(name, x, y) {
 	}
 
 	this.bewege = function() {
+		while (this.winkel < -180) this.winkel += 360;
+		while (this.winkel > 180) this.winkel -= 360;
+		r = false;
 		if (this.richtung == 0) {
-			if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) < 180) this.richtung = -1; else this.richtung = 1;
+			if (Math.abs(this.zielwinkel - this.winkel) > 180) this.richtung = -1; else this.richtung = 1;
 		}
-
-
-		if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) >= 1 ) this.winkel += this.richtung*1;
+		if (winkeldiff(this.zielwinkel, this.winkel) >= 2 ) {
+			this.winkel += this.richtung*Math.floor(1+Math.sqrt(winkeldiff(this.zielwinkel, this.winkel)));
+			r = true;
+		}
 		this.positionXY(
-			Math.floor(center + radius * Math.cos(this.winkel*3.14/180.0)),
-			Math.floor(center + radius * Math.sin(this.winkel*3.14/180.0)));
-		return true;
+			Math.floor(center + radius * Math.cos((-90+this.winkel)*3.14/180.0)),
+			Math.floor(center + radius * Math.sin((-90+this.winkel)*3.14/180.0)));
+		return r;
 	}
 
 }
@@ -71,23 +85,30 @@ function hardwaresystemUI() {
 	bewegungen = new Array();
 	bilder = new Array();
 
+	this.add = function() {
+		hwuielem = document.getElementById("hwui");
+		hwuielem.appendChild(this.teilbild("fragezeichen.png", "neu"));
+	}
+
 	this.del = function() {
-		bilderneu = new Array();
-		for (var i = 0; i < anzahlTeile; i++) {
-			if (i != aktivesTeil) {
-				bilder[i].richtung = 0;
-				bilderneu.push(bilder[i]);
-			} else {
-				b = document.getElementById("ank" + bilder[i].objektid);
-				pank = b.parentNode;
-				pank.removeChild(b);
+		if (bilder[aktivesTeil].objektid.substr(0,2) != "QQ") {
+			bilderneu = new Array();
+			for (var i = 0; i < anzahlTeile; i++) {
+				if (i != aktivesTeil) {
+					bilder[i].richtung = 0;
+					bilderneu.push(bilder[i]);
+				} else {
+					b = document.getElementById("ank" + bilder[i].objektid);
+					pank = b.parentNode;
+					pank.removeChild(b);
+				}
 			}
+			anzahlTeile = bilderneu.length;
+			bilder = bilderneu;
+			aktivesTeil = aktivesTeil % anzahlTeile
+			bewegungen = new Array();
+			bewegungen.push("nix,distribute");
 		}
-		anzahlTeile = bilderneu.length;
-		bilder = bilderneu;
-		aktivesTeil = aktivesTeil % anzahlTeile
-		bewegungen = new Array();
-		bewegungen.push("nix,distribute");
 	}
 
 	this.nameAktivesTeil = function() {
@@ -206,6 +227,7 @@ function hardwaresystemUI() {
 		hwuielem.style.width = "300px";
 
 		hwuielem.appendChild(this.auswahlrahmen());
+		hwuielem.appendChild(this.teilbild("fragezeichen.png", "QQsystem"));
 		hwuielem.appendChild(this.teilbild("teil1.png", "festplatte"));
 		hwuielem.appendChild(this.teilbild("teil2.png", "cdrom"));
 		hwuielem.appendChild(this.teilbild("teil3.png", "mouse"));
@@ -248,8 +270,8 @@ function hardwaresystemUI() {
 	this.auswahlrahmen = function() {
 		arahmen = document.createElement("img");
 		arahmen.src = "auswahlrahmen.png";
-		arahmen.style.left=200;
-		arahmen.style.top=88;
+		arahmen.style.left=88;
+		arahmen.style.top=-20;
 		arahmen.style.zIndex = 99;
 		arahmen.style.position="relative";
 
@@ -301,6 +323,10 @@ function hardwaresystemUI() {
 
 	 this.del = function() {
 		 hwui.del();
+	 }
+	 
+	 this.add = function() {
+		 hwui.add();
 	 }
  }
 
