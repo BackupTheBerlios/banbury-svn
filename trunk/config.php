@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', "5");
+define ('DBPTabVersionRequired', "$Rev$");
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -181,34 +181,38 @@ function erzeugeTabellen2() {
 	mysql_query("DROP TABLE IF EXISTS " . DBTabHardware, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabHardware .
 		"` (
-
-		CREATE TABLE `Hardware` (
 			`ID` mediumint(9) NOT NULL auto_increment,
 			`Name` varchar(50) collate utf8_bin NOT NULL,
 			`Menu` varchar(50) collate utf8_bin NOT NULL,
 			PRIMARY KEY  (`ID`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
-
-		INSERT INTO `Hardware` VALUES (1, 'Computer', '');
-		INSERT INTO `Hardware` VALUES (2, 'Peripherie', '');
-		INSERT INTO `Hardware` VALUES (3, 'Audio&Video', '');
-		INSERT INTO `Hardware` VALUES (4, 'Unbekannt', '');
-		INSERT INTO `Hardware` VALUES (5, 'Mobil', 'Computer');
-		INSERT INTO `Hardware` VALUES (6, 'Desktop', 'Computer');
-		INSERT INTO `Hardware` VALUES (7, 'Server', 'Computer');
-		INSERT INTO `Hardware` VALUES (8, 'Audio&Video', 'iPod');
-		INSERT INTO `Hardware` VALUES (9, 'iPod Nano', 'iPod');
-		INSERT INTO `Hardware` VALUES (10, 'iPod Shuffle', 'iPod');
-		INSERT INTO `Hardware` VALUES (11, 'Powerbook', 'Mobil');
-		INSERT INTO `Hardware` VALUES (12, 'Powermac', 'Desktop');
-		INSERT INTO `Hardware` VALUES (13, 'Mac Mini', Desktop);
-		INSERT INTO `Hardware` VALUES (14, 'X-Serve', 'Server');
-		INSERT INTO `Hardware` VALUES (15, 'X-Raid', 'Server');",
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;",
 		$db),
 		"Tabelle für Hardware",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
-
+	
+	ergebnis(
+		mysql_query(
+			"INSERT INTO " . DBTabHardware . 
+			" (ID, Name, Menu) VALUES (1, 'Computer', ''), " .
+			"(2, 'Peripherie', ''), " .
+			"(3, 'Audio&Video', ''), " .
+			"(4, 'Unbekannt', ''), " .
+			"(5, 'Mobil', 'Computer'), ".
+			"(6, 'Desktop', 'Computer'), ".
+			"(7, 'Server', 'Computer'), " .
+			"(8, 'Audio\&Video', 'iPod'), " .
+			"(9, 'iPod Nano', 'iPod'), " .
+			"(10, 'iPod Shuffle', 'iPod'), " .
+			"(11, 'Powerbook', 'Mobil'), " .
+			"(12, 'Powermac', 'Desktop'), " .
+			"(13, 'Mac Mini', 'Desktop'), "  .
+			"(14, 'X-Serve', 'Server'), " .
+			"(15, 'X-Raid', 'Server');", 
+			$db),
+		"Eintraege in Tabelle " . DBTabHardware,
+		"eingetragen",
+		"Fehler beim Eintragen: " . mysql_error($db));
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProperties, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProperties .
