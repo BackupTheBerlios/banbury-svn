@@ -48,7 +48,7 @@ session_start();
 
 	</head>
 	<body>
-
+	<div><img src="Content/images/banburylogo.png" width="136" height="32" alt="Logo" /></div>
 <?php
 
 // Hier die Navigation ...
