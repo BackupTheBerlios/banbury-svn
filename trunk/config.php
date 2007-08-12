@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', "3");
+define ('DBPTabVersionRequired', "4");
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -97,7 +97,7 @@ function erzeugeTabellen2() {
 
 
 	mysql_query("DROP TABLE IF EXISTS " . DBTabComments, $db);
-	ergebnis(mysql_query('CREATE TABLE `' . DBTabComments . 
+	ergebnis(mysql_query('CREATE TABLE `' . DBTabComments .
 		'` (
 			`ID` mediumint(9) NOT NULL,
 			`Inhalt` text collate utf8_bin NOT NULL,
@@ -141,7 +141,7 @@ function erzeugeTabellen2() {
 			`Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL,
 			`Mail` varchar(255) collate utf8_bin NOT NULL,
 			`Wert` varchar(40) collate utf8_bin NOT NULL
-			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin", 
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin",
 		$db),
 		"Tabelle für Schlüssel",
 		"angelegt",
@@ -178,12 +178,44 @@ function erzeugeTabellen2() {
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
 
+	mysql_query("DROP TABLE IF EXISTS " . DBTabHardware, $db);
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabHardware .
+		"` (
+
+		CREATE TABLE `Hardware` (
+			`ID` mediumint(9) NOT NULL auto_increment,
+			`Name` text collate utf8_bin NOT NULL,
+			`Menu` text collate utf8_bin NOT NULL,
+			PRIMARY KEY  (`ID`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
+
+		INSERT INTO `Hardware` VALUES (1, 0x436f6d7075746572, '');
+		INSERT INTO `Hardware` VALUES (2, 0x50657269706865726965, '');
+		INSERT INTO `Hardware` VALUES (3, 0x417564696f26566964656f, '');
+		INSERT INTO `Hardware` VALUES (4, 0x556e62656b616e6e74, '');
+		INSERT INTO `Hardware` VALUES (5, 0x4d6f62696c, 0x436f6d7075746572);
+		INSERT INTO `Hardware` VALUES (6, 0x4465736b746f70, 0x436f6d7075746572);
+		INSERT INTO `Hardware` VALUES (7, 0x536572766572, 0x436f6d7075746572);
+		INSERT INTO `Hardware` VALUES (8, 0x4d6163204d696e69, 0x4465736b746f70);
+		INSERT INTO `Hardware` VALUES (9, 0x506f7765726d6163, 0x4465736b746f70);
+		INSERT INTO `Hardware` VALUES (10, 0x506f776572626f6f6b, 0x4d6f62696c);
+		INSERT INTO `Hardware` VALUES (11, 0x3435364d656e753d, '');
+		INSERT INTO `Hardware` VALUES (12, 0x4c696e757874c383c2bc7465, '');
+		INSERT INTO `Hardware` VALUES (13, 0x69506f64, 0x417564696f);
+		INSERT INTO `Hardware` VALUES (14, 0x4f68727374c383c2b67073656c, 0x417564696f);
+		INSERT INTO `Hardware` VALUES (15, 0x6e6575, '');",
+		$db),
+		"Tabelle für Hardware",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+
+
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProperties, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProperties .
 		"` (
 			`PropName` varchar(50) NOT NULL UNIQUE,
 			`PropValue` varchar(200)
-			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;", 
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;",
 		$db),
 		"Tabelle für Systemdaten",
 		"angelegt",
@@ -306,7 +338,7 @@ function resetAdmin() {
 				DBD(DBTabUsers, "id=0");
 				$result = DBINAA(DBTabUsers, $werte);
 				ergebnis($result, "Benutzer anlegen", "erfolgreich", "nicht erfolgreich");
-				
+
 				//in Tabelle DBTabRoles eintragen
 				DBD(DBTabRoles, "BenutzerID=0");
 				$werte = array(
@@ -315,14 +347,14 @@ function resetAdmin() {
 				);
 				$result = $result && DBINAA(DBTabRoles, $werte);
 				ergebnis($result, "Benutzerberechtigung Debugger", "erfolgreich", "nicht erfolgreich");
-				
+
 				$werte = array(
 					'BenutzerID' => 0,
 					'Rolle' => ROLEDebug
 				);
 				$result = $result && DBINAA(DBTabRoles, $werte);
 				ergebnis($result, "Benutzerberechtigung Administrator", "erfolgreich", "nicht erfolgreich");
-				
+
 				$werte = array(
 					'ID' => 0,
 					'Nickname' => 1);
