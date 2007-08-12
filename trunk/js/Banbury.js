@@ -26,7 +26,7 @@ function bild(name, x, y) {
 	this.winkel = 0.0;
 	this.zielwinkel = 0.0;
 	this.objektid = name;
-	this.richtung = 1;
+	this.richtung = 0;
 	
 	this.schrittXY = function(posx, posy) {
 		r = false;
@@ -47,15 +47,10 @@ function bild(name, x, y) {
 	}
 	
 	this.bewege = function() {
-		//r = false;
-		/*if (this.zielwinkel > 181) this.zielwinkel -= 360;
-		if (this.zielwinkel < -181) this.zielwinkel += 360;
-		if (this.winkel < this.zielwinkel) {this.winkel += 1; r = true;}
-		if (this.winkel > this.zielwinkel) {this.winkel -= 1; r = true;}*/
-		//if ((this.winkel+1 < this.zielwinkel) || (this.winkel-1 > this.zielwikel)) this.winkel += this.richtung;
-		if (Math.abs(this.winkel%360 - this.zielwinkel) >= 10 ) this.winkel += this.richtung*5;
-		//if ((this.winkel+360)%360 != this.zielwinkel) this.winkel += this.richtung;
-		//return this.schrittXY(
+		if (this.richtung == 0) {
+			if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) < 180) this.richtung = -1; else this.richtung = 1;
+		}
+		if (Math.abs((3600+this.winkel)%360 - this.zielwinkel) >= 11 ) this.winkel += this.richtung*10;
 		this.positionXY(
 			Math.floor(center + radius * Math.cos(this.winkel*3.14/180.0)),
 			Math.floor(center + radius * Math.sin(this.winkel*3.14/180.0)));
@@ -72,6 +67,30 @@ function hardwaresystemUI() {
 		
 	bewegungen = new Array();
 	bilder = new Array();
+
+	this.del = function() {
+		bilderneu = new Array();
+		for (var i = 0; i < anzahlTeile; i++) {
+			if (i != aktivesTeil) {
+				bilder[i].richtung = 0;
+				bilderneu.push(bilder[i]);
+			} else {
+				b = document.getElementById("ank" + bilder[i].objektid);
+				pank = b.parentNode;
+				pank.removeChild(b);
+			}
+		}
+		anzahlTeile = bilderneu.length;
+		bilder = bilderneu;
+		aktivesTeil = aktivesTeil % anzahlTeile
+		bewegungen = new Array();
+		bewegungen.push("nix,distribute");
+	}
+	
+	this.nameAktivesTeil = function() {
+		name = bilder[aktivesTeil].objektid;
+		return name;
+	}
 	
 	this.pl = function() {
 		this.springeZu((aktivesTeil + 1) % anzahlTeile);
@@ -79,6 +98,14 @@ function hardwaresystemUI() {
 	
 	this.mn = function() {
 		this.springeZu((aktivesTeil + anzahlTeile - 1) % anzahlTeile);
+	}
+	
+	this.springeZuNamen = function(teilname) {
+		ziel = -1;
+		for (var i = 0; i < anzahlTeile; i++) {
+			if (bilder[i].objektid == teilname) { ziel = i; }
+		}
+		if (ziel >= 0) this.springeZu(ziel);
 	}
 	
 	//Der Benutzer klickt im großen Kreis auf ein Symbol
@@ -139,11 +166,11 @@ function hardwaresystemUI() {
 				for (var i = 0; i < anzahlTeile; i++) {
 					neue_bewegungen.push(bilder[i].objektid + ",move");
 				}
+				//alert(neue_bewegungen.join("; "));
 			}
 			if (ani == "move") {
-				if (objekt.substr(0,4) == "teil") {
-					bi = objekt.substr(4,1);
-					if (bilder[bi - 1].bewege()) neue_bewegungen.push(objekt+ ",move");
+				for (var i = 0; i < anzahlTeile; i++) {
+					if (bilder[i].bewege()) neue_bewegungen.push(zeile);
 				}
 			}
 		}
@@ -176,12 +203,12 @@ function hardwaresystemUI() {
 		hwuielem.style.width = "300px";
 		
 		hwuielem.appendChild(this.auswahlrahmen());
-		hwuielem.appendChild(this.teilbild("teil1.png"));
-		hwuielem.appendChild(this.teilbild("teil2.png"));
-		hwuielem.appendChild(this.teilbild("teil3.png"));
-		hwuielem.appendChild(this.teilbild("teil4.png"));
-		hwuielem.appendChild(this.teilbild("teil5.png"));
-		hwuielem.appendChild(this.teilbild("teil6.png"));
+		hwuielem.appendChild(this.teilbild("teil1.png", "festplatte"));
+		hwuielem.appendChild(this.teilbild("teil2.png", "cdrom"));
+		hwuielem.appendChild(this.teilbild("teil3.png", "mouse"));
+		hwuielem.appendChild(this.teilbild("teil4.png", "monitor"));
+		hwuielem.appendChild(this.teilbild("teil5.png", "festplatte2"));
+		hwuielem.appendChild(this.teilbild("teil6.png", "ram"));
 		
 		aktiv = window.setInterval("hwsysc.animation()", 100);
 		
@@ -192,9 +219,9 @@ function hardwaresystemUI() {
 		window.clearInterval(aktiv);
 	}
 	
-	this.teilbild = function(name) {
+	this.teilbild = function(src, name) {
 		tbimg = document.createElement("img");
-		tbimg.src = name;
+		tbimg.src = src;
 		tbimg.style.position="absolute";
 		tbimg.style.left = 210;
 		tbimg.style.top = 100;
@@ -206,8 +233,9 @@ function hardwaresystemUI() {
 		bilder.push(abild); 
 		
 		ank = document.createElement("a");
-		ank.setAttribute('href', 'javascript:hwsysc.jt(' + anzahlTeile + ');');
+		ank.setAttribute('href', 'javascript:hwsysc.jt("' + name + '");');
 		ank.appendChild(tbimg);
+		ank.setAttribute('id', 'ank' + name);
 		
 		anzahlTeile++;
 		
@@ -228,7 +256,6 @@ function hardwaresystemUI() {
  
  function hardwaresystemC() {
 	 
-	 teile = new Array();
 	 hwui = new hardwaresystemUI();
 	 
 	 function neu() {
@@ -266,7 +293,11 @@ function hardwaresystemUI() {
 	 }
 	 
 	 this.jt = function(teil) {
-		 hwui.springeZu(teil);
+		 hwui.springeZuNamen(teil);
+	 }
+	 
+	 this.del = function() {
+		 hwui.del();
 	 }
  }
  
