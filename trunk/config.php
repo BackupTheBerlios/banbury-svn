@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', '50');
+define ('DBPTabVersionRequired', '51');
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -58,6 +58,15 @@ if(isset($_GET['aktion'])){
 }else{
 	cfgTest();
 }
+
+function aktualisiereTabellen() {
+	echo "<p>";
+	echo actionLink("aktualisiereTabellen2");
+	echo "<br />oder zurück zu<br />";
+	echo actionLink("cfgTest");
+	echo "</p>\n";
+}
+
 function erzeugeTabellen() {
 	echo "<p>";
 	echo actionLink("erzeugeTabellen2");
@@ -69,7 +78,7 @@ function erzeugeTabellen() {
 function dbctDBTabPictures() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabPictures, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabPictures .
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabPictures .
 		"` (
 			`BesitzerID` mediumint(9) NOT NULL,
 			`ID` mediumint(9) NOT NULL,
@@ -80,13 +89,14 @@ function dbctDBTabPictures() {
 		$db),
 		"Tabelle für Bilder",
 		"angelegt",
-		"Fehler beim Anlegen: " . mysql_error($db));	
+		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabRoles() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabRoles, $db);
-	ergebnis(mysql_query('CREATE TABLE `' . DBTabRoles .
+	ergebnis($r = mysql_query('CREATE TABLE `' . DBTabRoles .
 		'` (
 			`Rolle` VARCHAR(11) NOT NULL,
 			`BenutzerID` MEDIUMINT NOT NULL
@@ -95,12 +105,13 @@ function dbctDBTabRoles() {
 		"Tabelle für Benutzerrollen",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabComments() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabComments, $db);
-	ergebnis(mysql_query('CREATE TABLE `' . DBTabComments .
+	ergebnis($r = mysql_query('CREATE TABLE `' . DBTabComments .
 		'` (
 			`ID` mediumint(9) NOT NULL,
 			`Inhalt` text collate utf8_bin NOT NULL,
@@ -114,12 +125,13 @@ function dbctDBTabComments() {
 		"Tabelle für Kommentare",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabProfiles() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProfiles, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProfiles.
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProfiles.
 		"` (
 			`ID` mediumint(9) NOT NULL,
 			`Nickname` text collate utf8_bin NOT NULL,
@@ -139,12 +151,13 @@ function dbctDBTabProfiles() {
 		"Tabelle für Profile",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabKeys() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabKeys, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys.
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys.
 		"` (
 			`Nickname` varchar(64) collate utf8_bin NOT NULL,
 			`Time` date NOT NULL, `Passwort` varchar(40) collate utf8_bin NOT NULL,
@@ -155,12 +168,13 @@ function dbctDBTabKeys() {
 		"Tabelle für Schlüssel",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabUsers() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabUsers, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
 		"` (
 			`ID` mediumint(9) NOT NULL,
 			`Nickname` varchar(64) collate utf8_bin NOT NULL,
@@ -189,12 +203,13 @@ function dbctDBTabUsers() {
 		"Tabelle für Benutzer",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabHardware() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabHardware, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabHardware .
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabHardware .
 		"` (
 			`ID` mediumint(9) NOT NULL auto_increment,
 			`Name` varchar(50) collate utf8_bin NOT NULL,
@@ -228,12 +243,13 @@ function dbctDBTabHardware() {
 		"Eintraege in Tabelle " . DBTabHardware,
 		"eingetragen",
 		"Fehler beim Eintragen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabTags() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabTags, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabTags .
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabTags .
 		"` (
 			`ID` mediumint(9) NOT NULL,
 			`Name` varchar(50) collate utf8_bin NOT NULL,
@@ -258,12 +274,30 @@ function dbctDBTabTags() {
 		"Eintraege in Tabelle " . DBTabTags,
 		"eingetragen",
 		"Fehler beim Eintragen: " . mysql_error($db));
+	return $r;
+}
+
+function dbctDBTabProtocol() {
+	global $db;
+	mysql_query("DROP TABLE IF EXISTS " . DBTabProtocol, $db);
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabProtocol .
+		"` (
+			`Datum` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			`Nickname` varchar(64),
+			`Quelle` varchar(50) NOT NULL,
+			`Nachricht` varchar(255) NOT NULL
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin ;",
+		$db),
+		"Tabelle für Protokoll",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
 }
 
 function dbctDBTabProperties() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProperties, $db);
-	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProperties .
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProperties .
 		"` (
 			`PropName` varchar(50) NOT NULL UNIQUE,
 			`PropValue` varchar(200)
@@ -272,25 +306,67 @@ function dbctDBTabProperties() {
 		"Tabelle für Systemdaten",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
-	ergebnis(DBSetProperty(DBPTabVersion, DBPTabVersionRequired),
-		"Tabellenversion",
-		"gespeichert",
-		"nicht gespeichert: " . mysql_error($db));
+	return $r;
 }
+
+
 
 function erzeugeTabellen2() {
 	require_once("php/Functions.php");
 	initDBConnection();
+	global $db;
 
-	dbctDBTabPictures();
-	dbctDBTabRoles();
-	dbctDBTabComments();
-	dbctDBTabProfiles();
-	dbctDBTabKeys();
-	dbctDBTabUsers();
-	dbctDBTabHardware();
-	dbctDBTabTags();
-	dbctDBTabProperties();
+	$erfolg = true;
+
+	$erfolg = $erfolg && dbctDBTabPictures();
+	$erfolg = $erfolg && dbctDBTabRoles();
+	$erfolg = $erfolg && dbctDBTabComments();
+	$erfolg = $erfolg && dbctDBTabProfiles();
+	$erfolg = $erfolg && dbctDBTabKeys();
+	$erfolg = $erfolg && dbctDBTabUsers();
+	$erfolg = $erfolg && dbctDBTabHardware();
+	$erfolg = $erfolg && dbctDBTabTags();
+	$erfolg = $erfolg && dbctDBTabProtocol();
+	$erfolg = $erfolg && dbctDBTabProperties();
+	ergebnis($erfolg,
+		"Tabellen anlegen",
+		"erfolgreich abgeschlossen.",
+		"Fehler aufgetreten. Bitte beheben Sie sofern möglich " .
+		"die Ursache und versuchen Sie eine Wiederholung. " .
+		"Andernfalls erbitten Sie Unterstützung auf ".
+		"<a href=\"http://banbury.berlios.de\">banbury.berlios.de</a>.");
+	if ($erfolg) {
+		ergebnis(DBSetProperty(DBPTabVersion, DBPTabVersionRequired),
+			"Tabellenversion " . DBPTabVersionRequired,
+			"gespeichert.",
+			"nicht gespeichert: " . mysql_error($db));
+	}
+	echo actionLink("cfgTest");
+}
+
+
+
+function aktualisiereTabellen2() {
+	require_once("php/Functions.php");
+	initDBConnection();
+	global $db;
+
+	$vorhandeneVersion = DBGetProperty(DBPTabVersion, 0);
+	echo "<p>Vorhandene Version: " . $vorhandeneVersion . ", Zielversion: " . DBPTabVersionRequired . "</p>\n";
+	if ($vorhandeneVersion < 50) {
+		ergebnis(false,
+			"Tabellenaktualisierung",
+			"",
+			"nicht möglich. Bitte nutzen Sie ".actionLink("erzeugeTabellen").".");
+	}
+	if ($vorhandeneVersion == 50) {
+		if (dbctDBTabProtocol()) {
+			ergebnis(DBSetProperty(DBPTabVersion, "51"),
+				"Tabellenversion 51",
+				"gespeichert",
+				"nicht gespeichert: " . mysql_error($db));
+		}
+	}
 
 	echo actionLink("cfgTest");
 }
