@@ -383,7 +383,6 @@ function cfgWarnung() {
 }
 
 function resetAdmin() {
-	global $_POST;
 	$fehler = "";
 	$username = $_POST["username"];
 	$kennwort1 = $_POST["kennwort1"];
