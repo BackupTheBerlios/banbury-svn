@@ -66,9 +66,7 @@ function erzeugeTabellen() {
 	echo "</p>\n";
 }
 
-function erzeugeTabellen2() {
-	require_once("php/Functions.php");
-	initDBConnection();
+function dbctDBTabPictures() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabPictures, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabPictures .
@@ -82,8 +80,11 @@ function erzeugeTabellen2() {
 		$db),
 		"Tabelle für Bilder",
 		"angelegt",
-		"Fehler beim Anlegen: " . mysql_error($db));
+		"Fehler beim Anlegen: " . mysql_error($db));	
+}
 
+function dbctDBTabRoles() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabRoles, $db);
 	ergebnis(mysql_query('CREATE TABLE `' . DBTabRoles .
 		'` (
@@ -94,8 +95,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Benutzerrollen",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+}
 
-
+function dbctDBTabComments() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabComments, $db);
 	ergebnis(mysql_query('CREATE TABLE `' . DBTabComments .
 		'` (
@@ -111,7 +114,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Kommentare",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+}
 
+function dbctDBTabProfiles() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProfiles, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProfiles.
 		"` (
@@ -133,7 +139,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Profile",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+}
 
+function dbctDBTabKeys() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabKeys, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabKeys.
 		"` (
@@ -146,7 +155,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Schlüssel",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+}
 
+function dbctDBTabUsers() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabUsers, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
 		"` (
@@ -177,7 +189,10 @@ function erzeugeTabellen2() {
 		"Tabelle für Benutzer",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
+}
 
+function dbctDBTabHardware() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabHardware, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabHardware .
 		"` (
@@ -213,7 +228,10 @@ function erzeugeTabellen2() {
 		"Eintraege in Tabelle " . DBTabHardware,
 		"eingetragen",
 		"Fehler beim Eintragen: " . mysql_error($db));
+}
 
+function dbctDBTabTags() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabTags, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabTags .
 		"` (
@@ -240,7 +258,10 @@ function erzeugeTabellen2() {
 		"Eintraege in Tabelle " . DBTabTags,
 		"eingetragen",
 		"Fehler beim Eintragen: " . mysql_error($db));
+}
 
+function dbctDBTabProperties() {
+	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProperties, $db);
 	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabProperties .
 		"` (
@@ -255,6 +276,21 @@ function erzeugeTabellen2() {
 		"Tabellenversion",
 		"gespeichert",
 		"nicht gespeichert: " . mysql_error($db));
+}
+
+function erzeugeTabellen2() {
+	require_once("php/Functions.php");
+	initDBConnection();
+
+	dbctDBTabPictures();
+	dbctDBTabRoles();
+	dbctDBTabComments();
+	dbctDBTabProfiles();
+	dbctDBTabKeys();
+	dbctDBTabUsers();
+	dbctDBTabHardware();
+	dbctDBTabTags();
+	dbctDBTabProperties();
 
 	echo actionLink("cfgTest");
 }
