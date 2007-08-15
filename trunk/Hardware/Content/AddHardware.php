@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Es folgt die zukünftige Template-Datei
 
 ?>
+<div align="center">
 <div id="POD">
 	<div id="Display">
 		<div id="PODDisplay">
@@ -29,18 +30,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			</table>
 		</div>
 	</div>
-	<div style="position:relative;margin-left:40px;margin-top:20px;">
+	<div id="Buttons"><a href="javascript:drehmn();"><img src="Icons/Tags/32/Links.png" /></a>
+	<a href="javascript:del();"><img src="Icons/Tags/32/Minus.png" /></a>
+	<a href="javascript:add();"><img src="Icons/Tags/32/Plus.png" /></a>
+	<a href="javascript:drehpl();"><img src="Icons/Tags/32/Rechts.png" /></a>
+	</div>
+	<div style="position:relative;margin-left:10px;margin-top:5px;">
 		<div id="hwui">&nbsp;</div>
 	</div>
+</div>
 </div>
 <div id="tplvalues" style="display:none"></div>
 
 <script src="js/Pod.js" type="text/javascript"></script>
 <br /><br /><p>
 	<a href="javascript:anistop();">aus</a>
-	<a href="javascript:drehpl();">dreh+</a>
-	<a href="javascript:drehmn();">dreh-</a>
-	<a href="javascript:del();">löschen</a>
-	<a href="javascript:add();">neu</a>
+
 </p>
 <p id="debug"> </p>

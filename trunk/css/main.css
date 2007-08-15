@@ -39,9 +39,10 @@ ul#sortables li {
 }
 
 #POD{
-	height:450px;
+	height:520px;
 	border:1px solid black;
 	width:320px;
+	text-align:left;
 }
 #PODDisplay{
 	position:relative;
@@ -49,7 +50,10 @@ ul#sortables li {
 	height:150px;
 }
 #PODTable{
-
+width:100%;
+}
+#PODTable td{
+	padding-right:20px;
 }
 #POD #Display{
 	overflow:hidden;
@@ -60,6 +64,16 @@ ul#sortables li {
 	height:150px;
 	border:1px solid black;
 	background-color:#eee;
+	margin-bottom:0px;
+
+}
+#POD #Buttons{
+	text-align:center;
+}
+#POD #Buttons a{
+	position:relative;
+	top:10px;
+	margin:20px;
 }
 #POD #Display tr:hover{
 	cursor:pointer;
@@ -75,4 +89,19 @@ ul#sortables li {
 #POD #Display td, #POD #Display th{
 	padding:2px;
 	height:18px;
+}
+#POD #Inforahmen{
+	font-size:12px;
+
+}
+#POD #Inforahmen input{
+	font-size:11px;
+	border: 1px solid #bbb;
+	background-color:transparent;
+	width:100%;
+	margin-bottom:5px;
+}
+#POD #hwui{
+	width: 300px;
+	height:300px;
 }

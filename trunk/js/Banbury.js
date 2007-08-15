@@ -38,10 +38,10 @@ var objektid = new Array();
 var richtung = new Array();
 
 // Zentrum der Grafiken
-var center = 120;
+var center = 150;
 
 // Radius
-var radius = 100.0;
+var radius = 110.0;
 
 // In diesem Winkel hält sich nur das zur Zeit ausgewählte Symbol auf
 var sperrwinkel = 120;

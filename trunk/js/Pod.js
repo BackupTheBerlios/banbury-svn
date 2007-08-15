@@ -36,7 +36,6 @@
 
 		LoadTPLOne(Tags);
 
-
 		var MyAjax = myEffects.start({'left':[0,300],duration: 300}).chain(function(){
 
 			new Ajax(url, {
@@ -140,8 +139,8 @@ function bildBewegung(bindex) {
 function auswahlrahmen() {
 	arahmen = document.createElement("img");
 	arahmen.src = ImagesFolder+"auswahlrahmen.png";
-	arahmen.style.left= (center-(PictureSize/2))+KorrekturPixel+"px";
-	arahmen.style.top= center - radius - (PictureSize/2) + "px";
+	arahmen.style.left= (center-(PictureSize))+KorrekturPixel+"px";
+	arahmen.style.top= center - radius - (PictureSize) + "px";
 	arahmen.style.zIndex = 99;
 	arahmen.style.position="relative";
 	return arahmen;
@@ -215,19 +214,31 @@ function LoadTPLOne(Tags){
 
 }
 
+
+TPLs = new Array();
+
+
 function LoadTPLTwo(){
+	TPLs = Array();
 	LoadedValues = tplvalues;
 	if(LoadedValues.childNodes.length > 0){
+	//alert(LoadedValues.innerHTML);
 		for (var i = 0; i < LoadedValues.childNodes.length;i++){
 			var Pic = LoadedValues.childNodes[i].getAttribute('Pic');
+			var ID = LoadedValues.childNodes[i].getAttribute('id');
+			var Werte = LoadedValues.childNodes[i].getAttribute('werte');
+			var Einheit = LoadedValues.childNodes[i].getAttribute('einheit');
 			var Value = LoadedValues.childNodes[i].innerHTML;
 			name = einzigartigerObjektname(Value);
-			hwuielem.appendChild(teilbild(ImagesFolder+Pic,Value));
+			TPLs[name] = new Object();
+			TPLs[name]['ID'] = ID;
+			TPLs[name]['Werte'] = Werte;
+			TPLs[name]['Einheit'] = Einheit;
+			hwuielem.appendChild(teilbild(ImagesFolder+Pic,name));
 		//	springeZuNamen(name);
 		}
 		bewegungen.push("distribute");
 		aktiv = window.setInterval("bewegen()", 100);
-
 	}
 }
 
@@ -266,10 +277,22 @@ function drehmn() {
 	springeZu((aktivesTeil + anzahlTeile - 1) % anzahlTeile);
 }
 
+function SetInforahmen(teilname){
+
+	new Ajax(url, {
+		method: 'post',
+		data: "Function=Inforahmen&ID=" + TPLs[teilname]['ID'],
+		update: Inforahmen,
+	}).request();
+
+}
+
 
 function springeZuNamen(teilname) {
 	ziel = indexByObjectid(teilname);
 	if (ziel >= 0) this.springeZu(ziel);
+	SetInforahmen(teilname);
+
 }
 
 
@@ -324,18 +347,28 @@ function init() {
 	hwuielem.style.backgroundImage = "url("+ImagesFolder+"kreishintergrund.png)";
 	hwuielem.style.backgroundPosition = ((center)-150) +"px "+((center)-150) +"px ";
 	hwuielem.style.height = (2*center)+"px";
-	hwuielem.style.height = (2*center)+"px";
 	hwuielem.style.width = (2*center)+"px";
 
 	hwuielem.appendChild(auswahlrahmen());
-/*	hwuielem.appendChild(teilbild(ImagesFolder+"Pieces.png", "QQsystem"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"0-Kern.png", "festplatte"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"SpeakerBox_wood.png", "cdrom"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"scanner.png", "mouse"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"hdd_unmount.png", "monitor"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"keyboard.png", "festplatte2"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"1-System.png", "ram"));*/
 	hwuielem.appendChild(teilbild(ImagesFolder+"1-System.png", "QQsystem"));
+
+	Inforahmen.id = "Inforahmen";
+	Inforahmen.style.position = "absolute";
+	Seitenlaenge = Math.sqrt(2*radius*radius) - (PictureSize / 2) - 30;
+	Inforahmen.style.width = Seitenlaenge + "px";
+	Inforahmen.style.height = Seitenlaenge + "px";
+	Inforahmen.style.left = center - (Seitenlaenge /2) + "px";
+	Inforahmen.style.top = center - (Seitenlaenge /2) + "px";
+	Inforahmen.zIndex = 55;
+
+
+	hwuielem.appendChild(Inforahmen);
+
+	new Ajax(url, {
+		method: 'post',
+		data: "Function=Inforahmen&ID=",
+		update: Inforahmen,
+	}).request();
 
 	bewegungen.push("distribute");
 	aktiv = window.setInterval("bewegen()", 100);
@@ -344,6 +377,8 @@ function init() {
 function anistop() {
 	window.clearInterval(aktiv);
 }
+
+var Inforahmen = document.createElement("div");
 
 init();
 

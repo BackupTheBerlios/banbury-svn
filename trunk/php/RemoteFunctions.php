@@ -155,7 +155,7 @@ function PODDisplay($Menu){
 		$out .="Keine Einträge an dieser Stelle";
 	}
 
-	$out .="<tr><td onclick=\"NewPODDisplay('".$Menu."');\">+ Hinzufügen</td><td align=\"right\">&gt;</td></tr>";
+	$out .="<tr><td onclick=\"NewPODDisplay('".$Menu."');\"><strong>Neuer Eintrag</strong></td><td align=\"right\">&gt;</td></tr>";
 	return $out;
 }
 
@@ -177,12 +177,34 @@ function LoadPODTPL($Tags){
 			$Tag = DBQ("SELECT * FROM ".DBTabTags." WHERE ID='".$TagID."'");
 			$Tag = $Tag[0];
 
-			$out .="<div Pic=\"".$Tag['ID']."-".$Tag['Name'].".png\">".$Tag['Name']."</div>";
+			$out .="<div Werte=\"".$Tag['Werte']."\" Einheit=\"".$Tag['Einheit']."\" ID=\"".$Tag['ID']."\" Pic=\"".$Tag['ID']."-".$Tag['Name'].".png\">".$Tag['Name']."</div>";
 		}
 	}
 	return $out;
 }
 
+function Inforahmen($ID){
+
+	$Name = "System";
+	$Werte = "Computer";
+	$Einheit = "";
+
+	$Tag = DBQ("SELECT * FROM ".DBTabTags." WHERE ID='".$ID."'");
+	$Tag = $Tag[0];
+
+	while($key = key($Tag)){
+		if(current($Tag) !=""){
+			$$key = current($Tag);
+		}
+		if(current($Tag) == "various")
+			$$key = "";
+		next($Tag);
+	}
+
+	set_include_path("Content/Templates/");
+	require("PODInforahmen.php");
+
+}
 
 
 ?>
