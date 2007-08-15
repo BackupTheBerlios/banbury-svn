@@ -1,5 +1,5 @@
-
-
+	var hwuielem = document.getElementById("hwui");
+	var tplvalues = document.getElementById('tplvalues');
 	var url = "CallFunc.php";
 	var target = document.getElementById('PODDisplay'); // Scrollen ...
 	var targetTable = document.getElementById('PODTable'); // Inhalt des Displays ...
@@ -15,8 +15,11 @@
 			target.style.overflow = 'auto';
 		});
 	}
-	function genPODDisplay(Menu){
+	function genPODDisplay(Menu,Tags){
 		target.style.overflow = 'hidden';
+
+		LoadTPLOne(Tags);
+
 		var MyAjax = myEffects.start({'left':[0,-300],duration: 300}).chain(function(){
 
 			new Ajax(url, {
@@ -28,8 +31,12 @@
 			}).request();
 		})
 	}
-	function genPODDisplayBack(Menu){
+	function genPODDisplayBack(Menu,Tags){
 		target.style.overflow = 'hidden';
+
+		LoadTPLOne(Tags);
+
+
 		var MyAjax = myEffects.start({'left':[0,300],duration: 300}).chain(function(){
 
 			new Ajax(url, {
@@ -187,13 +194,49 @@ function einzigartigerObjektname(vorlage) {
 	return vorlage + (max+1);
 }
 
+// Lädt eine Template ID ..
 
-// FÃ¼gt ein leeres Symbol ein
+function LoadTPLOne(Tags){
+	objekte = objektid.length;
+	while(objekte > 0){
+		del();
+		objekte--;
+	}
+	bewegungen.push("distribute");
+	aktiv = window.setInterval("bewegen()", 100);
+
+	var MyAjax = new Ajax(url, {
+		method: 'post',
+		data: "Function=LoadPODTPL&Tags=" + Tags,
+ 		update: tplvalues, 
+		onComplete: LoadTPLTwo,
+
+	}).request();
+
+}
+
+function LoadTPLTwo(){
+	LoadedValues = tplvalues;
+	if(LoadedValues.childNodes.length > 0){
+		for (var i = 0; i < LoadedValues.childNodes.length;i++){
+			var Pic = LoadedValues.childNodes[i].getAttribute('Pic');
+			var Value = LoadedValues.childNodes[i].innerHTML;
+			name = einzigartigerObjektname(Value);
+			hwuielem.appendChild(teilbild(ImagesFolder+Pic,Value));
+		//	springeZuNamen(name);
+		}
+		bewegungen.push("distribute");
+		aktiv = window.setInterval("bewegen()", 100);
+
+	}
+}
+
+
+// Fügt ein leeres Symbol ein
 
 function add() {
-	hwuielem = document.getElementById("hwui");
 	name = einzigartigerObjektname("neu");
-	hwuielem.appendChild(teilbild(ImagesFolder+"fragezeichen.png", name));
+	hwuielem.appendChild(teilbild(ImagesFolder+"-Kern.png", name));
 	springeZuNamen(name);
 }
 
@@ -273,12 +316,11 @@ function bewegen() {
 	}
 	while ((bewegungen.length > 2) && (bewegungen[0] == bewegungen[1])) bewegungen.shift();
 	// NOTE: Debugcode entfernen
-	dp = document.getElementById("debug");
-	dp.firstChild.nodeValue= "Debug: " + document.getElementById(objektid[aktivesTeil]).style.left;
+	 dp = document.getElementById("debug");
+	 dp.firstChild.nodeValue= "Debug: " + document.getElementById(objektid[aktivesTeil]).style.left;
 }
 
 function init() {
-	hwuielem = document.getElementById("hwui");
 	hwuielem.style.backgroundImage = "url("+ImagesFolder+"kreishintergrund.png)";
 	hwuielem.style.backgroundPosition = ((center)-150) +"px "+((center)-150) +"px ";
 	hwuielem.style.height = (2*center)+"px";
@@ -286,13 +328,14 @@ function init() {
 	hwuielem.style.width = (2*center)+"px";
 
 	hwuielem.appendChild(auswahlrahmen());
-	hwuielem.appendChild(teilbild(ImagesFolder+"Pieces.png", "QQsystem"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"Core.png", "festplatte"));
+/*	hwuielem.appendChild(teilbild(ImagesFolder+"Pieces.png", "QQsystem"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"0-Kern.png", "festplatte"));
 	hwuielem.appendChild(teilbild(ImagesFolder+"SpeakerBox_wood.png", "cdrom"));
 	hwuielem.appendChild(teilbild(ImagesFolder+"scanner.png", "mouse"));
 	hwuielem.appendChild(teilbild(ImagesFolder+"hdd_unmount.png", "monitor"));
 	hwuielem.appendChild(teilbild(ImagesFolder+"keyboard.png", "festplatte2"));
-	hwuielem.appendChild(teilbild(ImagesFolder+"system.png", "ram"));
+	hwuielem.appendChild(teilbild(ImagesFolder+"1-System.png", "ram"));*/
+	hwuielem.appendChild(teilbild(ImagesFolder+"1-System.png", "QQsystem"));
 
 	bewegungen.push("distribute");
 	aktiv = window.setInterval("bewegen()", 100);
@@ -303,3 +346,4 @@ function anistop() {
 }
 
 init();
+

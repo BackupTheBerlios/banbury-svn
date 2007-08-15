@@ -139,7 +139,8 @@ function PODDisplay($Menu){
 			$out .= "<div onclick=\"genPODDisplayBack('')\">&lt; Zurück zu Hauptmenü</div>";
 		}else{
 			$BckMenu = $Zurueck[0]['Menu'];
-			$out .= "<div onclick=\"genPODDisplayBack('".$BckMenu."')\">&lt; Zurück zu ".$BckMenu."</div>";
+			$BckMenuTags = $Zurueck[0]['Tags'];
+			$out .= "<div onclick=\"genPODDisplayBack('".$BckMenu."','".$BckMenuTags."')\">&lt; Zurück zu ".$BckMenu."</div>";
 		}
 
 	}
@@ -147,7 +148,7 @@ function PODDisplay($Menu){
 	if(is_array($Eintraege)){
 		asort($Eintraege);
 		foreach($Eintraege as $Eintrag){
-			$out .="<tr onclick=\"genPODDisplay('".$Eintrag['Name']."');\"><td>".$Eintrag['Name']."</td>";
+			$out .="<tr onclick=\"genPODDisplay('".$Eintrag['Name']."','".$Eintrag['Tags']."');\"><td>".$Eintrag['Name']."</td>";
 			$out .="<td align=\"right\">&gt</td></tr>";
 		}
 	}else{
@@ -168,7 +169,19 @@ function AddToPODDisplay($Name,$Menu){
 	DBIN(DBTabHardware,"Name,Menu","'".$Name."','".$Menu."'");
 }
 
+function LoadPODTPL($Tags){
+	$Tags = explode(",",$Tags);
+	$out = "";
+	if(count($Tags)>0){
+		foreach($Tags as $TagID){
+			$Tag = DBQ("SELECT * FROM ".DBTabTags." WHERE ID='".$TagID."'");
+			$Tag = $Tag[0];
 
+			$out .="<div Pic=\"".$Tag['ID']."-".$Tag['Name'].".png\">".$Tag['Name']."</div>";
+		}
+	}
+	return $out;
+}
 
 
 

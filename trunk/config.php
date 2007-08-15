@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', '$Rev$');
+define ('DBPTabVersionRequired', '50');
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -184,33 +184,60 @@ function erzeugeTabellen2() {
 			`ID` mediumint(9) NOT NULL auto_increment,
 			`Name` varchar(50) collate utf8_bin NOT NULL,
 			`Menu` varchar(50) collate utf8_bin NOT NULL,
+			`Tags` varchar(50) NOT NULL,
 			PRIMARY KEY  (`ID`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;",
 		$db),
 		"Tabelle für Hardware",
 		"angelegt",
 		"Fehler beim Anlegen: " . mysql_error($db));
-
 	ergebnis(
 		mysql_query(
 			"INSERT INTO " . DBTabHardware .
-			" (ID, Name, Menu) VALUES (1, 'Computer', ''), " .
-			"(2, 'Peripherie', ''), " .
-			"(3, 'Audio&Video', ''), " .
-			"(4, 'Unbekannt', ''), " .
-			"(5, 'Mobil', 'Computer'), ".
-			"(6, 'Desktop', 'Computer'), ".
-			"(7, 'Server', 'Computer'), " .
-			"(8, 'Audio\&Video', 'iPod'), " .
-			"(9, 'iPod Nano', 'iPod'), " .
-			"(10, 'iPod Shuffle', 'iPod'), " .
-			"(11, 'Powerbook', 'Mobil'), " .
-			"(12, 'Powermac', 'Desktop'), " .
-			"(13, 'Mac Mini', 'Desktop'), "  .
-			"(14, 'X-Serve', 'Server'), " .
-			"(15, 'X-Raid', 'Server');",
+			" (ID, Name, Menu, Tags) VALUES (1, 'Computer', '','0,1,2,3'), " .
+			"(2, 'Peripherie', '', ''), " .
+			"(3, 'Audio&Video', '', ''), " .
+			"(4, 'Unbekannt', '', ''), " .
+			"(5, 'Mobil', 'Computer', ''), ".
+			"(6, 'Desktop', 'Computer', ''), ".
+			"(7, 'Server', 'Computer', ''), " .
+			"(8, 'Audio\&Video', 'iPod', ''), " .
+			"(9, 'iPod Nano', 'iPod', ''), " .
+			"(10, 'iPod Shuffle', 'iPod', ''), " .
+			"(11, 'Powerbook', 'Mobil', ''), " .
+			"(12, 'Powermac', 'Desktop', ''), " .
+			"(13, 'Mac Mini', 'Desktop', ''), "  .
+			"(14, 'X-Serve', 'Server', ''), " .
+			"(15, 'X-Raid', 'Server', '');",
 			$db),
 		"Eintraege in Tabelle " . DBTabHardware,
+		"eingetragen",
+		"Fehler beim Eintragen: " . mysql_error($db));
+
+	mysql_query("DROP TABLE IF EXISTS " . DBTabTags, $db);
+	ergebnis(mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabTags .
+		"` (
+			`ID` mediumint(9) NOT NULL,
+			`Name` varchar(50) collate utf8_bin NOT NULL,
+			`Werte` varchar(250) collate utf8_bin NOT NULL,
+			`Einheit` varchar(25) collate utf8_bin NOT NULL
+
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin ;",
+		$db),
+		"Tabelle für Tags",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+
+	ergebnis(
+		mysql_query(
+			"INSERT INTO " . DBTabTags .
+			" (ID, Name, Werte, Einheit) VALUES " .
+			"(0, 'Kern', '', ''), " .
+			"(1, 'System', '',''), " .
+			"(2, 'Festplatte', 'various', 'GB'), " .
+			"(3, 'Tastatur', '','') ",
+			$db),
+		"Eintraege in Tabelle " . DBTabTags,
 		"eingetragen",
 		"Fehler beim Eintragen: " . mysql_error($db));
 

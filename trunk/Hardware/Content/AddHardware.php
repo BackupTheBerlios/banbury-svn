@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="hwui">&nbsp;</div>
 	</div>
 </div>
+<div id="tplvalues" style="display:none"></div>
 
 <script src="js/Pod.js" type="text/javascript"></script>
 <br /><br /><p>

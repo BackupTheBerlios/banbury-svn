@@ -23,8 +23,7 @@ function BWOpen(Target){
 
 var PictureSize = 32;
 var KorrekturPixel = -4; // Diese Pixelanzahl muss am Auswahlrahmen links eingefügt werden. Keiner weiß warum.
-var ImagesFolder = "Content/images/"+PictureSize+"/";
-
+var ImagesFolder = "Icons/Tags/"+PictureSize+"/";
 
 // derzeitiger Winkel der Komponenten
 var winkel = new Array();
