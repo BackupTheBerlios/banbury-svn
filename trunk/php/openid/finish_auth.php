@@ -33,6 +33,6 @@ if ($response->status == Auth_OpenID_CANCEL) {
     }
 }
 
-include 'index.php';
+include 'php/openid/index.php';
 
 ?>
