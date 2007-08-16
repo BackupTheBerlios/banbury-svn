@@ -24,6 +24,9 @@ $ChatProts = array(
 			"none" => "keins"
 );
 
+define ('USNicknameOkay', "N");
+define ('USProfilOkay', "P");
+define ('USEmailOkay', "E");
 
 
 ?>

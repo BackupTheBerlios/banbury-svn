@@ -10,12 +10,4 @@ http://www.lastcraft.com/simple_test.php
 #       |_|                          #
 ######################################
 JanRain PHP OpenID: http://www.openidenabled.com/openid/libraries/php
-
-OpenID login box css class http://www.openidenabled.com/openid/openid-login-box-css-class
-input.openid_login {
-   background: url(http://openid.net/login-bg.gif) no-repeat;
-   background-color: #fff;
-   background-position: 0 50%;
-   color: #000;
-   padding-left: 18px;
-}
+http://openid.net/specs.bml

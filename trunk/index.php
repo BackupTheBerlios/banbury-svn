@@ -58,9 +58,21 @@ include('Content/Navigation.php');
 
 $Target = explode("&",$_SERVER['QUERY_STRING']);
 $Target = $Target[0];
+if ($Target == "finish_auth") {
+	$origip = get_include_path();
+	set_include_path('php/openid');
+	include("finish_auth.php");
+	set_include_path($origip);
+}
+if ($Target == "Logout") include('Logout/index.php');
+if (session_is_registered('openid')) {
+	if (!isOpenidUserOK($_SESSION['openid'])) {
+		include("openid/checkstatus.php");
+		exit(0);
+	}
+}
 if(is_dir($Target) && !strstr($Target,"..") && !fnmatch("/*",$Target)){
 	include($Target.'/index.php');
-
 }else{
 	include('Content/Willkommen.html');
 }

@@ -8,8 +8,10 @@ $response = $consumer->complete($_GET);
 
 if ($response->status == Auth_OpenID_CANCEL) {
     // This means the authentication was cancelled.
+	// FIXME: Was tun nach Abbruch?
     $msg = 'Verification cancelled.';
 } else if ($response->status == Auth_OpenID_FAILURE) {
+	// FIXME: Was tun nach fehlerhafter Anmeldung?
     $msg = "OpenID authentication failed: " . $response->message;
 } else if ($response->status == Auth_OpenID_SUCCESS) {
     // This means the authentication succeeded.
@@ -25,14 +27,20 @@ if ($response->status == Auth_OpenID_CANCEL) {
 
     $sreg = $response->extensionResponse('sreg');
 
+	$_SESSION["openidsreg"] = $sreg;
+	$_SESSION["openid"] = $esc_identity;
+	/*
     if (@$sreg['email']) {
         $success .= "  You also returned '".$sreg['email']."' as your email.";
     }
     if (@$sreg['postcode']) {
         $success .= "  Your postal code is '".$sreg['postcode']."'";
     }
+	*/
+
+
 }
-
-include 'php/openid/index.php';
-
+	if (isset($msg)) Error($msg);
+//    if (isset($error)) Error($error);
+    if (isset($success)) Error($success);
 ?>

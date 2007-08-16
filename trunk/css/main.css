@@ -105,3 +105,23 @@ width:100%;
 	width: 300px;
 	height:300px;
 }
+.banburylogin {
+	margin-top:2ex;
+	margin-bottom:1ex;
+	background-color:#D0FFD0;
+	padding:1ex;
+}
+.openidlogin{
+	margin-top:2ex;
+	margin-bottom:1ex;
+	background-color:#D0D0FF;
+	padding:1ex;	
+}
+.openidlogin input{
+   background: url(http://openid.net/login-bg.gif) no-repeat;
+   background-color: #fff;
+   background-position: 0 50%;
+   color: #000;
+   padding-left: 18px;
+}
+

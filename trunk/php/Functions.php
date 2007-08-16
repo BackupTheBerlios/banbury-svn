@@ -230,8 +230,6 @@ function UserLogin($Nickname ='',$Passwort =''){
 ## in der Datenbank gespeichert sind. Bei Erfolg gibt die Funktion true zurück, sonst false.
 
 function UserLoggedIn(){
-	global $_SESSION;
-
 	if(session_is_registered('Nickname') && session_is_registered('Passwort')){
 		$Array = DBQ("SELECT ID,Nickname from ".DBTabUsers." WHERE Nickname = '".$_SESSION['Nickname']."' AND Passwort = '".$_SESSION['Passwort']."'");
 		if(isset($Array[0]) && $Array[0]['ID'] == $_SESSION['ID']){
@@ -241,6 +239,9 @@ function UserLoggedIn(){
 			return false;
 		}
 	}else{
+		if (session_is_registered('openid')) {
+			return true;
+		}
 		### ändern, wenn Anmeldung programmiert
 		return false;
 	}
@@ -389,7 +390,9 @@ function DBQ($query){
 function DBGetProperty($Name, $DefaultValue = "") {
 	$erg = DBQ("SELECT PropName,PropValue FROM " . DBTabProperties .
 		" WHERE PropName=\"" . $Name. "\"");
-	return $erg[0]["PropValue"];
+	$r = $erg[0]["PropValue"];
+	if ($r == "") $r = $DefaultValue;
+	return $r;
 }
 
 
@@ -939,9 +942,6 @@ function LoadTPL($TPLName,$Values = ""){
 
 function BringMeBack(){
 
-	global $_SERVER;
-	global $_SESSION;
-
 	if(isset($_SERVER['HTTPS']))
 		$Location = "Location: https://";
 	else
@@ -978,9 +978,10 @@ function UserHasRole($RoleName){
 ## Diese Funktion erlaubt es Benutzern mit entsprechenden Rechten Debuginformationen anzuzeigen
 
 function Debug(){
-	if(UserLoggedIn() && UserHasRole(ROLEDebug)){
+	// NOTE: Deaktiviert für Test
+	//if(UserLoggedIn() && UserHasRole(ROLEDebug)){
 		echo LoadTPL("Debug");
-	}
+	//}
 }
 
 
@@ -1001,5 +1002,31 @@ function FormatString($String,$Format){
 	return $String;
 }
 
+
+## Fragt in der Tabelle DBTabUsers die ID für einen Nickname ab
+##
+## [string] getIDforNickname($nickname)
+##
+## [string] $nickname - Der gesuchte Nickname
+## [string] $Vars - Mit Komma getrennte Variablennamen
+## [string] $Values - Mit Komma getrennte Werte
+
+function getIDforNickname($nickname) {
+	$erg = DBQ2(DBTabUsers, "Nickname, ID", "Nickname like '" . addslashes($nickname) . "'");
+	$r = -1;
+	if ($erg[0]["Nickname"] >= $nickname) $r = $erg[0]["ID"];
+	return $r;
+}
+
+
+## Prüft, ob für einen OpenID-Benutzer alle Daten vorhanden sind
+
+function isOpenidUserOK($openid) {
+	$r = false;
+	//Test: in Tabelle openid gibt es einen Eintrag
+	$erg = DBQ2(DBTabopenid, "openid, Nickname", "openid like '" . addslashes($openid) . "'");
+	if ($erg[0]["openid"] == $openid) $r = $erg[0]["Nickname"] != "";
+	return $r;
+}
 
 ?>

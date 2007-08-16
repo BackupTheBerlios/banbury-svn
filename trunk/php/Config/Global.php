@@ -67,5 +67,6 @@ define ('PASSWORTNEUBETREFF','Ihr Passwort bei '.PROJECTNAME.' wurde zurückgese
 
 define ('ROLEDebug', 'Debugger');
 define ('ROLEAdmin', 'Admin');
+define ('ROLEUser', 'User');
 
 ?>

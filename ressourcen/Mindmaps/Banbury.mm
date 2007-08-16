@@ -173,8 +173,17 @@
 <font NAME="SansSerif" SIZE="16"/>
 </node>
 </node>
-<node COLOR="#0033ff" CREATED="1187024620000" ID="Freemind_Link_883419529" MODIFIED="1187024684406" POSITION="right" TEXT="Datenbank">
+<node COLOR="#0033ff" CREATED="1187024620000" ID="Freemind_Link_883419529" LINK="Datenbank.mm" MODIFIED="1187267438254" POSITION="right" TEXT="Datenbank">
 <font NAME="SansSerif" SIZE="18"/>
+</node>
+<node COLOR="#0033ff" CREATED="1187267390375" ID="Freemind_Link_1932274849" MODIFIED="1187267394335" POSITION="left" TEXT="OpenID">
+<font NAME="SansSerif" SIZE="18"/>
+<node COLOR="#00b439" CREATED="1187267395645" ID="Freemind_Link_244802773" MODIFIED="1187267409088" TEXT="Anmeldung &#xfc;ber: name.myopenid.com">
+<font NAME="SansSerif" SIZE="16"/>
+</node>
+<node COLOR="#00b439" CREATED="1187267413529" ID="Freemind_Link_1329863369" MODIFIED="1187267425750" TEXT="openID wird">
+<font NAME="SansSerif" SIZE="16"/>
+</node>
 </node>
 </node>
 </map>

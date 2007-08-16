@@ -15,8 +15,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+session_start();
+
+// Löschen aller Session-Variablen.
+$_SESSION = array();
+
+// Falls die Session gelöscht werden soll, löschen Sie auch das
+// Session-Cookie.
+// Achtung: Damit wird die Session gelöscht, nicht nur die Session-Daten!
+if (isset($_COOKIE[session_name()])) {
+    setcookie(session_name(), '', time()-42000, '/');
+}
+
+// Zum Schluß, löschen der Session.
 session_destroy();
-
-BringMeBack();
-
 ?>

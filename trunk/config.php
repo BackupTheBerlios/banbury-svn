@@ -40,7 +40,7 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 
 if($config ==0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', '51');
+define ('DBPTabVersionRequired', '53');
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -176,7 +176,7 @@ function dbctDBTabUsers() {
 	mysql_query("DROP TABLE IF EXISTS " . DBTabUsers, $db);
 	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
 		"` (
-			`ID` mediumint(9) NOT NULL,
+			`ID` mediumint(9) NOT NULL auto_increment,
 			`Nickname` varchar(64) collate utf8_bin NOT NULL,
 			`Passwort` varchar(64) collate utf8_bin NOT NULL,
 			`Mail` varchar(255) collate utf8_bin NOT NULL,
@@ -198,7 +198,7 @@ function dbctDBTabUsers() {
 			`Hardwarewuensche` text collate utf8_bin NOT NULL,
 			`Softwarewuensche` text collate utf8_bin NOT NULL,
 			`Sorted` text collate utf8_bin NOT NULL
-			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;",
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;",
 		$db),
 		"Tabelle für Benutzer",
 		"angelegt",
@@ -294,6 +294,22 @@ function dbctDBTabProtocol() {
 	return $r;
 }
 
+function dbctDBTabopenid() {
+	global $db;
+	mysql_query("DROP TABLE IF EXISTS " . DBTabopenid, $db);
+	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabopenid .
+		"` (
+			`openid` varchar(255) NOT NULL UNIQUE,
+			`Nickname` varchar(64) collate utf8_bin NOT NULL,
+			`status` varchar(1) NOT NULL
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;",
+		$db),
+		"Tabelle für openID-Anmeldungen",
+		"angelegt",
+		"Fehler beim Anlegen: " . mysql_error($db));
+	return $r;
+}
+
 function dbctDBTabProperties() {
 	global $db;
 	mysql_query("DROP TABLE IF EXISTS " . DBTabProperties, $db);
@@ -327,6 +343,9 @@ function erzeugeTabellen2() {
 	$erfolg = $erfolg && dbctDBTabHardware();
 	$erfolg = $erfolg && dbctDBTabTags();
 	$erfolg = $erfolg && dbctDBTabProtocol();
+	$erfolg = $erfolg && dbctDBTabopenid();
+
+	//Die Tabelle Properties als letztes anlegen!
 	$erfolg = $erfolg && dbctDBTabProperties();
 	ergebnis($erfolg,
 		"Tabellen anlegen",
@@ -353,13 +372,13 @@ function aktualisiereTabellen2() {
 
 	$vorhandeneVersion = DBGetProperty(DBPTabVersion, 0);
 	echo "<p>Vorhandene Version: " . $vorhandeneVersion . ", Zielversion: " . DBPTabVersionRequired . "</p>\n";
-	if ($vorhandeneVersion < 50) {
+	if (DBGetProperty(DBPTabVersion, 0) < 50) {
 		ergebnis(false,
 			"Tabellenaktualisierung",
 			"",
 			"nicht möglich. Bitte nutzen Sie ".actionLink("erzeugeTabellen").".");
 	}
-	if ($vorhandeneVersion == 50) {
+	if (DBGetProperty(DBPTabVersion, 0) == 50) {
 		if (dbctDBTabProtocol()) {
 			ergebnis(DBSetProperty(DBPTabVersion, "51"),
 				"Tabellenversion 51",
@@ -367,7 +386,32 @@ function aktualisiereTabellen2() {
 				"nicht gespeichert: " . mysql_error($db));
 		}
 	}
-
+	if (DBGetProperty(DBPTabVersion, 0) == "51") {
+		if (dbctDBTabopenid()) {
+			ergebnis(DBSetProperty(DBPTabVersion, "52"),
+				"Tabellenversion 52",
+				"gespeichert",
+				"nicht gespeichert: " . mysql_error($db));
+		}
+	}
+	if (DBGetProperty(DBPTabVersion, 0) == "52") {
+		$q = "ALTER TABLE " . DBTabUsers . " ADD PRIMARY KEY ( `ID` );";
+		ergebnis($erg = mysql_query($q, $db),
+			"Änderung der Struktur (Primärschlüssel aktivieren) an Tabelle " . DBTabUsers,
+			"erfolgreich",
+			"nicht erfolgreich: " . mysql_error($db) . "<br />" . htmlentities($q));
+		$q = "ALTER TABLE " . DBTabUsers . " MODIFY ID mediumint(9) NOT NULL auto_increment;";
+		ergebnis($erg = $erg && mysql_query($q, $db),
+			"Änderung der Struktur (auto_increment für Spalte ID) an Tabelle " . DBTabUsers,
+			"erfolgreich",
+			"nicht erfolgreich: " . mysql_error($db) . "<br />" . htmlentities($q));
+		
+		if ($erg) ergebnis(DBSetProperty(DBPTabVersion, "53"),
+				"Tabellenversion 53",
+				"gespeichert",
+				"nicht gespeichert: " . mysql_error($db));
+	}
+		
 	echo actionLink("cfgTest");
 }
 

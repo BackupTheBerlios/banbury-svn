@@ -15,6 +15,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+if(isset($_POST['action']) && isset($_POST['openid_url'])) {
+	if ($_POST['action'] == "verify" && $_POST['openid_url'] != "") {
+		$origip = get_include_path();
+		set_include_path('php/openid');
+		include("try_auth.php");
+		set_include_path($origip);
+	}
+}
 if(isset($_POST['Nickname']) && isset($_POST['Passwort'])){
 	if(!UserLogin($_POST['Nickname'],sha1($_POST['Passwort']))){
 		include("Content/Error.html");

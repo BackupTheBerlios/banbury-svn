@@ -35,6 +35,7 @@ define ('DBTabComments', DBPrefix."Kommentare");
 define ('DBTabHardware', DBPrefix."Hardware");
 define ('DBTabTags', DBPrefix."Tags");
 define ('DBTabProtocol', DBPrefix."Protokoll");
+define ('DBTabopenid', DBPrefix."openid");
 
 //Bezeichnungen für Einträge in der Properties-Tabelle
 define ('DBPTabVersion', "TableVersion");

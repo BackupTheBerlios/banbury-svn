@@ -17,10 +17,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // if(!isset($_SESSION['BringMeBackTo']) or $_SESSION['BringMeBackTo']=="") // Das soll den Benutzer nach dem Login wieder zur Ausgangsposition zurückbringen.
 	$_SESSION['BringMeBackTo'] = $_SERVER['QUERY_STRING'];
 ?>
+<div class="banburylogin">
+Anmeldung bei Banbury
 <form action="?Login" method="post">
-<input type="text" name="Nickname" value="Nickname" />
-<input type="password" name="Passwort" value="Passwort" />
+<div>
+Nickname <input type="text" name="Nickname" value="Nickname" /><br />
+Passwort <input type="password" name="Passwort" value="Passwort" /><br />
 <input type="submit" id="Submit" value="Anmelden" />
+</div>
 </form>
 <a href="?Register">Register</a>
 <a href="?NewPass">Passwort vergessen</a>
+</div>
+<div class="openidlogin">
+<form method="post" action="?Login">
+Identity&nbsp;URL:
+<input type="hidden" name="action" value="verify" />
+<input type="text" name="openid_url" value=""/>
+<input type="submit" value="Anmelden (OpenID)" />
+</form>
+</div>
