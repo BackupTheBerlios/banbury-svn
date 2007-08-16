@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$Reihenfolge = DBQ("SELECT Sorted FROM USERS WHERE ID=".$_SESSION['ID']);
+$Reihenfolge = DBQ("SELECT Sorted FROM ".DBTabUsers." WHERE ID=".$_SESSION['ID']);
 
 $Reihenfolge = explode(",",$Reihenfolge[0]['Sorted']);
 

@@ -19,7 +19,7 @@ $QUERIES = array();
 $LSRARRAY = array();
 $LSRCOUNT = 0;
 
-## TODO: Funktionsinfo Ls($verzeichnis) 
+## TODO: Funktionsinfo Ls($verzeichnis)
 
 function Ls($verzeichnis){
 	$ARRAY=array();
@@ -45,7 +45,7 @@ function Ls($verzeichnis){
 }
 
 
-## TODO: Funktionsinfo DirCount($verzeichnis) 
+## TODO: Funktionsinfo DirCount($verzeichnis)
 
 function DirCount($verzeichnis){
 	echo $verzeichnis;
@@ -69,7 +69,7 @@ function DirCount($verzeichnis){
 }
 
 
-## TODO: Funktionsinfo Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option) 
+## TODO: Funktionsinfo Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option)
 
 function Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option){
 	global $LSRARRAY;
@@ -98,7 +98,7 @@ function Lsrr($verzeichnis,$ZIANO_LSRARRAY,$ZIANO_LSRCOUNT,$Option){
 }
 
 
-## TODO: Funktionsinfo Lsr($verzeichnis, $Option ="f") 
+## TODO: Funktionsinfo Lsr($verzeichnis, $Option ="f")
 
 function Lsr($verzeichnis, $Option ="f"){
 
@@ -120,7 +120,7 @@ function Lsr($verzeichnis, $Option ="f"){
 }
 
 
-## TODO: Funktionsinfo ShortenString($String,$Length) 
+## TODO: Funktionsinfo ShortenString($String,$Length)
 
 function ShortenString($String,$Length){
 	if(strlen($String) > $Length){
@@ -132,7 +132,7 @@ function ShortenString($String,$Length){
 }
 
 
-## TODO: Funktionsinfo Error($Value) 
+## TODO: Funktionsinfo Error($Value)
 
 function Error($Value){
 	echo '<div class="Error" id="Error"><img src="IconsPNG/PasswordNotOK.png" align="left" /><h2>Ein Fehler trat auf.</h2> <strong>'.PROJECTNAME.' Meldung:</strong> <br /><em><br />';
@@ -141,7 +141,7 @@ function Error($Value){
 }
 
 
-## TODO: Funktionsinfo MKPass() 
+## TODO: Funktionsinfo MKPass()
 
 function MKPass(){
 	$pass="";
@@ -155,7 +155,7 @@ function MKPass(){
 }
 
 
-## TODO: Funktionsinfo SendMail($von,$vonname,$an,$betreff,$inhalt) 
+## TODO: Funktionsinfo SendMail($von,$vonname,$an,$betreff,$inhalt)
 
 function SendMail($von,$vonname,$an,$betreff,$inhalt){
 	global $GlobalMailEncoding;
@@ -193,7 +193,7 @@ function aArrayIntoString($Array){
 }
 
 
-## TODO: Funktionsinfo UserLogin($Nickname ='',$Passwort ='') 
+## TODO: Funktionsinfo UserLogin($Nickname ='',$Passwort ='')
 
 function UserLogin($Nickname ='',$Passwort =''){
 	$Array = DBQ("SELECT Nickname,Passwort,ID from ".DBTabUsers." WHERE Nickname = '".$Nickname."' AND Passwort = '".$Passwort."'");
@@ -233,7 +233,7 @@ function UserLoggedIn(){
 	global $_SESSION;
 
 	if(session_is_registered('Nickname') && session_is_registered('Passwort')){
-		$Array = DBQ("SELECT ID,Nickname from USERS WHERE Nickname = '".$_SESSION['Nickname']."' AND Passwort = '".$_SESSION['Passwort']."'");
+		$Array = DBQ("SELECT ID,Nickname from ".DBTabUsers." WHERE Nickname = '".$_SESSION['Nickname']."' AND Passwort = '".$_SESSION['Passwort']."'");
 		if(isset($Array[0]) && $Array[0]['ID'] == $_SESSION['ID']){
 			return true;
 		}else{
@@ -256,7 +256,7 @@ function UserLoggedIn(){
 ## Die Funktion gibt true zurück, wenn ein Benutzer in der Datenbank eingetragen ist, sonst false.
 
 function UserExists($Name){
-	$Array = DBQ("SELECT Nickname FROM USERS WHERE Nickname='".$Name."'");
+	$Array = DBQ("SELECT Nickname FROM ".DBTabUsers." WHERE Nickname='".$Name."'");
 	if(is_array($Array) && count($Array) > 0){
 		return true;
 	}else{
@@ -309,7 +309,7 @@ function GeneratePasswort($Length){
 ## Bei Erfolg wird true zurückgegeben, sonst false.
 
 function UserHasMail($Name,$Mail){
-	$Array = DBQ("SELECT Nickname,Mail FROM USERS WHERE Nickname='".$Name."'");
+	$Array = DBQ("SELECT Nickname,Mail FROM ".DBTabUsers." WHERE Nickname='".$Name."'");
 	if($Array[0]['Nickname'] == $Name && $Array[0]['Mail'] == $Mail){
 		return true;
 	}else{
@@ -335,7 +335,7 @@ function initDBConnection() {
 }
 
 
-## TODO: Funktionsinfo DBQ2($Tabelle, $Felder, $Abfrage)  
+## TODO: Funktionsinfo DBQ2($Tabelle, $Felder, $Abfrage)
 
 function DBQ2($Tabelle, $Felder, $Abfrage) {
 	return DBQ("SELECT $Felder FROM $Tabelle WHERE $Abfrage");
@@ -658,7 +658,7 @@ function GenerateContentID($Table){
 }
 
 
-## TODO: Funktionsinfo ZapComments($ID) 
+## TODO: Funktionsinfo ZapComments($ID)
 
 function ZapComments($ID){
 
@@ -667,7 +667,7 @@ function ZapComments($ID){
 }
 
 
-## TODO: Funktionsinfo ZapContent($ID,$Type) 
+## TODO: Funktionsinfo ZapContent($ID,$Type)
 
 function ZapContent($ID,$Type){
 

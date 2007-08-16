@@ -27,14 +27,14 @@ if(!UserLoggedIn()){
 
 			if(isset($_POST['Values'])){ // Speichern des geänderten Profils
 
-				$Array = DBQ("SELECT * FROM USERS WHERE ID='".$_SESSION['ID']."'");
+				$Array = DBQ("SELECT * FROM ".DBTabUsers." WHERE ID='".$_SESSION['ID']."'");
 				$Array = $Array[0];
-				$Show = DBQ("SELECT * FROM Profile WHERE ID='".$_SESSION['ID']."'");
+				$Show = DBQ("SELECT * FROM ".DBTabProfiles." WHERE ID='".$_SESSION['ID']."'");
 
 
 				$Values = $_POST['Values'];
 				$Update = aArrayIntoString($Values);
-				DBU("USERS","ID='".$_SESSION['ID']."'",$Update); // Werte speichern
+				DBU(DBTabUsers,"ID='".$_SESSION['ID']."'",$Update); // Werte speichern
 				if(is_array($Show)){
 					$Show = $Show[0];
 

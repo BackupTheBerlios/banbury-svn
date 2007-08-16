@@ -54,7 +54,7 @@ $Hardware = '<strong>Hardware</strong>';
 $Software = '<strong>Software</strong>';
 $Anzeigen = '<strong>Anzeigen</strong>';
 
-$Reihenfolge = DBQ("SELECT Sorted FROM USERS WHERE ID=".$_SESSION['ID']);
+$Reihenfolge = DBQ("SELECT Sorted FROM ".DBTabUsers." WHERE ID=".$_SESSION['ID']);
 
 $Reihenfolge = explode(",",$Reihenfolge[0]['Sorted']);
 
