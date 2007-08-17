@@ -84,6 +84,8 @@ function dbctDBTabPictures() {
 			`ID` mediumint(9) NOT NULL,
 			`Dateiname` mediumtext collate utf8_bin NOT NULL,
 			`Titel` mediumtext collate utf8_bin NOT NULL,
+			`Skaliert` mediumtext collate utf8_bin NOT NULL,
+			`Time` timestamp collate utf8_bin NOT NULL,
 			`Thumbnail` mediumtext collate utf8_bin NOT NULL
 			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin",
 		$db),
@@ -176,7 +178,7 @@ function dbctDBTabUsers() {
 	mysql_query("DROP TABLE IF EXISTS " . DBTabUsers, $db);
 	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `". DBTabUsers .
 		"` (
-			`ID` mediumint(9) NOT NULL auto_increment,
+			`ID` mediumint(9) NOT NULL,
 			`Nickname` varchar(64) collate utf8_bin NOT NULL,
 			`Passwort` varchar(64) collate utf8_bin NOT NULL,
 			`Mail` varchar(255) collate utf8_bin NOT NULL,
@@ -198,7 +200,7 @@ function dbctDBTabUsers() {
 			`Hardwarewuensche` text collate utf8_bin NOT NULL,
 			`Softwarewuensche` text collate utf8_bin NOT NULL,
 			`Sorted` text collate utf8_bin NOT NULL
-			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;",
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;",
 		$db),
 		"Tabelle für Benutzer",
 		"angelegt",
@@ -405,13 +407,13 @@ function aktualisiereTabellen2() {
 			"Änderung der Struktur (auto_increment für Spalte ID) an Tabelle " . DBTabUsers,
 			"erfolgreich",
 			"nicht erfolgreich: " . mysql_error($db) . "<br />" . htmlentities($q));
-		
+
 		if ($erg) ergebnis(DBSetProperty(DBPTabVersion, "53"),
 				"Tabellenversion 53",
 				"gespeichert",
 				"nicht gespeichert: " . mysql_error($db));
 	}
-		
+
 	echo actionLink("cfgTest");
 }
 

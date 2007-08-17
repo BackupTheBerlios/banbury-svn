@@ -735,7 +735,7 @@ function CreateContent($Content, $Type, $Time = 0, $Owner, $META){
 			$ThumbName = $ThumbCount."-".$META['Bild']['name'].".jpg";
 			$PicName = $PicCount."-".$META['Bild']['name'];
 			$Info = getimagesize($META['Bild']['tmp_name']);
-print_r($Info);
+print_r($Info); // DEBUG
 			CreateThumbnail(THUMBMAXSIZE,$META['Bild'],BilderVerzeichnis."/Thumbnails/".$ThumbName); // Thumbnail erstellen
 
 			if($Info[0] > SCALEDMAXSIZE or $Info[1] > SCALEDMAXSIZE){
@@ -947,7 +947,7 @@ function BringMeBack(){
 	else
 		$Location = "Location: http://";
 
-	$Location .= SERVER.SCRIPT;
+	$Location .= SERVER.":".$_SERVER['SERVER_PORT'].SCRIPT;
 
 	if(isset($_SESSION['BringMeBackTo']))
 		$Location.= "?".$_SESSION['BringMeBackTo'];

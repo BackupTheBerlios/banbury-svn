@@ -15,7 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-session_start();
+
+// Das könnte eventuell schon passiert sein (daher das @)
+@session_start();
 
 // Löschen aller Session-Variablen.
 $_SESSION = array();
