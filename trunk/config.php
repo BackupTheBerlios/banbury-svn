@@ -38,9 +38,9 @@ $config = 1; // Auf 1 setzen, um Config zu aktivieren
 <?php
 
 
-if($config ==0) die("Config nicht zugelassen");
+if($config == 0) die("Config nicht zugelassen");
 
-define ('DBPTabVersionRequired', '53');
+define ('DBPTabVersionRequired', '55');
 
 $aktionen = array(
 	'erzeugeTabellen' => "Tabellen neu erstellen",
@@ -285,7 +285,8 @@ function dbctDBTabProtocol() {
 	ergebnis($r = mysql_query("CREATE TABLE IF NOT EXISTS `" . DBTabProtocol .
 		"` (
 			`Datum` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			`Nickname` varchar(64),
+			`Level` tinyint unsigned NOT NULL,
+			`Nickname` varchar(64) NOT NULL,
 			`Quelle` varchar(50) NOT NULL,
 			`Nachricht` varchar(255) NOT NULL
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_bin ;",
@@ -413,7 +414,29 @@ function aktualisiereTabellen2() {
 				"gespeichert",
 				"nicht gespeichert: " . mysql_error($db));
 	}
-
+	if (DBGetProperty(DBPTabVersion, 0) == "53") {
+		$q = "ALTER TABLE " . DBTabProtocol . " ADD Level tinyint unsigned AFTER Datum;";
+		ergebnis($erg = mysql_query($q, $db),
+			"Änderung der Struktur (Spalte Level) an Tabelle " . DBTabProtocol,
+			"erfolgreich",
+			"nicht erfolgreich: " . mysql_error($db) . "<br />" . htmlentities($q));
+		if ($erg) ergebnis(DBSetProperty(DBPTabVersion, "54"),
+				"Tabellenversion 54",
+				"gespeichert",
+				"nicht gespeichert: " . mysql_error($db));
+	}
+	if (DBGetProperty(DBPTabVersion, 0) == "54") {
+		$q = "ALTER TABLE " . DBTabProtocol . " MODIFY Level tinyint unsigned NOT NULL, MODIFY Nickname varchar(64) NOT NULL;";
+		ergebnis($erg = mysql_query($q, $db),
+			"Änderung der Struktur (Spalte Level) an Tabelle " . DBTabProtocol,
+			"erfolgreich",
+			"nicht erfolgreich: " . mysql_error($db) . "<br />" . htmlentities($q));
+		if ($erg) ergebnis(DBSetProperty(DBPTabVersion, "55"),
+				"Tabellenversion 55",
+				"gespeichert",
+				"nicht gespeichert: " . mysql_error($db));
+	}
+	logentry(LogDebug, "SQL-Admin", "config.php", "Datenbankversion 55 erreicht");
 	echo actionLink("cfgTest");
 }
 

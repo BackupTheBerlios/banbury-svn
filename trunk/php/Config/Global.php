@@ -43,6 +43,12 @@ define ('SERVER',$_SERVER['SERVER_NAME']);
 define ('SCRIPT',$_SERVER['PHP_SELF']);
 define ('MAINTEMPLATES','Content/Templates/'); // Unbedingt mit Slash (/) enden !
 
+define ('LogDebug', 0);
+define ('LogInfo', 20);
+define ('LogWarn', 40);
+define ('LogError', 60);
+define ('LogFatal', 80);
+
 ## Einschränkungen und Optionen
 
 define ('AVATARMAXSIZE',120); // Maximale Avatargröße
@@ -52,7 +58,7 @@ define ('PICMAXSIZE',1200); // Maximale Größe von Bildern
 define ('MAXPICSCOUNT',3); // Maximale Anzahl an Bildern, die ein Benutzer haben darf
 define ('MAXITEMSINLIST',12); // Maximale Anzahl an Bildern, Reviews etc. in einer Liste.
 define ('MAXLENGTHKOMMENTAR',250);
-
+define ('LogLevel', LogWarn); // Nur Protokolleinträge größer gleich diesem Wert werden protokolliert
 
 ## Konfiguration
 

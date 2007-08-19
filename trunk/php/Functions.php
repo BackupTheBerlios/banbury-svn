@@ -381,6 +381,24 @@ function DBQ($query){
 }
 
 
+## Fügt der Tabelle DBTabProtocol einen Eintrag hinzu
+##
+## [int] $level - Bedeutung des Eintrags, kann LogDebug, LogInfo, LogWarn, LogError, LogFatal sein
+## [string] $nickname - Unter welcher Benutzerkennung trat der Fehler auf
+## [string] $quelle - Welche Routine verursacht den Protokolleintrag
+## [string] $nachricht - Eintrag für das Protokoll
+
+function logentry($level, $nickname, $quelle, $nachricht) {
+	if ($level >= LogLevel) {
+		DBIN(DBTabProtocol, "Level, Nickname, Quelle, Nachricht",
+			//"'" . date("d.m.Y h:i:s",time()) . "'," .
+			$level . ",'" .
+			addslashes($nickname) . "','" .
+			addslashes($quelle) . "','" .
+			addslashes($nachricht) . "'");
+	}
+}
+
 ## Liest aus der Properties-Tabelle den unter $Name gespeicherten Wert
 ## [string] DBGetProperty($Name)
 ##
@@ -483,7 +501,7 @@ function DBINAA($Table, $aArray) {
 ## [string] $Values - Mit Komma getrennte Werte
 
 function DBIN($Table,$Vars,$Values){
-	return DBQ("INSERT INTO $Table($Vars) VALUES($Values)");
+	return DBQ("INSERT INTO $Table ($Vars) VALUES($Values)");
 }
 
 
