@@ -922,7 +922,6 @@ function OutputContentList($Handlername,$Style = 'Icons'){
 ## Damit dynamischer Inhalt eingebunden werden kann, wird die Template-Datei includiert.
 
 function LoadTPL($TPLName,$Values = ""){
-	restore_include_path();
 	global $TEMPLATES;
 
 	$TPLFile = MAINTEMPLATES.$TPLName.".php";
@@ -938,10 +937,10 @@ function LoadTPL($TPLName,$Values = ""){
 		}else{
 			$Value = $Values;
 		}
-		ob_start();
+		ob_start("TemplateOB");
+			restore_include_path();
 			include($TPLFile);  // Template-Datei einbinden.
-			$Return = ob_get_contents();
-		ob_end_clean();
+			$Return = ob_get_clean();
 		$TEMPLATES[count($TEMPLATES)] = $TPLFile; // DEBUG
 		return $Return;
 	}else{

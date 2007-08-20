@@ -15,13 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-ob_start(); // Put all that in Buffer
 
 set_include_path('php');
 
 require('Includes.php');
 require('Functions.php');
 
+ob_start(PROJECTNAME."MainOB");
 
 initDBConnection();
 
@@ -95,7 +95,7 @@ Debug();
 	mysql_close($db);
 
 	$Return = ob_get_contents();
-	ob_end_clean();
+	while (@ob_end_flush());
 	echo $Return;
 
 ?>

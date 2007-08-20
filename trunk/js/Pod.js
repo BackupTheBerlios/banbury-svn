@@ -1,8 +1,8 @@
 	var hwuielem = document.getElementById("hwui");
 	var tplvalues = document.getElementById('tplvalues');
 	var url = "CallFunc.php";
-	var target = document.getElementById('PODDisplay'); // Scrollen ...
-	var targetTable = document.getElementById('PODTable'); // Inhalt des Displays ...
+	var target = document.getElementById('Moving'); // Scrollen ...
+	var targetTable = document.getElementById('Table'); // Inhalt des Displays ...
 	var myEffects = target.effects({duration: 1000, transition:Fx.Transitions.Sine.easeInOut});
 
 	function SlideF(){
@@ -207,7 +207,7 @@ function LoadTPLOne(Tags){
 	var MyAjax = new Ajax(url, {
 		method: 'post',
 		data: "Function=LoadPODTPL&Tags=" + Tags,
- 		update: tplvalues, 
+ 		update: tplvalues,
 		onComplete: LoadTPLTwo,
 
 	}).request();
@@ -339,8 +339,8 @@ function bewegen() {
 	}
 	while ((bewegungen.length > 2) && (bewegungen[0] == bewegungen[1])) bewegungen.shift();
 	// NOTE: Debugcode entfernen
-	 dp = document.getElementById("debug");
-	 dp.firstChild.nodeValue= "Debug: " + document.getElementById(objektid[aktivesTeil]).style.left;
+//	 dp = document.getElementById("debug");
+//	 dp.firstChild.nodeValue= "Debug: " + document.getElementById(objektid[aktivesTeil]).style.left;
 }
 
 function init() {
