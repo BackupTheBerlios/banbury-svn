@@ -100,6 +100,30 @@
 <icon BUILTIN="Mail"/>
 </node>
 </node>
+<node COLOR="#00b439" CREATED="1192735415227" ID="Freemind_Link_424978115" MODIFIED="1192735417001" TEXT="Freunde">
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1192735418338" ID="Freemind_Link_1437097208" MODIFIED="1192735420995" TEXT="Geburtstage">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+</node>
+<node COLOR="#00b439" CREATED="1192735423201" ID="Freemind_Link_1817499884" MODIFIED="1192735428919" TEXT="Meine Videos">
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1192735430503" ID="Freemind_Link_143409141" MODIFIED="1192735433948" TEXT="MySpace">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1192735434438" ID="Freemind_Link_1757511334" MODIFIED="1192735438674" TEXT="GoogleVideo">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1192735439196" ID="Freemind_Link_976226696" MODIFIED="1192735442426" TEXT="ClipFish">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1192735442656" ID="Freemind_Link_208218713" MODIFIED="1192735444355" TEXT="YouTube">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+</node>
+<node COLOR="#00b439" CREATED="1192735445589" ID="Freemind_Link_178516191" MODIFIED="1192735448555" TEXT="Lesezeichen">
+<font NAME="SansSerif" SIZE="16"/>
+</node>
 </node>
 <node COLOR="#0033ff" CREATED="1187021914781" ID="Freemind_Link_1193904408" MODIFIED="1187024684375" POSITION="right" TEXT="Backend">
 <font NAME="SansSerif" SIZE="18"/>
@@ -144,6 +168,27 @@
 </node>
 </node>
 </node>
+<node COLOR="#00b439" CREATED="1192735495555" ID="Freemind_Link_491993077" MODIFIED="1192735498739" TEXT="Ruby on Rails">
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1192737518538" ID="Freemind_Link_1260082187" LINK="http://developer.apple.com/tools/rubyonrails.html" MODIFIED="1192737548275" TEXT="Using Ruby on Rails for Web Development on Mac OS X">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1192737616881" ID="Freemind_Link_1670235494" LINK="http://www.zetetic.net/articles/2007/09/21/social-networking-with-rails-using-actsasnetwork" MODIFIED="1192737634970" TEXT="Social Networking with Rails using ActsAsNetwork">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1192737866720" ID="Freemind_Link_391547274" MODIFIED="1192737869207" TEXT="OpenID">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1192737852889" ID="Freemind_Link_539389456" LINK="http://blog.dopefreshtight.de/artikel/openid-in-rails-einbinden/" MODIFIED="1192737880122" TEXT="OpenID in Rails einbinden">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node COLOR="#111111" CREATED="1192737677012" ID="Freemind_Link_494983722" LINK="http://www.bencurtis.com/archives/2007/03/rails-openid-and-acts-as-authenticated/" MODIFIED="1192737881921" TEXT="BenCurtis.com &#xbb; Rails, OpenID, and Acts as Authenticated">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node COLOR="#990000" CREATED="1192737907049" ID="Freemind_Link_649148690" LINK="http://media.sitepoint.com/books/ror.pdf" MODIFIED="1192737913499" TEXT="Einf&#xfc;hrungsbuch (engl.)">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+</node>
 </node>
 <node COLOR="#0033ff" CREATED="1187023882813" ID="Freemind_Link_1586899261" MODIFIED="1187024684406" POSITION="left" TEXT="Ranking">
 <font NAME="SansSerif" SIZE="18"/>
@@ -165,6 +210,10 @@
 <font NAME="SansSerif" SIZE="14"/>
 <icon BUILTIN="full-4"/>
 </node>
+<node COLOR="#990000" CREATED="1192735470819" ID="Freemind_Link_817098156" MODIFIED="1192735476807" TEXT="Bill">
+<font NAME="SansSerif" SIZE="14"/>
+<icon BUILTIN="full-5"/>
+</node>
 </node>
 <node COLOR="#00b439" CREATED="1187023905979" ID="Freemind_Link_805861265" MODIFIED="1187024684406" TEXT="Hardware">
 <font NAME="SansSerif" SIZE="16"/>
@@ -175,6 +224,12 @@
 </node>
 <node COLOR="#0033ff" CREATED="1187024620000" ID="Freemind_Link_883419529" LINK="Datenbank.mm" MODIFIED="1187267438254" POSITION="right" TEXT="Datenbank">
 <font NAME="SansSerif" SIZE="18"/>
+</node>
+<node COLOR="#0033ff" CREATED="1192735391067" ID="Freemind_Link_1542983247" MODIFIED="1192735393812" POSITION="right" TEXT="Funktionen">
+<font NAME="SansSerif" SIZE="18"/>
+<node COLOR="#00b439" CREATED="1192735395266" ID="Freemind_Link_1019139548" MODIFIED="1192735403739" TEXT="Benutzer melden">
+<font NAME="SansSerif" SIZE="16"/>
+</node>
 </node>
 <node COLOR="#0033ff" CREATED="1187267390375" ID="Freemind_Link_1932274849" MODIFIED="1187267394335" POSITION="left" TEXT="OpenID">
 <font NAME="SansSerif" SIZE="18"/>
