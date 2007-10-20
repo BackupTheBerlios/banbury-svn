@@ -170,11 +170,38 @@
 </node>
 <node COLOR="#00b439" CREATED="1192735495555" ID="Freemind_Link_491993077" MODIFIED="1192735498739" TEXT="Ruby on Rails">
 <font NAME="SansSerif" SIZE="16"/>
-<node COLOR="#990000" CREATED="1192737518538" ID="Freemind_Link_1260082187" LINK="http://developer.apple.com/tools/rubyonrails.html" MODIFIED="1192737548275" TEXT="Using Ruby on Rails for Web Development on Mac OS X">
+<node COLOR="#990000" CREATED="1192903080273" ID="Freemind_Link_151446063" MODIFIED="1192903083238" TEXT="Ruby">
 <font NAME="SansSerif" SIZE="14"/>
 </node>
-<node COLOR="#990000" CREATED="1192737616881" ID="Freemind_Link_1670235494" LINK="http://www.zetetic.net/articles/2007/09/21/social-networking-with-rails-using-actsasnetwork" MODIFIED="1192737634970" TEXT="Social Networking with Rails using ActsAsNetwork">
+<node COLOR="#990000" CREATED="1192903083744" ID="Freemind_Link_383986425" MODIFIED="1192903089274" TEXT="Ruby On Rails">
 <font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1192737616881" ID="Freemind_Link_1670235494" LINK="http://www.zetetic.net/articles/2007/09/21/social-networking-with-rails-using-actsasnetwork" MODIFIED="1192903095925" TEXT="Social Networking with Rails using ActsAsNetwork">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node COLOR="#111111" CREATED="1192737907049" ID="Freemind_Link_649148690" LINK="http://media.sitepoint.com/books/ror.pdf" MODIFIED="1192903098408" TEXT="Einf&#xfc;hrungsbuch (engl.)">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node COLOR="#111111" CREATED="1192737518538" ID="Freemind_Link_1260082187" LINK="http://developer.apple.com/tools/rubyonrails.html" MODIFIED="1192903100461" TEXT="Using Ruby on Rails for Web Development on Mac OS X">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node COLOR="#111111" CREATED="1192903275259" ID="Freemind_Link_129738644" LINK="http://www-128.ibm.com/developerworks/linux/library/l-rubyrails/" MODIFIED="1192903285417" TEXT="Fast-track your Web apps with Ruby on Rails (IBM DeveloperWorks)"/>
+<node COLOR="#111111" CREATED="1192903314190" ID="Freemind_Link_808207396" LINK="http://www.oreillynet.com/pub/a/ruby/2007/05/17/cookin-with-ruby-on-rails---may.html" MODIFIED="1192903335521" TEXT="Cookin&apos; with Ruby on Rails - May"/>
+<node COLOR="#111111" CREATED="1192903345738" ID="Freemind_Link_1424597503" MODIFIED="1192903353687" TEXT="Rolling with Ruby on Rails Revisited">
+<node COLOR="#111111" CREATED="1192903355080" ID="Freemind_Link_1457435300" LINK="http://www.onlamp.com/pub/a/onlamp/2006/12/14/revisiting-ruby-on-rails-revisited.html" MODIFIED="1192903363441" TEXT="Teil 1"/>
+<node COLOR="#111111" CREATED="1192903369223" ID="Freemind_Link_1534808600" LINK="http://www.onlamp.com/pub/a/onlamp/2007/01/05/revisiting-ruby-on-rails-revisited-2.html" MODIFIED="1192903373449" TEXT="Teil 2"/>
+</node>
+<node COLOR="#111111" CREATED="1192903380026" ID="Freemind_Link_327526998" LINK="http://de.wikibooks.org/wiki/Ruby_on_Rails" MODIFIED="1192903389198" TEXT="WikiBooks Ruby on Rails"/>
+</node>
+<node COLOR="#990000" CREATED="1192903245592" ID="Freemind_Link_962983209" MODIFIED="1192903247357" TEXT="Eclipse">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1192903180372" ID="Freemind_Link_964949684" LINK="http://www.aptana.com/docs/index.php/Plugging_Aptana_into_an_existing_Eclipse_configuration" MODIFIED="1192903249561" TEXT="Plugging Aptana into an existing Eclipse configuration">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node COLOR="#111111" CREATED="1192903251731" ID="Freemind_Link_445979485" LINK="http://www-128.ibm.com/developerworks/opensource/library/os-rubyeclipse/" MODIFIED="1192903264871" TEXT="Using the Ruby Development Tools plug-in for Eclipse (IBM DeveloperWorks)"/>
+</node>
+<node COLOR="#990000" CREATED="1192903073672" ID="Freemind_Link_1082172910" MODIFIED="1192903076561" TEXT="Ajax">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1192903295354" ID="Freemind_Link_1781145209" LINK="http://www.onlamp.com/pub/a/onlamp/2005/06/09/rails_ajax.html" MODIFIED="1192903305167" TEXT="Ajax on Rails"/>
 </node>
 <node COLOR="#990000" CREATED="1192737866720" ID="Freemind_Link_391547274" MODIFIED="1192737869207" TEXT="OpenID">
 <font NAME="SansSerif" SIZE="14"/>
@@ -184,9 +211,6 @@
 <node COLOR="#111111" CREATED="1192737677012" ID="Freemind_Link_494983722" LINK="http://www.bencurtis.com/archives/2007/03/rails-openid-and-acts-as-authenticated/" MODIFIED="1192737881921" TEXT="BenCurtis.com &#xbb; Rails, OpenID, and Acts as Authenticated">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-</node>
-<node COLOR="#990000" CREATED="1192737907049" ID="Freemind_Link_649148690" LINK="http://media.sitepoint.com/books/ror.pdf" MODIFIED="1192737913499" TEXT="Einf&#xfc;hrungsbuch (engl.)">
-<font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
 </node>
